@@ -2,6 +2,8 @@
 # Przyklady do rozdzialu o kolorach
 #
 
+setwd("/Users/pbiecek/camtasia/GitHub/Eseje/Kolory/")
+
 #
 # Przyklad: Pasma Macha
 #
