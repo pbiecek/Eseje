@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="eye" sodipodi:docname="humaneye.pdf" sodipodi:version="0.32" inkscape:version="0.48.4 r9939" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="6239.328px"
+	 height="3626.459px" viewBox="-5684.363 -2060.11 6239.328 3626.459"
+	 enable-background="new -5684.363 -2060.11 6239.328 3626.459" xml:space="preserve">
+<sodipodi:namedview  height="516px" width="491px" fit-margin-bottom="0" fit-margin-right="0" inkscape:current-layer="Labeling" inkscape:window-y="-8" inkscape:window-width="1366" inkscape:window-x="-8" inkscape:pageshadow="2" inkscape:window-height="705" inkscape:pageopacity="0.0" objecttolerance="10.0" guidetolerance="10.0" gridtolerance="10.0" borderopacity="1.0" bordercolor="#666666" pagecolor="#ffffff" inkscape:zoom="0.96593773" inkscape:cx="292.90801" inkscape:cy="168.8546" showgrid="false" fit-margin-top="0" fit-margin-left="0" id="base" inkscape:window-maximized="1">
+	</sodipodi:namedview>
+<g id="Labeling" transform="translate(43.716347,-72.086005)" inkscape:groupmode="layer">
+	<g id="g3944" transform="matrix(0,-1,1,0,59.744546,565.9042)">
+		<path id="sclera" sodipodi:nodetypes="csccccsccc" inkscape:connector-curvature="0" fill="#999999" stroke="#000000" d="
+			M472.455,171.792c3.494,93.93-68.607,150.384-151.62,150.384c-26.597,0-33.373-1.827-51.828-3.696
+			c-14.142,24.695-18.373,42.778-31.297,69.701c-21.131,2.63-38.349-0.609-43.546-26.913c18.662-32.277,21.484-38.658,40.01-58.595
+			c-39.99-32.376-59.927-79.831-64.34-130.573c-5.815-66.866,37.611-118.766,93.725-140.046
+			c33.91-30.121,73.266-47.328,119.747,0.781C437.224,55.698,472.455,109.57,472.455,171.792L472.455,171.792z"/>
+		<path id="choroidea" inkscape:connector-curvature="0" fill="#DDAFE9" stroke="#000000" d="M464.886,173.047
+			c-7.392,84.022-58.962,138.872-141.317,141.929c-77.954,2.894-138.89-64.594-143.491-142.803
+			c-3.479-59.13,46.795-141.63,143.491-141.056C408.107,31.619,464.451,99.069,464.886,173.047z"/>
+		<path id="corpus_vitreum" inkscape:connector-curvature="0" fill="#FFFFFF" stroke="#000000" d="M457.021,169.771
+			c0,76.576-60.349,138.654-134.794,138.654s-134.794-62.077-134.794-138.654s60.35-138.654,134.794-138.654
+			S457.021,93.195,457.021,169.771L457.021,169.771L457.021,169.771z"/>
+		
+			<rect id="nervus_opticus_--3d-canal" x="235.291" y="279.52" transform="matrix(0.8745 0.485 -0.485 0.8745 190.5634 -74.1784)" fill="#AA8800" width="6.677" height="103.299"/>
+		
+			<path id="nervus_opticus" sodipodi:nodetypes="ccssssssccscsssccsssssscssscccc" inkscape:connector-curvature="0" fill="#FFDD55" stroke="#000000" d="
+			M201.95,365.411c10.488-27.778,25.415-43.378,32.578-50.797c6.855-7.11,8.159-12.915,9.727-18.682
+			c1.607-5.911-3.774-14.471-9.573-18.528c-5.903-4.13-23.636-24.109-29.181-33.35c-5.545-9.242-13.064-29.347-14.359-35.821
+			c-0.52-2.6-5.572-21.124-6.47-40.789c-0.443-9.694,1.509-29.431,6.863-43.578c4.851-12.817,9.526-16.941,14.583-24.793
+			c-10.453,19.492-18.193,41.032-17.923,63.216c0.27,22.029,7.433,59.235,20.621,76.815c5.134,6.844,18.112,27.52,33.964,37.856
+			c15.64,0.318,21.176,5.776,18.558,10.608c-15.397,28.418-38.629,68.691-47.72,83.931c-3.925,6.58,1.734,6.363,4.04,3.454
+			c6.173-7.785,48.006-88.466,46.847-88.736c14.859-3.504,23.339,13.092,33.896,17.722c8.111-0.419,13.997-1.534,26.961-0.954
+			c5.041,0.225,7.142,4.051,9.566,3.837c8.938-0.788,4.747-3.986,10.931-5.186c17.681-3.431,37.511-9.807,49.246-17.576
+			c13.781-9.123,36.345-32.443,49.275-59.355c4.22-8.783,12.549-36.445,11.133-63.425c-1.264-24.093-3.617-31.797-16.098-60.198
+			c13.2,26.639,22.042,34.16,20.689,67.935c-1.352,33.765-6.26,56.57-30.262,89.551c-9.17,12.601-36.178,37.714-62.996,45.697
+			c-49.125,14.623-90.545,2.364-94.108,1.48c-8.233,0.578-14.434,12.874-16.975,20.059c-3.475,12.742-14.039,39.688-25.557,57.173
+			C220.48,383.353,202.461,378.62,201.95,365.411L201.95,365.411z"/>
+		<path id="path" inkscape:connector-curvature="0" fill="#D1D3D3" stroke="#000000" d="M274.363,39.321
+			c51-7.82,60.98-8.475,96.654-0.309c-9.129-17.991-22.614-27.505-46.165-28.718c-23.415-1.206-37.577,12.886-50.488,28.873"/>
+		<g id="_x33_d" transform="translate(8.99762,-43.753295)">
+			<path id="nervus_--3d" sodipodi:nodetypes="cccc" inkscape:connector-curvature="0" fill="#AA8800" stroke="#000000" d="
+				M192.595,409.857l10.878,6.451c0.193,3.101,1.808,4.192,5.197,3.082l12.14,7.199l-0.027-0.057
+				C194.976,427.022,192.595,409.857,192.595,409.857L192.595,409.857z"/>
+			<path id="sclera_--3d" sodipodi:nodetypes="ccccc" inkscape:connector-curvature="0" fill="#4D4D4D" stroke="#000000" d="
+				M192.506,409.731l-7.161-4.312c-0.201-0.029,1.115,32.926,42.732,26.486l-6.93-5.082
+				C222.016,426.124,200.212,427.399,192.506,409.731L192.506,409.731z"/>
+		</g>
+	</g>
+</g>
+<line fill="none" stroke="#980000" x1="-2115.952" y1="158.349" x2="-2125.952" y2="171.128"/>
+<g>
+	<g>
+	</g>
+	<g>
+	</g>
+</g>
+<path opacity="0.3" d="M202.64,180.349l-5530.495,386.73c-18.795-268.788-18.795-504.672,0-773.46L202.64,180.349z"/>
+<path opacity="0.3" d="M213.317,180.349l-2400.623,1386c-509.801-883.001-509.801-1888.999,0-2772L213.317,180.349z"/>
+<path opacity="0.3" fill="#020202" d="M208.062,181.628l-693,1200.311c-662.914-382.733-890.045-1230.398-507.311-1893.311
+	c297.384-515.084,855.256-775.224,1440.988-671.944L208.062,181.628z"/>
+<path opacity="0.3" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" d="M213.317,158.349l-4048.775,1084.866
+	c-199.519-744.614-199.519-1425.118,0-2169.732L213.317,158.349z"/>
+<g>
+	<g>
+	</g>
+	<g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 -443.8696 -1936.3606)"><tspan x="0" y="0" font-family="'MinionPro-Regular'" font-size="150">Obszar widzenia</tspan><tspan x="176.248" y="180" font-family="'MinionPro-Regular'" font-size="150">około 160°</tspan></text>
+<text transform="matrix(1 0 0 1 -2491.8975 -1671.3284)"><tspan x="0" y="0" font-family="'MinionPro-Regular'" font-size="150">Obszar rozpoznawania kolorów</tspan><tspan x="700.792" y="180" font-family="'MinionPro-Regular'" font-size="150">30° - 60°</tspan></text>
+<text transform="matrix(1 0 0 1 -4116.4062 -1323.4573)"><tspan x="0" y="0" font-family="'MinionPro-Regular'" font-size="150">Obszar rozpoznawania kształtów</tspan><tspan x="735.666" y="180" font-family="'MinionPro-Regular'" font-size="150">10° - 30°</tspan></text>
+<text transform="matrix(1 0 0 1 -5686.2388 -990.6832)"><tspan x="0" y="0" font-family="'MinionPro-Regular'" font-size="150">Obszar najostrzejszego widzenia</tspan><tspan x="752.689" y="180" font-family="'MinionPro-Regular'" font-size="150">5° - 10°</tspan></text>
+</svg>
