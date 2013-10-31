@@ -18,11 +18,11 @@ kolor <- floor(6*rank(dane[,6])/244)+1
 rozmiar <- sqrt(dane[,5])
 
 newproj <- "+ellps=GRS80"
-location <- c(20.8, 52.1, 21.3, 52.4)
+location <- c(20.7, 52.0, 21.4, 52.5)
 
 portland = get_map(location = location, source = "stamen", maptype = "watercolor", color="bw")
 CairoPDF("podstawowkiStamenWater.pdf",12,12)
-ggmap(portland,darken = c(0.65, "white")) +theme_nothing()+xlim(20.86, 21.23)+ylim(52.11, 52.36)+
+ggmap(portland,darken = c(0.95, "white")) +theme_nothing()+xlim(20.86, 21.23)+ylim(52.11, 52.36)+
   geom_point(aes(y = res2[,1], x = res2[,2]), data=dane2, 
              colour="black", size=rozmiar/2+1)+
   geom_point(aes(y = res2[,1], x = res2[,2]), data=dane2, 
