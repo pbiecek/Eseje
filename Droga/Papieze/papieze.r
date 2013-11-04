@@ -74,12 +74,27 @@ pops <- zz[[4]][,2]
 pops <- as.character(pops)
 
 wektor <- sapply(strsplit(pops, split=", "), '[', 2)
-wektor <- factor(wektor)
+wektor <- as.character(factor(wektor))
 wektor[is.na(wektor)] = ""
 wektor[265] = "Blessed"
 
 l.pp <- table(YearsB %/% 100)
 l.y <- sapply(l.pp, function(x) 1:x)
+
+Iwektor <- sapply(strsplit(pops, split=" [XVI]"), '[', 1)
+Iwektor <- sapply(strsplit(Iwektor, split=","), '[', 1)
+sort(summary(factor(Iwektor)))
+
+Iwektor <- sapply(strsplit(pops, split=","), '[', 1)
+
+pdf("lpapiezeK.pdf",16,5)
+par(mar=c(3,5,1,1))
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", xaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))
+axis(2, seq(0,100,10), las=1)
+axis(1, 0:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X",
+"XI", "XII", "XIII", "XIV", "XV", "XVI","XVII","XVIII","XIX","XX","XXI"), las=1)
+dev.off()
 
 
 CairoSVG("lpapiezy.svg",8,6)
