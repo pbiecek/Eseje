@@ -1,0 +1,321 @@
+L2=scan("http://oce.catholic.com/index.php?title=List_of_Popes",what="character")
+index=which(L2=="</td><td>Reigned")#
+X=L2[index+1]#
+Y=strsplit(X,split="-")
+diffyears=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=1}#
+   if(length(x)==2){s=diff(as.numeric(x))}#
+   return(s)}#
+whichyearsbeg=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=as.numeric(x)}#
+   if(length(x)==2){s=as.numeric(x)[1]}#
+   return(s)}#
+whichyearsend=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=as.numeric(x)}#
+   if(length(x)==2){s=as.numeric(x)[2]}#
+   return(s)}#
+Years=unlist(lapply(Y,whichyearsbeg))#
+ YearsB=c(Years[1:91],752,Years[92:length(Years)])#
+ YearsB[187]=1276#
+ Years=unlist(lapply(Y,whichyearsend))#
+ YearsE=c(Years[1:91],752,Years[92:length(Years)])#
+ YearsE[187]=1276#
+ YearsE[266]=2013#
+ YearsE[122]=914 #
+ W=unlist(lapply(Y,diffyears))#
+ W=c(W[1:91],1,W[92:length(W)])#
+ W[W==-899]=1#
+ which(is.na(W))#
+ W[187]=1#
+ W[266]=2013-2005#
+plot(YearsB,W,type="h")
+library(XML)#
+library(wordcloud)
+zz = readHTMLTable("http://oce.catholic.com/index.php?title=List_of_Popes")
+pops <- zz[[4]][,2]#
+pops <- as.character(pops)
+wektor <- sapply(strsplit(pops, split=", "), '[', 2)#
+wektor <- factor(wektor)#
+wektor[is.na(wektor)] = ""#
+wektor[265] = "Blessed"#
+l.pp <- table(YearsB %/% 100)#
+l.y <- sapply(l.pp, function(x) 1:x)
+plot(unlist(l.y), YearsB %/% 100, yaxt="n", xlab="liczba papieøy", ylab="wiek", #
+     pch=15, cex=1.8, xaxt="n", bty="n", #
+     col=c("grey","red3","blue2", "orange")[as.numeric(factor(wektor))], xlim=c(1,30))#
+axis(2, 0:20, c("XX",paste(1:20,"XX",sep="")),las=1)#
+axis(1,c(0,5,10,15,20))#
+legend("topright", c("Papieø", "B≥ogos≥awiony", "åwiÍty", "Aposto≥"), fill=c("grey","blue2", "orange","red3"), bty="n")
+l.y
+pops
+wektor
+wektor <- sapply(strsplit(pops, split=", "), '[', 2)#
+wektor <- factor(wektor)#
+wektor[is.na(wektor)] = ""#
+wektor[265] = "Blessed"
+wektor <- as.character(factor(wektor))
+wektor <- as.character(factor(wektor))#
+wektor[is.na(wektor)] = ""
+wektor[265] = "Blessed"
+l.pp
+YearsB
+plot(YearsB)
+plot(YearsB, rep(1,length(YearsB)))
+plot(YearsB, rep(1,length(YearsB)), xlim=c(0,1000))
+plot(YearsB, YearsB %/% 1000, xlim=c(0,1000))
+plot(YearsB %% 1000, YearsB %/% 1000, xlim=c(0,1000))
+plot(YearsB %% 500, YearsB %/% 500)
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n")#
+axis(2, 1:5, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="")#
+axis(2, 1:5, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="")#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19)#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n")#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+getwd()
+wektor
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=factor(wektor))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+table(factor(wektor))
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)
+pdf("lpapiezeK.pdf",12,4)#
+par(mar=c(3,10,2,2))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,3)#
+par(mar=c(1,5,1,1))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 2.5, 1.5, 2)[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,2)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 500, YearsB %/% 500, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,3)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 400, YearsB %/% 400, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+imiona
+wektor
+Iwektor <- sapply(strsplit(pops, split=" [XVI]"), '[', 1)#
+Iwektor <- sapply(strsplit(Iwektor, split=","), '[', 1)#
+sort(summary(factor(Iwektor)))
+pdf("lpapiezeK.pdf",12,3)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 400, YearsB %/% 400, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n")#
+text(YearsB %% 400, YearsB %/% 400, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)])#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,3)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 400, YearsB %/% 400, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n")#
+text(YearsB %% 400, YearsB %/% 400, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=90, cex=0.8)#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 400, YearsB %/% 400, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n")#
+text(YearsB %% 400, YearsB %/% 400, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=90, cex=0.6)#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 400, YearsB %/% 400, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n")#
+text(YearsB %% 400, YearsB %/% 400, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 300, YearsB %/% 300, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n", ylim=c(-0.5, 6))#
+text(YearsB %% 300, YearsB %/% 300, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 250, YearsB %/% 250, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n", ylim=c(-0.5, 9))#
+text(YearsB %% 250, YearsB %/% 250, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pops
+Iwektor <- pops#
+#
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 250, YearsB %/% 250, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n", ylim=c(-0.5, 9))#
+text(YearsB %% 250, YearsB %/% 250, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+Iwektor <- sapply(strsplit(pops, split=","), '[', 1)
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %% 250, YearsB %/% 250, yaxt="n", ylab="", xlab="", pch=19, bty="n", col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=c(1, 1.5, 1.1, 1.3)[factor(wektor)], type="n", ylim=c(-0.5, 9))#
+text(YearsB %% 250, YearsB %/% 250, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], srt=45, cex=0.6, adj=c(0,0))#
+axis(2, 0:4, c("1 - 500", "501 - 1000", "1001 - 1500", "1501 - 2000", "2001 - 2012"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))#
+axis(2, seq(0,100,10))#
+axis(1, 1:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",12,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", xaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))#
+axis(2, seq(0,100,10), las=1)#
+axis(1, 1:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",14,5)#
+par(mar=c(2,8,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", xaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))#
+axis(2, seq(0,100,10), las=1)#
+axis(1, 1:21, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X",#
+"XI", "XII", "XIII", "XIV", "XV", "XVI","XVII","XVIII","XIX","XX","XXI"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",14,5)#
+par(mar=c(3,5,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", xaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))#
+axis(2, seq(0,100,10), las=1)#
+axis(1, 0:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X",#
+"XI", "XII", "XIII", "XIV", "XV", "XVI","XVII","XVIII","XIX","XX","XXI"), las=1)#
+dev.off()
+pdf("lpapiezeK.pdf",16,5)#
+par(mar=c(3,5,1,1))#
+plot(YearsB %/% 100, YearsB %% 100, yaxt="n", xaxt="n", ylab="", xlab="", pch=19, bty="n", type="n")#
+text(YearsB %/% 100, YearsB %% 100, Iwektor, col=c("grey", "red3", "blue2", "orange")[factor(wektor)], cex=0.6, adj=c(0,0))#
+axis(2, seq(0,100,10), las=1)#
+axis(1, 0:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X",#
+"XI", "XII", "XIII", "XIV", "XV", "XVI","XVII","XVIII","XIX","XX","XXI"), las=1)#
+dev.off()
+L2=scan("http://oce.catholic.com/index.php?title=List_of_Popes",what="character")#
+index=which(L2=="</td><td>Reigned")#
+X=L2[index+1]#
+Y=strsplit(X,split="-")#
+diffyears=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=1}#
+   if(length(x)==2){s=diff(as.numeric(x))}#
+   return(s)}#
+whichyearsbeg=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=as.numeric(x)}#
+   if(length(x)==2){s=as.numeric(x)[1]}#
+   return(s)}#
+whichyearsend=function(x){#
+   s=NA#
+   if(sum(substr(x,1,1)=="c")>0){x[substr(x,1,1)=="c"]=substr(x[substr(x,1,1)=="c"],3,nchar(x[substr(x,1,1)=="c"]))}#
+   if(length(x)==1){s=as.numeric(x)}#
+   if(length(x)==2){s=as.numeric(x)[2]}#
+   return(s)}#
+Years=unlist(lapply(Y,whichyearsbeg))#
+ YearsB=c(Years[1:91],752,Years[92:length(Years)])#
+ YearsB[187]=1276#
+ Years=unlist(lapply(Y,whichyearsend))#
+ YearsE=c(Years[1:91],752,Years[92:length(Years)])#
+ YearsE[187]=1276#
+ YearsE[266]=2013#
+ YearsE[122]=914 #
+ W=unlist(lapply(Y,diffyears))#
+ W=c(W[1:91],1,W[92:length(W)])#
+ W[W==-899]=1#
+ which(is.na(W))#
+ W[187]=1#
+ W[266]=2013-2005
+n=200#
+ YEARS = seq(0,2000,length=n)#
+ Z=rep(NA,n)#
+ for(i in 2:(n-1)){#
+   index=which((YearsB>YEARS[i]-50)&(YearsE<YEARS[i]+50))#
+   Z[i] = mean(W[index])}#
+ plot(YEARS,Z,type="l",ylim=c(0,30))#
+ n=50#
+ YEARS = seq(0,2000,length=n)#
+ Z=rep(NA,n)#
+ for(i in 2:(n-1)){#
+   index=which((YearsB>YEARS[i]-50)&(YearsE<YEARS[i]+50))#
+   Z[i] = mean(W[index])}#
+ lines(YEARS,Z,type="l",col="grey")#
+library(XML)#
+library(wordcloud)#
+zz = readHTMLTable("http://oce.catholic.com/index.php?title=List_of_Popes")#
+pops <- zz[[4]][,2]#
+pops <- as.character(pops)#
+wektor <- sapply(strsplit(pops, split=", "), '[', 2)#
+wektor <- as.character(factor(wektor))#
+wektor[is.na(wektor)] = ""#
+wektor[265] = "Blessed"#
+l.pp <- table(YearsB %/% 100)#
+l.y <- sapply(l.pp, function(x) 1:x)#
+Iwektor <- sapply(strsplit(pops, split=" [XVI]"), '[', 1)#
+Iwektor <- sapply(strsplit(Iwektor, split=","), '[', 1)#
+sort(summary(factor(Iwektor)))#
+#
+Iwektor <- sapply(strsplit(pops, split=","), '[', 1)
+library(survival)
+zmarl <- !((1:266) %in% c(266, 193))#
+par(mar=c(4,5,2,2))#
+plot(survfit(Surv(time=W, event=zmarl)~1), conf.int=0, las=1, ylim=c(0,1), xlab="lat ¿ycia po wyborze na papie¿a", ylab="% papie¿y",yaxt="n", bty="n",yaxs="i")#
+sapply(c(0.25,0.5,0.75), function(q) {#
+  lines(c(0,quantile(W,q)),1-c(q,q),lty=3)#
+  lines(c(quantile(W,q),quantile(W,q)),c(0,1-q),lty=3)#
+})#
+axis(1,quantile(W,c(0.25,0.5,0.75)))#
+axis(2,c(0.25,0.5,0.75,0,1),las=1)
+CairoPDF("czaszycia.pdf",8,5)#
+zmarl <- !((1:266) %in% c(266, 193))#
+par(mar=c(4,5,2,2))#
+plot(survfit(Surv(time=W, event=zmarl)~1), conf.int=0, las=1, ylim=c(0,1), xlab="lat zycia po wyborze na papieza", ylab="% papiezy",yaxt="n", bty="n",yaxs="i")#
+sapply(c(0.25,0.5,0.75), function(q) {#
+  lines(c(0,quantile(W,q)),1-c(q,q),lty=3)#
+  lines(c(quantile(W,q),quantile(W,q)),c(0,1-q),lty=3)#
+})#
+axis(1,quantile(W,c(0.25,0.5,0.75)))#
+axis(2,c(0.25,0.5,0.75,0,1),las=1)#
+dev.off()
+hh <- sapply(1:25, function(a) {#
+  c(prop.test(sum(W < a+0.5 & W > a-0.5), sum(W > a-0.5))$conf.int,#
+  prop.test(sum(W < a+0.5 & W > a-0.5), sum(W > a-0.5))$estimate)#
+})#
+plot(hh[3,], pch=19, ylim=c(0,0.5),las=1, xlab="rok urzêdowania", ylab="funkcja hazardu")#
+for(i in 1:ncol(hh)) lines(c(i,i),hh[1:2,i])
+pdf("czaszycia.pdf",8,5)#
+zmarl <- !((1:266) %in% c(266, 193))#
+par(mar=c(4,5,2,2))#
+plot(survfit(Surv(time=W, event=zmarl)~1), conf.int=0, las=1, ylim=c(0,1), xlab="lat zycia po wyborze na papieza", ylab="% papiezy",yaxt="n", bty="n",yaxs="i")#
+sapply(c(0.25,0.5,0.75), function(q) {#
+  lines(c(0,quantile(W,q)),1-c(q,q),lty=3)#
+  lines(c(quantile(W,q),quantile(W,q)),c(0,1-q),lty=3)#
+})#
+axis(1,quantile(W,c(0.25,0.5,0.75)))#
+axis(2,c(0.25,0.5,0.75,0,1),las=1)#
+dev.off()

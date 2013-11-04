@@ -146,10 +146,10 @@ dev.off()
 
 
 library(survival)
-CairoSVG("czaszycia.svg",8,5)
+pdf("czaszycia.pdf",8,5)
 zmarl <- !((1:266) %in% c(266, 193))
 par(mar=c(4,5,2,2))
-plot(survfit(Surv(time=W, event=zmarl)~1), conf.int=0, las=1, ylim=c(0,1), xlab="lat ¿ycia po wyborze na papie¿a", ylab="% papie¿y",yaxt="n", bty="n",yaxs="i")
+plot(survfit(Surv(time=W, event=zmarl)~1), conf.int=0, las=1, ylim=c(0,1), xlab="lat zycia po wyborze na papieza", ylab="% papiezy",yaxt="n", bty="n",yaxs="i")
 sapply(c(0.25,0.5,0.75), function(q) {
   lines(c(0,quantile(W,q)),1-c(q,q),lty=3)
   lines(c(quantile(W,q),quantile(W,q)),c(0,1-q),lty=3)
