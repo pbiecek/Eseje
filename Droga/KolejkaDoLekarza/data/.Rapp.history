@@ -1,0 +1,37 @@
+library("dats.rda")
+load("dats.rda")
+list.files()
+setwd("all")
+list.files()
+load("dats.rda")
+(load("dats.rda"))
+str(dats)
+length(dats)
+str(dats[[1]])
+str(dats[[2]])
+list.files()
+(load("dats2.rda"))
+(load("dats3.rda"))
+length(dats2)
+length(dats2[[1]])
+str(dats2[[1]])
+str(dats2[[2]])
+length(dats3)
+str(dats3[[1]])
+miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
+dat = dats[[1]]
+miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
+head(dat[,5])
+miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
+library(RODBC)#
+file.name <- "07_AOS_30062013.xls"
+install.packages("RODBC")
+library(RODBC)#
+file.name <- "07_AOS_30062013.xls"
+file.names <- list.files(pattern="xls")
+excel.connect <- odbcConnectExcel(file.name)#
+  dat <- sqlFetch(excel.connect, "Zestawienie")#
+  odbcClose(excel.connect)
+head(dats2)
+summary(dats2)
+summary(dats3)
