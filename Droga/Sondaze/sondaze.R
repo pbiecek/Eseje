@@ -36,8 +36,8 @@ dev.off()
 
 
 pdf("poparcie2lataSlupki.pdf", 12, 6)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
-
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+#geom_point(size=5) + 
 dev.off()
 
 
@@ -47,18 +47,18 @@ dev.off()
 
 
 pdf("poparcie2lataSlupkiTrend32.pdf", 12, 8)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5, alpha=0.5) + geom_smooth(se=FALSE, size=3, span=0.32) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
-
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_smooth(se=FALSE, size=3, span=0.32) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+#geom_point(size=5, alpha=0.5) + 
 dev.off()
 
-
 pdf("poparcie2lataSlupkiTrend100.pdf", 12, 8)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5, alpha=0.5) + geom_smooth(se=FALSE, size=3, span=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+#+ geom_point(size=5, alpha=0.5)
 dev.off()
 
 pdf("poparcie2lataSlupkiTrend1.pdf", 12, 8)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5, alpha=0.5) + geom_smooth(se=FALSE, size=3, span=0.1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))+ ylim(16,50.3)
-
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) +geom_smooth(se=FALSE, size=3, span=0.1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))+ ylim(16,50.3)
+# geom_point(size=5, alpha=0.5) + 
 dev.off()
 
 
