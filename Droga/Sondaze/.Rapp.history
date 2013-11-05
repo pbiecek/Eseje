@@ -1,90 +1,3 @@
-read.table("smgkrc.txt")
-read.table("smgkrc.txt", sep=";")
-read.table("smgkrc.txt", sep=";")[,1:6]
-smgkrc <- read.table("smgkrc.txt", sep=";")[,1:6]
-write.table(smgkrc, file="smgkrc.txt", sep=";")[,1:6]
-write.table(smgkrc, file="smgkrc.txt", sep=";", col.names=FALSE, row.names=FALSE)[,1:6]
-smgkrc[,2:6]
-smgkrc[,2:6] <- round(smgkrc[,2:6], 2)
-smgkrc
-write.table(smgkrc, file="smgkrc.txt", sep=";", col.names=FALSE, row.names=FALSE)[,1:6]
-smgkrc <- read.table("smgkrc.txt", sep=";")
-smgkrc
-smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)
-smgkrc
-colnames(smgkrc) <- partie
-partie  <- c("PO", "PIS", "RP", "PSL","SLD")
-colnames(smgkrc) <- partie
-smgkrc
-plot(as.Date(rownames(smgkrc)), smgkrc[,1:2])
-as.Date(rownames(smgkrc))
-?as.Date
-daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")
-daty
-matplot(daty, smgkrc[,1:2])
-library(ggplot2)
-qplot(daty, smgkrc[,1:2])
-smgkrc$daty <- daty
-library(reshape2)
-head(smgkrc)
-melt(smgkrc[,c(1,2,6)])
-?melt
-melt(smgkrc[,c(1,2,6)], id.vars=c(1,2))
-melt(smgkrc[,c(1,2,6)], id.vars=c(3))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2 )
-smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2 )
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2, geom="point")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2, geoms="point")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + plot_geom()
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point()
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point() + geom_smooth() + theme_bw()
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw()
-head(smgkrc2)
-sqrt(smgkrc2$value*(100-smgkrc2$value)/10^4/500)
-sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=0.5))
-smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
-smgkrc2$LI95 <- smgkrc2$value - 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=0.5))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=I(0.3)))
-smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
-smgkrc2$LI95 <- smgkrc2$value - 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=I(0.3)))
-head(smgkrc2)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95), alpha=I(0.3))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95), alpha=I(0.3), col="#00000000")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95), alpha=I(0.3), col="#000000")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95), alpha=I(0.3), col="#ffffff")
-dim(smgkrc)
-head(smgkrc)
-smgkrc2 <- melt(smgkrc[1:15,c(1,2,6)], id.vars=c(3))#
-#
-smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
-smgkrc2$LI95 <- smgkrc2$value - 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95), alpha=I(0.3), col="#ffffff")
-smgkrc2
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, fill=variable), alpha=I(0.3), col="#ffffff")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, fill=variable), alpha=I(0.3), col="#ffffff00")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + geom_points() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, fill=variable), alpha=I(0.3), col="#ffffff00")
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + geom_point() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, fill=variable), alpha=I(0.3), col="#ffffff00")
-smgkrc2 <- melt(smgkrc[1:10,c(1,2,6)], id.vars=c(3))#
-#
-smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
-smgkrc2$LI95 <- smgkrc2$value - 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + geom_point() + theme_bw() +#
   geom_ribbon(aes(ymin=UI95, ymax=LI95, fill=variable), alpha=I(0.3), col="#ffffff00")
 pnorm(c(0.5,0.1))
@@ -610,3 +523,192 @@ smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
 smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
 smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + geom_line()+ theme_bw() + theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)+scale_fill_manual(values=c("orange", "blue3"))
+library(ggplot2)#
+library(reshape2)#
+#
+partie  <- c("PO", "PIS", "RP", "PSL","SLD")#
+smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)#
+colnames(smgkrc) <- partie#
+#
+daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")#
+smgkrc$daty <- daty#
+#
+smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
+smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
+smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
+smgkrc
+smgkrc[1,]
+smgkrc[1,1:2]
+smgkrc[1,1:5]#
+smgkrc[2,1:5] - smgkrc[1,1:5]
+smgkrc[2,1:5]
+barplot(smgkrc[1,1:5])
+barplot(as.vector(smgkrc[1,1:5]))
+barplot(as.maxtrix(smgkrc[1,1:5]))
+barplot(as.matrix(smgkrc[1,1:5]))
+barplot(as.matrix(smgkrc[1,1:5]), horizontal=TRUE)
+barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE)
+barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1)
+paste(smgkrc[1,1:5], smgkrc[1,1:5] - smgkrc[2,1:5])
+paste(smgkrc[1,1:5], round(smgkrc[1,1:5] - smgkrc[2,1:5],1))
+paste(smgkrc[1,1:5], ifelse(delta < 0, "", "+"), delta)
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5],1)#
+paste(smgkrc[1,1:5], ifelse(delta < 0, "", "+"), delta)
+paste0(smgkrc[1,1:5], ifelse(delta < 0, " ", " +"), delta)
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+paste0(round(smgkrc[1,1:5]), ifelse(delta < 0, " ", " +"), delta)
+paste0(round(smgkrc[1,1:5]),"%", ifelse(delta < 0, " ", " +"), delta,"%")
+paste0(round(smgkrc[1,1:5]),"%", ifelse(delta < 0, " (", " (+"), delta,"%)")
+paste0(round(smgkrc[1,1:5]),"%", ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")
+paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)"))
+paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ", abs(delta),"%)")))
+paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ", abs(delta),"%)"))
+)
+ifelse(delta < 0, " (spadek o ", " (wzrost o ", abs(delta),"%)")
+ifelse(delta < 0, " (spadek o ", " (wzrost o ", abs(delta),"%)")
+paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)"))
+ifelse(delta < 0, " (spadek o ", " (wzrost o ")
+ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o "))
+paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ")), abs(delta),"%)")
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ")), abs(delta),"%)")#
+barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1)
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,40))
+pp
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ")), abs(delta),"%)")#
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,40))#
+text(pp, as.matrix(smgkrc[1,1:5]), napis, adj=c(0,1))
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,40))#
+text( as.matrix(smgkrc[1,1:5]), pp , napis, adj=c(0,1))
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,40))#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))
+pdf("zmiana.pdf",12,5)#
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    ifelse(delta < 0, " (spadek o ", " (wzrost o ")), abs(delta),"%)")#
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,50))#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))#
+dev.off()
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o ")), abs(delta),"%)"))
+paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")))
+pdf("zmiana.pdf",12,5)#
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")))#
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,50))#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))#
+dev.off()
+kolory <- c("orange", "blue3", "gold", "green3", "red3")
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,50), col=kolory)
+kolory
+?barplot
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory))
+pp <- barplot(as.matrix(smgkrc[1,1:5]), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)
+pp <- barplot(t(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)
+pp <- barplot(as.vector(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))
+axis(2, at=pp, partie)
+pp <- barplot(as.vector(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))#
+axis(2, at=pp, partie, las=1, col.axis="white")
+axis(2, at=pp, partie, las=1, col.ticks="white")
+pp <- barplot(as.vector(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))#
+axis(2, at=pp, partie, las=1, col.ticks="white")
+pdf("zmiana.pdf",12,5)#
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])#
+napis <- paste0(round(smgkrc[1,1:5]),"%", #
+    ifelse(abs(delta) < 1, "(bez zmian)",#
+    paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")))#
+pp <- barplot(as.vector(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)#
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))#
+axis(2, at=pp, partie, las=1, col.ticks="white")#
+dev.off()
+daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")#
+smgkrc$daty <- daty#
+#
+smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
+smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
+smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
+daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")#
+smgkrc$daty <- daty#
+#
+smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
+smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
+smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+pdf("poparcie2lataSlupki.pdf", 12, 6)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#geom_point(size=5) + #
+dev.off()
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5, alpha=0.5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+pdf("poparcie2lataSlupkiTrend32.pdf", 12, 8)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_smooth(se=FALSE, size=3, span=0.32) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#geom_point(size=5, alpha=0.5) + #
+dev.off()
+pdf("poparcie2lataSlupkiTrend32.pdf", 12, 8)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_smooth(se=FALSE, size=3, span=0.32) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#geom_point(size=5, alpha=0.5) + #
+dev.off()#
+#
+pdf("poparcie2lataSlupkiTrend100.pdf", 12, 8)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#+ geom_point(size=5, alpha=0.5)#
+dev.off()
+pdf("poparcie2lataSlupkiTrend1.pdf", 12, 8)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) +geom_smooth(se=FALSE, size=3, span=0.1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))+ ylim(16,50.3)#
+# geom_point(size=5, alpha=0.5) + #
+dev.off()
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=2) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=51) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#+ geom_point(size=5, alpha=0.5)
+?loess
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=51, degree=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)
+pdf("poparcie2lataSlupkiTrend100.pdf", 12, 8)#
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2)  + geom_smooth(se=FALSE, size=3, span=51, degree=1) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), alpha=0.5, width=10)+ theme(legend.position="none") + ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)#
+#+ geom_point(size=5, alpha=0.5)#
+dev.off()
+.9 * 56
+sapply(seq(0.1,0.5,0.02), function(x) {#
+	mod <- loess(value~as.numeric(daty), data = smgkrc2[smgkrc2$variable == "PO",], span=x)#
+	c(x, mean(mod$fitted <= smgkrc2$UI90[smgkrc2$variable == "PO"] & mod$fitted >= smgkrc2$LI90[smgkrc2$variable == "PO"]))#
+})*0.5 + #
+sapply(seq(0.1,0.5,0.02), function(x) {#
+	mod <- loess(value~as.numeric(daty), data = smgkrc2[smgkrc2$variable == "PIS",], span=x)#
+	c(x, mean(mod$fitted <= smgkrc2$UI90[smgkrc2$variable == "PIS"] & mod$fitted >= smgkrc2$LI90[smgkrc2$variable == "PIS"]))#
+})*0.5
+sapply(seq(0.1,5,0.02), function(x) {#
+	mod <- loess(value~as.numeric(daty), degree=1, data = smgkrc2[smgkrc2$variable == "PO",], span=x)#
+	c(x, mean(mod$fitted <= smgkrc2$UI90[smgkrc2$variable == "PO"] & mod$fitted >= smgkrc2$LI90[smgkrc2$variable == "PO"]))#
+})*0.5 + #
+sapply(seq(0.1,5,0.02), function(x) {#
+	mod <- loess(value~as.numeric(daty), degree=1, data = smgkrc2[smgkrc2$variable == "PIS",], span=x)#
+	c(x, mean(mod$fitted <= smgkrc2$UI90[smgkrc2$variable == "PIS"] & mod$fitted >= smgkrc2$LI90[smgkrc2$variable == "PIS"]))#
+})*0.5
