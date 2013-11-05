@@ -1,7 +1,5 @@
 read.table("smgkrc.txt")
 read.table("smgkrc.txt", sep=";")
-read.table("smgkrc.txt", sep=";")
-read.table("smgkrc.txt", sep=";")
 read.table("smgkrc.txt", sep=";")[,1:6]
 smgkrc <- read.table("smgkrc.txt", sep=";")[,1:6]
 write.table(smgkrc, file="smgkrc.txt", sep=";")[,1:6]
@@ -16,7 +14,6 @@ smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)
 smgkrc
 colnames(smgkrc) <- partie
 partie  <- c("PO", "PIS", "RP", "PSL","SLD")
-colnames(smgkrc) <- partie
 colnames(smgkrc) <- partie
 smgkrc
 plot(as.Date(rownames(smgkrc)), smgkrc[,1:2])
@@ -42,8 +39,6 @@ ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2, geoms="point")
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + plot_geom()
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point()
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point() + geom_smooth() + theme_bw()
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point() + geom_smooth() + theme_bw()
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point() + geom_smooth() + theme_bw()
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw()
 head(smgkrc2)
 sqrt(smgkrc2$value*(100-smgkrc2$value)/10^4/500)
@@ -54,8 +49,6 @@ smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
 smgkrc2$LI95 <- smgkrc2$value - 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
   geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=0.5))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
-  geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=I(0.3)))
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_line() + theme_bw() +#
   geom_ribbon(aes(ymin=UI95, ymax=LI95, alpha=I(0.3)))
 smgkrc2$UI95 <- smgkrc2$value + 2*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
@@ -342,7 +335,6 @@ pdf("poparcie2lataSlupki.pdf", 12, 6)#
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable))+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("dzień sondażu")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))#
 dev.off()
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=1)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("data badania poparcia")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))
-ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=1)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("data badania poparcia")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("data badania poparcia")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))
 pdf("poparcie2lataSlupki.pdf", 12, 6)#
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + theme_bw()  + geom_errorbar(aes(ymin = UI90, ymax=LI90, color=variable), width=10)+ theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("data badania poparcia")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1))#
@@ -590,3 +582,31 @@ dev.off()
 pdf("poparcie2lata.pdf", 12, 8)#
 ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + geom_line()+ theme_bw() + theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)+scale_fill_manual(values=c("orange", "blue3"))#
 dev.off()
+library(ggplot2)#
+library(reshape2)
+smgkrc <- read.table("cbos.txt", sep=";", row.names=1)
+smgkrc
+smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)
+dim(smgkrc)
+smgkrc <- read.table("cbos.txt", sep=";", row.names=1)[,1:5]
+smgkrc <- read.table("cbos.txt", sep=";", row.names=1)[,1:5]#
+colnames(smgkrc) <- partie
+partie  <- c("PO", "PIS", "RP", "PSL","SLD")
+daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")#
+smgkrc$daty <- daty#
+#
+smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
+smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
+smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + geom_line()+ theme_bw() + theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)+scale_fill_manual(values=c("orange", "blue3"))
+X11()
+smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)
+colnames(smgkrc) <- partie#
+#
+daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")#
+smgkrc$daty <- daty#
+#
+smgkrc2 <- melt(smgkrc[,c(1,2,6)], id.vars=c(3))#
+smgkrc2$UI90 <- smgkrc2$value + 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)#
+smgkrc2$LI90 <- smgkrc2$value - 1.64*sqrt(smgkrc2$value*(100-smgkrc2$value)/500)
+ggplot(aes(x=daty, y=value, col=variable), data= smgkrc2) + geom_point(size=5) + geom_line()+ theme_bw() + theme(legend.position="none")+ ylab("poparcie dla partii") + xlab("")+scale_color_manual(values=c("orange", "blue3"))+ scale_x_date(expand = 0.01*c(1, 1)) + ylim(16,50.3)+scale_fill_manual(values=c("orange", "blue3"))

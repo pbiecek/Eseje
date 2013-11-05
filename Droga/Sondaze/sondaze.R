@@ -2,8 +2,21 @@ library(ggplot2)
 library(reshape2)
 
 partie  <- c("PO", "PIS", "RP", "PSL","SLD")
+kolory <- c("orange", "blue3", "gold", "green3", "red3")
 smgkrc <- read.table("smgkrc.txt", sep=";", row.names=1)
 colnames(smgkrc) <- partie
+
+
+pdf("zmiana.pdf",12,5)
+delta <- round(smgkrc[1,1:5] - smgkrc[2,1:5])
+napis <- paste0(round(smgkrc[1,1:5]),"%", 
+    ifelse(abs(delta) < 1, "(bez zmian)",
+    paste0(ifelse(delta < 0, " (spadek o ", " (wzrost o "), abs(delta),"%)")))
+pp <- barplot(as.vector(as.matrix(smgkrc[1,1:5])), horiz=TRUE, las=1, xlim=c(0,50), col=as.matrix(kolory), border=kolory)
+text( as.matrix(smgkrc[1,1:5]) + 2, pp , napis, adj=c(0,1))
+axis(2, at=pp, partie, las=1, col.ticks="white")
+dev.off()
+
 
 daty <- as.Date(rownames(smgkrc), "%d/%m/%Y")
 smgkrc$daty <- daty
