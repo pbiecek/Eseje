@@ -48,8 +48,9 @@ save(wspolrzedne,file="wspolrzedne.rda")
 # wczytaj uprzednio zapisane dane
 load("wszystkieDane.rda")
 load("wspolrzedne.rda")
-miasta <- sapply(strsplit(as.character(wszystkieDane[,5]), split="\n"), '[', 1)
-miastawoj <- paste(miasta, ", ", wojewodztwa[as.numeric(wszystkieDane[,10])], sep="")
+load("miastawoj.rda")
+load("pary.rda")
+load("tocheck.rda")
 
 
 
@@ -74,7 +75,7 @@ wybraneMiasta <- sapply(strsplit(as.character(wybraneDane[,5]), split="\n"), '['
 wybraneMiastawoj <- paste(wybraneMiasta, ", ", wojewodztwa[as.numeric(wybraneDane[,10])], sep="")
 
 wybraneWspolrzedne <- df[wybraneMiastawoj,]
-plot(wybraneWspolrzedne[,2], wybraneWspolrzedne[,1], pch=19, cex=0.2, col="#00000022")
+plot(wybraneWspolrzedne[,2], wybraneWspolrzedne[,1], pch=19, cex=0.2)
 
 wybraneDane[,c(6,8)]
 
@@ -92,6 +93,8 @@ x = seq(14,24.5,0.02)
 y = seq(49,55,0.02)
 grid <- expand.grid(dlugosc = x, szerokosc=y)
 
+pdf("mapaSredniCzas.pdf",12,11)
+
 wybraneDF <- data.frame(y=wybraneDane[,8], wybraneWspolrzedne[,2:1])
 srednieCzasy <- kknn(y~., wybraneDF, grid, k=5)
 srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
@@ -107,23 +110,26 @@ filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, srednieCzasyLista$z,  
 }, col = rev(heat.colors(length(lv) - 1)), levels=lv)
 title(main=grupa)
 
-
+dev.off()
 
 #
 # podejscie 2
 # sredni czas czekania w okolicy za pomoca wielkosci punktu
 
-x = seq(14,24.5,0.1)
+pdf("mapaSredniPunkty.pdf",12,11)
+
+x = seq(14,24.5,0.15)
 y = seq(49,55,0.1)
 grid <- expand.grid(dlugosc = x, szerokosc=y)
 srednieCzasy <- kknn(y~., wybraneDF, grid, k=15)
 srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
 
-plot(grid[,1], grid[,2], pch=19, cex=as.vector(srednieCzasyLista$z)/100, xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+plot(grid[,1], grid[,2], pch=19, cex=as.vector(srednieCzasyLista$z)/70, xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 plot(d,col='white',add=TRUE)
 plot(shape1, border="grey50", lwd=1, add=T)
-plot(shape0, border="black", lwd=2, add=T)  
+plot(shape0, border="black", lwd=1, add=T)  
 
+dev.off()
 
 #
 # podejscie 3
@@ -138,14 +144,21 @@ najblizszyLekarz <- t(apply(polskieMiasta[,c(4,5)], 1, function(x) {
   c(lekarz[ind,1], lekarz[ind,2])
 }))
 
+pdf("mapaOdleglosci.pdf",12,11)
+
 par(mar=c(0,0,0,0))
-plot(polskieMiasta[,5], polskieMiasta[,4], pch=19, cex=(polskieMiasta[,3]/200000)^0.3, col="#ff000055",
-     xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+plot(polskieMiasta[,5], polskieMiasta[,4], pch=19, cex=(polskieMiasta[,3]/200000)^0.5, col="#ff0000",
+     xaxt="n", yaxt="n", bty="n", xlab="", ylab="", type="n")
 for (i in 1:nrow(polskieMiasta)) {
   lines(c(polskieMiasta[i,5], najblizszyLekarz[i,2]),
         c(polskieMiasta[i,4], najblizszyLekarz[i,1]),
-        col="#00000055")
+        col="#000000bb", lwd=1)
 }
+points(polskieMiasta[,5], polskieMiasta[,4], pch=19, cex=(polskieMiasta[,3]/100000)^0.5, col="#ff0000aa")
+plot(shape1, border="#55555522", lwd=1, add=T)
+plot(shape0, border="#55555522", lwd=1, add=T)  
+
+dev.off()
 
 #
 # podejscie 4
@@ -160,7 +173,8 @@ najblizszyLekarz <- t(apply(grid[,2:1], 1, function(x) {
   c(lekarz[ind,1], lekarz[ind,2])
 }))
 
-par(mar=c(0,0,0,0))
+pdf("mapaOdleglosciSiatka.pdf",12,11)
+
 plot(grid[,1], grid[,2], pch=19, cex=0.1, col="#ff000055",
      xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 for (i in 1:nrow(grid)) {
@@ -170,16 +184,20 @@ for (i in 1:nrow(grid)) {
 }
 plot(d,col='white',add=TRUE)
 plot(shape1, border="grey50", lwd=1, add=T)
-plot(shape0, border="black", lwd=2, add=T)  
+plot(shape0, border="black", lwd=1, add=T)  
+
+dev.off()
 
 #
 # podejscie 5
 najblizszyLekarzOdleglosc <- apply(grid[,2:1], 1, function(x) {
-  min(sqrt((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2))
+  min(sqrt((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2), na.rm=TRUE)
 })
-najblizszyLekarzOdlegloscMatrix <- matrix(najblizszyLekarzOdleglosc, length(srednieCzasyLista$x), length(srednieCzasyLista$y))
+najblizszyLekarzOdlegloscMatrix <- matrix(najblizszyLekarzOdleglosc, length(unique(grid[,1])), length(unique(grid[,2])))
 
 lv <- seq(0,max(najblizszyLekarzOdleglosc) + 1,length.out=101)
+
+pdf("mapaOdleglosciKolory.pdf",12,11)
 
 filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, najblizszyLekarzOdlegloscMatrix,  frame.plot = FALSE, plot.axes={
   plot(d,col='white',add=TRUE)
@@ -189,7 +207,7 @@ filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, najblizszyLekarzOdlegl
 }, col = rev(heat.colors(length(lv) - 1)), levels=lv)
 title(main=grupa)
 
-
+dev.off()
 
 
 
