@@ -1,4 +1,4 @@
-setwd("c:/_Przemek_/Google Drive/__SmarterPoland__/_JuzNaBlogu_/_2013 08 Czekanie na lekarza_") 
+setwd("c:/_Przemek_/GitHub/Eseje/Droga/KolejkaDoLekarza") 
 
 
 miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
