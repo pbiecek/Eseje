@@ -1,108 +1,9 @@
-setwd("c:/_Przemek_/GitHub/Eseje/Droga/KolejkaDoLekarza") 
-
-
-miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
-
-smiasta <- unique(miasta)
-res <- list()
-for (i in 1:length(smiasta)) {
-  res[[i]] <- SmarterPoland::getGoogleMapsAddress(city=smiasta[i], street="mazowieckie")
-  cat(i, smiasta[i], "\n")
-}
-  
-
-plot(sapply(res, `[`, 2), sapply(res, `[`, 1))
-text(sapply(res, `[`, 2), sapply(res, `[`, 1), smiasta)
-
-
-
-filled.contour2 <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, 
-                                                       length.out = ncol(z)), z, xlim = range(x, finite = TRUE), 
-          ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE), 
-          levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors, 
-          col = color.palette(length(levels) - 1), plot.title, plot.axes, 
-          key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, 
-          axes = TRUE, frame.plot = axes, ...) 
-{
-  mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-  on.exit(par(par.orig))
-  w <- (3 + mar.orig[2L]) * par("csi") * 2.54
-  layout(matrix(c(2, 1), ncol = 2L), widths = c(1, lcm(w)))
-  par(las = las)
-  mar <- mar.orig
-  mar[4L] <- mar[2L]
-  mar[2L] <- 1
-  par(mar = mar)
-  plot.new()
-  plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
-              yaxs = "i")
-  rect(0, levels[-length(levels)], 1, levels[-1L], col = col,border=NA)
-  if (missing(key.axes)) {
-    if (axes) 
-      axis(4)
-  }
-  else key.axes
-  box()
-  if (!missing(key.title)) 
-    key.title
-  mar <- mar.orig
-  mar[4L] <- 1
-  par(mar = mar)
-  plot.new()
-  plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
-  .filled.contour(x, y, z, levels, col)
-  if (missing(plot.axes)) {
-    if (axes) {
-      title(main = "", xlab = "", ylab = "")
-      Axis(x, side = 1)
-      Axis(y, side = 2)
-    }
-  }
-  else plot.axes
-  if (frame.plot) 
-    box()
-  if (missing(plot.title)) 
-    title(...)
-  else plot.title
-  invisible()
-}
-
+setwd("c:/_Przemek_/GitHub/Eseje/Droga/KolejkaDoLekarza/data/") 
 
 library(RODBC)
 file.name <- "07_AOS_30062013.xls"
-
 file.names <- list.files(pattern="xls")
-
-for (file.name in file.names) {
-  excel.connect <- odbcConnectExcel(file.name)
-  dat <- sqlFetch(excel.connect, "Zestawienie")
-  odbcClose(excel.connect)
-  
-  dat <- dat[dat[,2] == "przypadek stabilny", ]
-  levels(dat[,1]) <- tolower(levels(dat[,1]))
-  
-  file.name <- gsub(file.name, pattern="xls", replacement="png")
-  dat[,1] <- reorder(dat[,1], dat[,8], median)
-
-  png(file.name, 800, max(15*nlevels(dat[,1]),300))
-  par(mar=c(4,27,3,3))
-  boxplot(dat[,8]~dat[,1], horizontal=TRUE, las=1, pch=19, varwidth=TRUE, xlab="sredni okres oczekiwania w dniach", col="red",cex=0.6)
-  abline(v=366*(1:3))
-  axis(3)
-  abline(v=(366/6)*(0:28), lty=3)
-  abline(v=(366/2)*(0:28), lty=2)
-  dev.off()
-}
-
-
-
-
-setwd("c:/_Przemek_/Google Drive/__SmarterPoland__/_JuzNaBlogu_/_2013 08 Czekanie na lekarza_/all") 
-
-library(RODBC)
-file.name <- "07_AOS_30062013.xls"
-
-file.names <- list.files(pattern="xls")
+wojewodztwa <- c("Dolnoslaskie", "Kujawsko-Pomorskie", "Lubelskie", "Lubuskie", "Lodzkie", "Malopolskie", "Mazowieckie", "Opolskie", "Podkarpackie", "Podlaskie", "Pomorskie", "Slaskie", "Swietokrzyskie", "Warminsko - Mazurskie", "Wielkopolskie", "Zachodniopomorskie")
 dats <- list()
 
 for (file.name in file.names) {
@@ -112,23 +13,23 @@ for (file.name in file.names) {
   odbcClose(excel.connect)
 }
 
+wszystkieDane <- do.call(rbind, dats)
 
-summary(dats3)
-
-wojewodztwa <- c("Dolnoslaskie", "Kujawsko-Pomorskie", "Lubelskie", "Lubuskie", "Lodzkie", "Malopolskie", "Mazowieckie", "Opolskie", "Podkarpackie", "Podlaskie", "Pomorskie", "Slaskie", "Swietokrzyskie", "Warminsko - Mazurskie", "Wielkopolskie", "Zachodniopomorskie")
-
-miasta <- sapply(strsplit(as.character(dats3[,5]), split="\n"), '[', 1)
-miastawoj <- paste(miasta, ", ", wojewodztwa[as.numeric(dats3[,10])], sep="")
+miasta <- sapply(strsplit(as.character(wszystkieDane[,5]), split="\n"), '[', 1)
+miastawoj <- paste(miasta, ", ", wojewodztwa[as.numeric(wszystkieDane[,10])], sep="")
 
 tocheck <- unique(miastawoj)
 
 pary <- strsplit(tocheck, split=", ")
-
-res <- list()
-for (i in 835:length(tocheck)) {
-  res[[i]] <- SmarterPoland::getGoogleMapsAddress(city=pary[[i]][1], street=pary[[i]][2])
+wspolrzedne <- list()
+for (i in 1:length(tocheck)) {
+  wspolrzedne[[i]] <- SmarterPoland::getGoogleMapsAddress(city=pary[[i]][1], street=pary[[i]][2])
   cat(i, tocheck[i], "\n")
 }
+
+
+save(wszystkieDane, file="wszystkieDane.rda")
+save(wspolrzedne,file="wspolrzedne.rda")
 
 
 plot(sapply(res, `[`, 2), sapply(res, `[`, 1), pch=19, cex=0.2)
@@ -217,7 +118,7 @@ for (k in c(5,10,20)) {
   }
 }
 
-  
+
 
 
 grupy <- names(which(table(dats3[,1]) > 500))
@@ -252,3 +153,122 @@ for (grupa in grupy) {
   
   dev.off()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
+
+smiasta <- unique(miasta)
+res <- list()
+for (i in 1:length(smiasta)) {
+  res[[i]] <- SmarterPoland::getGoogleMapsAddress(city=smiasta[i], street="mazowieckie")
+  cat(i, smiasta[i], "\n")
+}
+  
+
+plot(sapply(res, `[`, 2), sapply(res, `[`, 1))
+text(sapply(res, `[`, 2), sapply(res, `[`, 1), smiasta)
+
+
+
+filled.contour2 <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, 
+                                                       length.out = ncol(z)), z, xlim = range(x, finite = TRUE), 
+          ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE), 
+          levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors, 
+          col = color.palette(length(levels) - 1), plot.title, plot.axes, 
+          key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, 
+          axes = TRUE, frame.plot = axes, ...) 
+{
+  mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
+  on.exit(par(par.orig))
+  w <- (3 + mar.orig[2L]) * par("csi") * 2.54
+  layout(matrix(c(2, 1), ncol = 2L), widths = c(1, lcm(w)))
+  par(las = las)
+  mar <- mar.orig
+  mar[4L] <- mar[2L]
+  mar[2L] <- 1
+  par(mar = mar)
+  plot.new()
+  plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
+              yaxs = "i")
+  rect(0, levels[-length(levels)], 1, levels[-1L], col = col,border=NA)
+  if (missing(key.axes)) {
+    if (axes) 
+      axis(4)
+  }
+  else key.axes
+  box()
+  if (!missing(key.title)) 
+    key.title
+  mar <- mar.orig
+  mar[4L] <- 1
+  par(mar = mar)
+  plot.new()
+  plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
+  .filled.contour(x, y, z, levels, col)
+  if (missing(plot.axes)) {
+    if (axes) {
+      title(main = "", xlab = "", ylab = "")
+      Axis(x, side = 1)
+      Axis(y, side = 2)
+    }
+  }
+  else plot.axes
+  if (frame.plot) 
+    box()
+  if (missing(plot.title)) 
+    title(...)
+  else plot.title
+  invisible()
+}
+
