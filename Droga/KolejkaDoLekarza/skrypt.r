@@ -22,7 +22,7 @@ tocheck <- unique(miastawoj)
 
 pary <- strsplit(tocheck, split=", ")
 wspolrzedne <- list()
-for (i in 1:length(tocheck)) {
+for (i in 1190:length(tocheck)) {
   wspolrzedne[[i]] <- SmarterPoland::getGoogleMapsAddress(city=pary[[i]][1], street=pary[[i]][2])
   cat(i, tocheck[i], "\n")
 }
@@ -32,10 +32,13 @@ save(wszystkieDane, file="wszystkieDane.rda")
 save(wspolrzedne,file="wspolrzedne.rda")
 
 
-plot(sapply(res, `[`, 2), sapply(res, `[`, 1), pch=19, cex=0.2)
-text(sapply(res, `[`, 2), sapply(res, `[`, 1), tocheck)
+plot(sapply(wspolrzedne, `[`, 2), sapply(wspolrzedne, `[`, 1), pch=19, cex=0.2)
+text(sapply(wspolrzedne, `[`, 2), sapply(wspolrzedne, `[`, 1), tocheck)
 
-df <- data.frame(sapply(res, `[`, 1), sapply(res, `[`, 2), sapply(pary, `[`, 1), sapply(pary, `[`, 2))
+df <- data.frame(sapply(wspolrzedne, `[`, 1), 
+                 sapply(wspolrzedne, `[`, 2), 
+                 sapply(pary, `[`, 1),
+                 sapply(pary, `[`, 2))
 colnames(df) <- c("szerokosc", "dlugosc", "miasto", "wojewodztwo")
 rownames(df) <- tocheck
 
@@ -52,12 +55,6 @@ dats4 <- dats3[dats3[,1] == grupa,]
 all4 <- all[dats3[,1] == grupa,]
 
 plot(all4[,2]+rnorm(nrow(all4))/100, all4[,1]+rnorm(nrow(all4))/100, pch=19, cex=0.2, col="#00000022")
-
-library(fields)
-gladz <- smooth.2d(dats4[,8], all4[,2:1], nrow=200, ncol=200)
-
-image( gladz)
-points( all4[,2:1], pch=10, cex=0.2)  
 
 
 library("kknn")
