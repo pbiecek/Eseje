@@ -1,6 +1,20 @@
 setwd("c:/_Przemek_/GitHub/Eseje/Droga/KolejkaDoLekarza/data/") 
+setwd("/Users/pbiecek/camtasia/GitHub/Eseje/Droga/KolejkaDoLekarza/data/") 
 
 library(RODBC)
+
+library("kknn")
+library("lattice")
+library(rworldmap)
+library(maptools)
+library(gpclib)
+library(maptools)   
+library(RColorBrewer) 
+library(classInt)
+gpclibPermit()
+library(rgeos)  
+require(maptools)
+
 file.name <- "07_AOS_30062013.xls"
 file.names <- list.files(pattern="xls")
 wojewodztwa <- c("Dolnoslaskie", "Kujawsko-Pomorskie", "Lubelskie", "Lubuskie", "Lodzkie", "Malopolskie", "Mazowieckie", "Opolskie", "Podkarpackie", "Podlaskie", "Pomorskie", "Slaskie", "Swietokrzyskie", "Warminsko - Mazurskie", "Wielkopolskie", "Zachodniopomorskie")
@@ -31,10 +45,16 @@ for (i in 1190:length(tocheck)) {
 save(wszystkieDane, file="wszystkieDane.rda")
 save(wspolrzedne,file="wspolrzedne.rda")
 
+# wczytaj uprzednio zapisane dane
+load("wszystkieDane.rda")
+load("wspolrzedne.rda")
+miasta <- sapply(strsplit(as.character(wszystkieDane[,5]), split="\n"), '[', 1)
+miastawoj <- paste(miasta, ", ", wojewodztwa[as.numeric(wszystkieDane[,10])], sep="")
 
-plot(sapply(wspolrzedne, `[`, 2), sapply(wspolrzedne, `[`, 1), pch=19, cex=0.2)
-text(sapply(wspolrzedne, `[`, 2), sapply(wspolrzedne, `[`, 1), tocheck)
 
+
+#
+# skad sa dane?
 df <- data.frame(sapply(wspolrzedne, `[`, 1), 
                  sapply(wspolrzedne, `[`, 2), 
                  sapply(pary, `[`, 1),
@@ -42,114 +62,132 @@ df <- data.frame(sapply(wspolrzedne, `[`, 1),
 colnames(df) <- c("szerokosc", "dlugosc", "miasto", "wojewodztwo")
 rownames(df) <- tocheck
 
-all <- df[miastawoj,]
+plot(df[,2], df[,1], pch=19, cex=0.2)
 
-plot(all[,2]+rnorm(nrow(all))/100, all[,1]+rnorm(nrow(all))/100, pch=19, cex=0.2, col="#00000022")
+#
+# tylko wybrany typ poradni
 
+grupa <- "PORADNIA ALERGOLOGICZNA"
 
-plot(1+as.vector(table(dats3[,1])), 1+tapply(dats3[,8], dats3[,1], mean, na.rm=TRUE), log="xy", pch=19, cex=0.5)
+wybraneDane <- wszystkieDane[wszystkieDane[,1] == grupa & wszystkieDane[,2] == "przypadek stabilny", ]
+wybraneMiasta <- sapply(strsplit(as.character(wybraneDane[,5]), split="\n"), '[', 1)
+wybraneMiastawoj <- paste(wybraneMiasta, ", ", wojewodztwa[as.numeric(wybraneDane[,10])], sep="")
 
-grupa <- "PORADNIA KARDIOLOGICZNA"
+wybraneWspolrzedne <- df[wybraneMiastawoj,]
+plot(wybraneWspolrzedne[,2], wybraneWspolrzedne[,1], pch=19, cex=0.2, col="#00000022")
 
-dats4 <- dats3[dats3[,1] == grupa,]
-all4 <- all[dats3[,1] == grupa,]
+wybraneDane[,c(6,8)]
 
-plot(all4[,2]+rnorm(nrow(all4))/100, all4[,1]+rnorm(nrow(all4))/100, pch=19, cex=0.2, col="#00000022")
-
-
-library("kknn")
-library("lattice")
-library(rworldmap)
-library(maptools)
-library(gpclib)
-library(maptools)   
-library(RColorBrewer) 
-library(classInt)
-gpclibPermit()
-library(rgeos)  
-require(maptools)
+#
+# podejscie 1
+# sredni czas czekania w okolicy za pomoca koloru
 
 newproj <- "+proj=utm +zone=55 +south +ellps=GRS80 +units=m"
 newproj <- "+ellps=GRS80"
-shape0 <- readShapeSpatial("POL_adm0", proj4string = CRS(newproj))
-shape1 <- readShapeSpatial("POL_adm1", proj4string = CRS(newproj),repair=TRUE,force_ring=T,verbose=TRUE) 
+shape0 <- readShapeSpatial("/Users/pbiecek/camtasia/Dropbox/__SmarterPoland__/_Mapy_/POL_adm0", proj4string = CRS(newproj))
+shape1 <- readShapeSpatial("/Users/pbiecek/camtasia/Dropbox/__SmarterPoland__/_Mapy_/POL_adm1", proj4string = CRS(newproj),repair=TRUE,force_ring=T,verbose=TRUE) 
 
+# siatka punktow
 x = seq(14,24.5,0.02)
 y = seq(49,55,0.02)
-
 grid <- expand.grid(dlugosc = x, szerokosc=y)
 
-grupa <- "PORADNIA KARDIOLOGICZNA"
+wybraneDF <- data.frame(y=wybraneDane[,8], wybraneWspolrzedne[,2:1])
+srednieCzasy <- kknn(y~., wybraneDF, grid, k=5)
+srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
+tx = readWKT("POLYGON ((12.9 48.9, 12.9 55.1, 25.1 55.1, 25.1 48.9, 12.9 48.9))")
+d = gDifference(tx,shape0)
+lv <- seq(0,max(srednieCzasy$fitted.values) + 1,length.out=101)
+    
+filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, srednieCzasyLista$z,  frame.plot = FALSE, plot.axes={
+  plot(d,col='white',add=TRUE)
+  plot(shape1, border="grey50", lwd=1, add=T)
+  plot(shape0, border="black", lwd=2, add=T)  
+  points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch=10, cex=0.2)
+}, col = rev(heat.colors(length(lv) - 1)), levels=lv)
+title(main=grupa)
 
-grupy <- names(which(table(dats3[,1])>100))
 
-for (k in c(5,10,20)) {
-  for (grupa in grupy) {
-    dats4 <- dats3[dats3[,1] == grupa,]
-    all4 <- all[dats3[,1] == grupa,]
-    
-    ddf <- data.frame(y=dats4[,8], all4[,2:1])
-    
-    res <- kknn(y~., ddf, grid, k=k)
-    
-    resG <- list(x = x, y = y, z = matrix(res$fitted.values, length(x), length(y)))
-    tx = readWKT("POLYGON ((12.9 48.9, 12.9 55.1, 25.1 55.1, 25.1 48.9, 12.9 48.9))")
-    d = gDifference(tx,shape0)
-    
-    lv <- seq(0,max(res$fitted.values) + 1,length.out=101)
-    
-    png(paste(grupa,k,".png",sep=""),900,700)
-    
-    windowsFonts(Calibri=windowsFont("Palatino Linotype"))
-    par(family="Calibri")
-    
-    filled.contour2(resG$x, resG$y, resG$z,  frame.plot = FALSE, plot.axes={
-      plot(d,col='white',add=TRUE)
-      plot(shape1, border="grey50", lwd=1, add=T)
-      plot(shape0, border="black", lwd=2, add=T)  
-      points(ddf[,2] + rnorm(nrow(ddf))/30,ddf[,3] + rnorm(nrow(ddf))/30, pch=10, cex=0.2)
-    }, col = rev(heat.colors(length(lv) - 1)), levels=lv)
-    title(main=grupa)
-    
-    dev.off()
-  }
+
+#
+# podejscie 2
+# sredni czas czekania w okolicy za pomoca wielkosci punktu
+
+x = seq(14,24.5,0.1)
+y = seq(49,55,0.1)
+grid <- expand.grid(dlugosc = x, szerokosc=y)
+srednieCzasy <- kknn(y~., wybraneDF, grid, k=15)
+srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
+
+plot(grid[,1], grid[,2], pch=19, cex=as.vector(srednieCzasyLista$z)/100, xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+plot(d,col='white',add=TRUE)
+plot(shape1, border="grey50", lwd=1, add=T)
+plot(shape0, border="black", lwd=2, add=T)  
+
+
+#
+# podejscie 3
+# odleglosc od miejsca za pomoca dlugosci odcinkow
+
+polskieMiasta <- world.cities[world.cities$country.etc == 'Poland',]
+
+lekarz <- wybraneWspolrzedne[wybraneDane[,8] < 14,]
+
+najblizszyLekarz <- t(apply(polskieMiasta[,c(4,5)], 1, function(x) {
+  ind <- which.min((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2)
+  c(lekarz[ind,1], lekarz[ind,2])
+}))
+
+par(mar=c(0,0,0,0))
+plot(polskieMiasta[,5], polskieMiasta[,4], pch=19, cex=(polskieMiasta[,3]/200000)^0.3, col="#ff000055",
+     xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+for (i in 1:nrow(polskieMiasta)) {
+  lines(c(polskieMiasta[i,5], najblizszyLekarz[i,2]),
+        c(polskieMiasta[i,4], najblizszyLekarz[i,1]),
+        col="#00000055")
 }
 
+#
+# podejscie 4
+# odleglosc od miejsca za pomoca dlugosci odcinkow na regularnej siatce
+x = seq(14,24.5,0.1)
+y = seq(49,55,0.1)
+grid <- expand.grid(dlugosc = x, szerokosc=y)
 
+lekarz <- wybraneWspolrzedne[wybraneDane[,8] < 14,]
+najblizszyLekarz <- t(apply(grid[,2:1], 1, function(x) {
+  ind <- which.min((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2)
+  c(lekarz[ind,1], lekarz[ind,2])
+}))
 
-
-grupy <- names(which(table(dats3[,1]) > 500))
-
-
-for (grupa in grupy) {
-  dats4 <- dats3[dats3[,1] == grupa,]
-  all4 <- all[dats3[,1] == grupa,]
-  
-  ddf <- data.frame(y=dats4[,8], all4[,2:1])
-  
-  res <- kknn(y~., ddf, grid, k=12)
-  
-  resG <- list(x = x, y = y, z = matrix(res$fitted.values, length(x), length(y)))
-  tx = readWKT("POLYGON ((12.9 48.9, 12.9 55.1, 25.1 55.1, 25.1 48.9, 12.9 48.9))")
-  d = gDifference(tx,shape0)
-  
-  lv <- seq(0,max(res$fitted.values) + 1,length.out=101)
-  
-  png(paste(grupa,".png",sep=""),900,700)
-  
-  windowsFonts(Calibri=windowsFont("Palatino Linotype"))
-  par(family="Calibri")
-  
-  filled.contour2(resG$x, resG$y, resG$z,  frame.plot = FALSE, plot.axes={
-    plot(d,col='white',add=TRUE)
-    plot(shape1, border="grey50", lwd=1, add=T)
-    plot(shape0, border="black", lwd=2, add=T)  
-    points(ddf[,2] + rnorm(nrow(ddf))/30,ddf[,3] + rnorm(nrow(ddf))/30, pch=10, cex=0.2)
-  }, col = rev(heat.colors(length(lv) - 1)), levels=lv)
-  title(main=grupa)
-  
-  dev.off()
+par(mar=c(0,0,0,0))
+plot(grid[,1], grid[,2], pch=19, cex=0.1, col="#ff000055",
+     xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+for (i in 1:nrow(grid)) {
+  lines(c(grid[i,1], najblizszyLekarz[i,2]),
+        c(grid[i,2], najblizszyLekarz[i,1]),
+        col="#00000055")
 }
+plot(d,col='white',add=TRUE)
+plot(shape1, border="grey50", lwd=1, add=T)
+plot(shape0, border="black", lwd=2, add=T)  
+
+#
+# podejscie 5
+najblizszyLekarzOdleglosc <- apply(grid[,2:1], 1, function(x) {
+  min(sqrt((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2))
+})
+najblizszyLekarzOdlegloscMatrix <- matrix(najblizszyLekarzOdleglosc, length(srednieCzasyLista$x), length(srednieCzasyLista$y))
+
+lv <- seq(0,max(najblizszyLekarzOdleglosc) + 1,length.out=101)
+
+filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, najblizszyLekarzOdlegloscMatrix,  frame.plot = FALSE, plot.axes={
+  plot(d,col='white',add=TRUE)
+  plot(shape1, border="grey50", lwd=1, add=T)
+  plot(shape0, border="black", lwd=2, add=T)  
+  points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch=10, cex=0.2)
+}, col = rev(heat.colors(length(lv) - 1)), levels=lv)
+title(main=grupa)
 
 
 
@@ -160,63 +198,9 @@ for (grupa in grupy) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-miasta <- sapply(strsplit(as.character(dat[,5]),"\n"),`[`, 1)
-
-smiasta <- unique(miasta)
-res <- list()
-for (i in 1:length(smiasta)) {
-  res[[i]] <- SmarterPoland::getGoogleMapsAddress(city=smiasta[i], street="mazowieckie")
-  cat(i, smiasta[i], "\n")
-}
-  
-
-plot(sapply(res, `[`, 2), sapply(res, `[`, 1))
-text(sapply(res, `[`, 2), sapply(res, `[`, 1), smiasta)
-
-
+#
+# Funkajc pomocnicza
+# zmodyfikowana by latwiej bylo rysowac odpowiednia skale kolorow
 
 filled.contour2 <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1, 
                                                        length.out = ncol(z)), z, xlim = range(x, finite = TRUE), 
