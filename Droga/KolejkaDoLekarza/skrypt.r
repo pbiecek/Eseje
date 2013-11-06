@@ -53,7 +53,6 @@ load("pary.rda")
 load("tocheck.rda")
 
 
-
 #
 # skad sa dane?
 df <- data.frame(sapply(wspolrzedne, `[`, 1), 
@@ -70,9 +69,14 @@ plot(df[,2], df[,1], pch=19, cex=0.2)
 
 grupa <- "PORADNIA ALERGOLOGICZNA"
 
-wybraneDane <- wszystkieDane[wszystkieDane[,1] == grupa & wszystkieDane[,2] == "przypadek stabilny", ]
-wybraneMiasta <- sapply(strsplit(as.character(wybraneDane[,5]), split="\n"), '[', 1)
+wybraneDane <- wszystkieDane[which(wszystkieDane[,1] == grupa & wszystkieDane[,2] == "przypadek stabilny"), ]
+adres <- as.character(wybraneDane[,5])
+wybraneMiasta <- sapply(strsplit(adres, split="\n"), '[', 1)
 wybraneMiastawoj <- paste(wybraneMiasta, ", ", wojewodztwa[as.numeric(wybraneDane[,10])], sep="")
+
+load("wybraneDane.rda")
+load("wybraneMiasta.rda")
+load("wybraneMiastawoj.rda")
 
 wybraneWspolrzedne <- df[wybraneMiastawoj,]
 plot(wybraneWspolrzedne[,2], wybraneWspolrzedne[,1], pch=19, cex=0.2)
@@ -94,7 +98,9 @@ y = seq(49,55,0.02)
 grid <- expand.grid(dlugosc = x, szerokosc=y)
 
 pdf("mapaSredniCzas.pdf",12,11)
+par(mar=c(0,0,0,0))
 
+rownames(wybraneWspolrzedne) = NULL
 wybraneDF <- data.frame(y=wybraneDane[,8], wybraneWspolrzedne[,2:1])
 srednieCzasy <- kknn(y~., wybraneDF, grid, k=5)
 srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
@@ -102,13 +108,11 @@ tx = readWKT("POLYGON ((12.9 48.9, 12.9 55.1, 25.1 55.1, 25.1 48.9, 12.9 48.9))"
 d = gDifference(tx,shape0)
 lv <- seq(0,max(srednieCzasy$fitted.values) + 1,length.out=101)
     
-filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, srednieCzasyLista$z,  frame.plot = FALSE, plot.axes={
-  plot(d,col='white',add=TRUE)
-  plot(shape1, border="grey50", lwd=1, add=T)
-  plot(shape0, border="black", lwd=2, add=T)  
-  points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch=10, cex=0.2)
-}, col = rev(heat.colors(length(lv) - 1)), levels=lv)
-title(main=grupa)
+filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, srednieCzasyLista$z, col = rev(heat.colors(length(lv) - 1)), levels=lv)
+plot(d,col='white',add=TRUE)
+plot(shape1, border="grey50", lwd=1, add=T)
+plot(shape0, border="black", lwd=1, add=T)  
+points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch='x', cex=0.5)
 
 dev.off()
 
@@ -117,14 +121,14 @@ dev.off()
 # sredni czas czekania w okolicy za pomoca wielkosci punktu
 
 pdf("mapaSredniPunkty.pdf",12,11)
-
+par(mar=c(0,0,0,0))
 x = seq(14,24.5,0.15)
 y = seq(49,55,0.1)
 grid <- expand.grid(dlugosc = x, szerokosc=y)
-srednieCzasy <- kknn(y~., wybraneDF, grid, k=15)
+srednieCzasy <- kknn(y~., wybraneDF, grid, k=5)
 srednieCzasyLista <- list(x = x, y = y, z = matrix(srednieCzasy$fitted.values, length(x), length(y)))
 
-plot(grid[,1], grid[,2], pch=19, cex=as.vector(srednieCzasyLista$z)/70, xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+plot(grid[,1], grid[,2], pch=19, cex=as.vector(srednieCzasyLista$z)/100, xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 plot(d,col='white',add=TRUE)
 plot(shape1, border="grey50", lwd=1, add=T)
 plot(shape0, border="black", lwd=1, add=T)  
@@ -140,7 +144,7 @@ polskieMiasta <- world.cities[world.cities$country.etc == 'Poland',]
 lekarz <- wybraneWspolrzedne[wybraneDane[,8] < 14,]
 
 najblizszyLekarz <- t(apply(polskieMiasta[,c(4,5)], 1, function(x) {
-  ind <- which.min((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2)
+  ind <- which.min((lekarz[,1] - x[1])^2*2 + (lekarz[,2] - x[2])^2)
   c(lekarz[ind,1], lekarz[ind,2])
 }))
 
@@ -155,10 +159,36 @@ for (i in 1:nrow(polskieMiasta)) {
         col="#000000bb", lwd=1)
 }
 points(polskieMiasta[,5], polskieMiasta[,4], pch=19, cex=(polskieMiasta[,3]/100000)^0.5, col="#ff0000aa")
+points(najblizszyLekarz[,2], najblizszyLekarz[,1], pch='x', cex=0.8)
 plot(shape1, border="#55555522", lwd=1, add=T)
 plot(shape0, border="#55555522", lwd=1, add=T)  
 
 dev.off()
+
+
+
+library(maptools)
+library(ggmap)
+library(ggplot2)
+library(mapproj)
+location <- c(min(x), min(y), max(x), max(y))
+location <- c(18.2, 49.8, 19.7, 50.9)
+
+odcinki <- data.frame(x=polskieMiasta[,5], y=polskieMiasta[,4], xe=najblizszyLekarz[,2], ye = najblizszyLekarz[,1])
+  
+portland = get_map(location = location, source = "google", color="bw", maptype="roadmap")
+
+pdf("mapaTlo.pdf",12,11)
+ggmap(portland,darken = c(0.95, "white")) +theme_nothing() + xlim(location[c(1,3)]) + ylim(location[c(2,4)]) +
+  geom_point(aes(y = lat, x = long, size=2*sqrt(pop/100000)), data=polskieMiasta, 
+             colour="#ff0000aa") +
+  geom_segment(aes(x=x, xend=xe, y=y, yend=ye), data=odcinki)+
+  geom_point(aes(y = szerokosc, x = dlugosc), data=wybraneWspolrzedne, 
+             colour="#000000aa", pch='x')
+  
+dev.off()  
+
+
 
 #
 # podejscie 4
@@ -169,12 +199,12 @@ grid <- expand.grid(dlugosc = x, szerokosc=y)
 
 lekarz <- wybraneWspolrzedne[wybraneDane[,8] < 14,]
 najblizszyLekarz <- t(apply(grid[,2:1], 1, function(x) {
-  ind <- which.min((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2)
+  ind <- which.min((lekarz[,1] - x[1])^2*2 + (lekarz[,2] - x[2])^2)
   c(lekarz[ind,1], lekarz[ind,2])
 }))
 
 pdf("mapaOdleglosciSiatka.pdf",12,11)
-
+par(mar=c(0,0,0,0))
 plot(grid[,1], grid[,2], pch=19, cex=0.1, col="#ff000055",
      xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 for (i in 1:nrow(grid)) {
@@ -191,21 +221,22 @@ dev.off()
 #
 # podejscie 5
 najblizszyLekarzOdleglosc <- apply(grid[,2:1], 1, function(x) {
-  min(sqrt((lekarz[,1] - x[1])^2 + (lekarz[,2] - x[2])^2), na.rm=TRUE)
+  min(sqrt((lekarz[,1] - x[1])^2*2 + (lekarz[,2] - x[2])^2), na.rm=TRUE)
 })
-najblizszyLekarzOdlegloscMatrix <- matrix(najblizszyLekarzOdleglosc, length(unique(grid[,1])), length(unique(grid[,2])))
+srednieCzasyLista <- list(x = x, y = y)
+najblizszyLekarzOdlegloscMatrix <- matrix(najblizszyLekarzOdleglosc, length(srednieCzasyLista$x), length(srednieCzasyLista$y))
 
-lv <- seq(0,max(najblizszyLekarzOdleglosc) + 1,length.out=101)
+lv <- seq(0,2 ,length.out=101)
+wybraneDF2 <- wybraneDF[wybraneDane[,8] < 14,]
 
 pdf("mapaOdleglosciKolory.pdf",12,11)
-
-filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, najblizszyLekarzOdlegloscMatrix,  frame.plot = FALSE, plot.axes={
-  plot(d,col='white',add=TRUE)
-  plot(shape1, border="grey50", lwd=1, add=T)
-  plot(shape0, border="black", lwd=2, add=T)  
-  points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch=10, cex=0.2)
-}, col = rev(heat.colors(length(lv) - 1)), levels=lv)
-title(main=grupa)
+par(mar=c(0,0,0,0))
+filled.contour2(srednieCzasyLista$x, srednieCzasyLista$y, najblizszyLekarzOdlegloscMatrix, col = rev(heat.colors(length(lv) - 1)), levels=lv)
+plot(d,col='white',add=TRUE)
+plot(shape1, border="grey50", lwd=1, add=T)
+plot(shape0, border="black", lwd=1, add=T)  
+points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wybraneDF))/30, pch='x', cex=0.7, col="#77777777")
+points(wybraneDF2[,2] + rnorm(nrow(wybraneDF2))/30, wybraneDF2[,3] + rnorm(nrow(wybraneDF2))/30, pch='x', cex=0.7, col="black")
 
 dev.off()
 
@@ -228,46 +259,11 @@ filled.contour2 <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1,
           key.title, key.axes, asp = NA, xaxs = "i", yaxs = "i", las = 1, 
           axes = TRUE, frame.plot = axes, ...) 
 {
-  mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
-  on.exit(par(par.orig))
-  w <- (3 + mar.orig[2L]) * par("csi") * 2.54
-  layout(matrix(c(2, 1), ncol = 2L), widths = c(1, lcm(w)))
-  par(las = las)
-  mar <- mar.orig
-  mar[4L] <- mar[2L]
-  mar[2L] <- 1
-  par(mar = mar)
-  plot.new()
-  plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", 
-              yaxs = "i")
-  rect(0, levels[-length(levels)], 1, levels[-1L], col = col,border=NA)
-  if (missing(key.axes)) {
-    if (axes) 
-      axis(4)
-  }
-  else key.axes
-  box()
-  if (!missing(key.title)) 
-    key.title
-  mar <- mar.orig
-  mar[4L] <- 1
-  par(mar = mar)
   plot.new()
   plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
   .filled.contour(x, y, z, levels, col)
-  if (missing(plot.axes)) {
-    if (axes) {
-      title(main = "", xlab = "", ylab = "")
-      Axis(x, side = 1)
-      Axis(y, side = 2)
-    }
-  }
-  else plot.axes
   if (frame.plot) 
     box()
-  if (missing(plot.title)) 
-    title(...)
-  else plot.title
   invisible()
 }
 
