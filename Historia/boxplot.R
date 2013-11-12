@@ -34,3 +34,21 @@ for (i in 1:4) {
 }
 
 dev.off()
+
+
+
+library(ggplot2)
+library(Cairo)
+CairoPDF("Bertin.pdf", 14, 6)
+grid.newpage()
+p1 <- ggplot(aes(x = Sepal.Length, y = Sepal.Width, col=Species), data=iris) + geom_point(size=5) + theme_bw() + theme(legend.position="top")
+p2 <- ggplot(aes(x = Sepal.Length, y = Sepal.Width, shape=Species), data=iris) + geom_point(size=5) + theme_bw() + theme(legend.position="top")
+p3 <- ggplot(aes(x = Sepal.Length, y = Sepal.Width, size=Species), data=iris) + geom_point() + theme_bw() + theme(legend.position="top")
+
+pushViewport(viewport(layout = grid.layout(1, 3)))
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
+dev.off()
+
+
