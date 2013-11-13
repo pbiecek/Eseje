@@ -52,3 +52,28 @@ print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
 dev.off()
 
 
+
+
+apartments2 <- apartments[apartments$district %in% names(tail(sort(table(apartments$district)), 10)), ]
+apartments2$district <- reorder(apartments2$district, apartments2$m2.price, median, na.rm=TRUE)
+
+library(PerformanceAnalytics)
+tufte.boxplot <- function(x, g) {
+  k <- nlevels(g)
+  crit.val <- tapply(x, g, median)
+  plot(1:k, crit.val, pch=19,las=2, ylim=c(4000,16000), xlab="", xaxt="n", bty="n", ylab="cena za m2")
+  axis(1, seq_along(levels(g)), labels=levels(g), las=2)
+  for (i in 1:k) {
+    tmp <- boxplot.stats(x[as.numeric(g)==i])
+    segments(i, tmp$stats[1], i, tmp$stats[2])
+    segments(i, tmp$stats[4], i, tmp$stats[5])
+#    points(rep(i, length(tmp$out)), tmp$out, cex=.8)
+  }
+}
+
+par("cenaMieszkan.pdf", 10, 15)
+par(mfrow=c(2, 1))
+boxplot( m2.price~ factor(district), data=apartments2, las=2, outline=FALSE, ylim=c(4000,16000), bty="n", ylab="cena za m2")
+with(apartments2, tufte.boxplot(m2.price, factor(district)))
+dev.off()
+
