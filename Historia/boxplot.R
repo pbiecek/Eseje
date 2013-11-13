@@ -71,8 +71,8 @@ tufte.boxplot <- function(x, g) {
   }
 }
 
-par("cenaMieszkan.pdf", 10, 15)
-par(mfrow=c(2, 1))
+pdf("cenaMieszkan.pdf", 14, 7)
+par(mfrow=c(1, 2))
 boxplot( m2.price~ factor(district), data=apartments2, las=2, outline=FALSE, ylim=c(4000,16000), bty="n", ylab="cena za m2")
 with(apartments2, tufte.boxplot(m2.price, factor(district)))
 dev.off()
