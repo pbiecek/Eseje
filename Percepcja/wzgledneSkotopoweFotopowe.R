@@ -16,6 +16,16 @@ relative <- cbind(datt[seq(1, length(datt), 3)],
       datt[seq(2, length(datt), 3)],
       datt[seq(3, length(datt), 3)])
 
-relative <- relative[order(relative[,1]),]
-matplot(relative[,1], relative[,2:3], type="l", las=1, lwd=2, bty="n", ylab="", main="wzgledna czulosc przy widzeniu fotopowym i skotopowym")
+pdf("/Users/pbiecek/camtasia/GitHub/Eseje/Percepcja/skotopoweFotopowe.pdf",12,7)
 
+relative <- relative[order(relative[,1]),]
+par(xaxs="i", yaxs="i")
+matplot(relative[,1], relative[,2:3], type="l", 
+        lty=1, las=1, lwd=5, bty="n", ylab="względna czułość", 
+        xlab="długość fali",
+        main="widzenie fotopowe i skotopowe", xaxt="n", yaxt="n", ylim=c(0,1), col=c("#00007777", "#00000077"))
+matlines(relative[,1], relative[,2:3], type="h", lty=1, col=c("#0000bb77", "#00000077"), lwd=3)
+axis(1, seq(360,780,20))
+axis(2, seq(0,1,.1), las=1)
+
+dev.off()
