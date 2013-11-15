@@ -29,3 +29,18 @@ axis(1, seq(360,780,20))
 axis(2, seq(0,1,.1), las=1)
 
 dev.off()
+
+
+
+
+
+
+
+
+
+pdf("/Users/pbiecek/camtasia/GitHub/Eseje/Percepcja/axis.pdf",4,12)
+
+plot(c(1,1), c(-6,8), yaxt="n")
+axis(2, seq(-6,8), 10^seq(-6,8), las=1)
+
+dev.off()
