@@ -16,7 +16,7 @@ relative <- cbind(datt[seq(1, length(datt), 3)],
       datt[seq(2, length(datt), 3)],
       datt[seq(3, length(datt), 3)])
 
-pdf("/Users/pbiecek/camtasia/GitHub/Eseje/Percepcja/skotopoweFotopowe.pdf",12,7)
+pdf("/Users/pbiecek/camtasia/GitHub/Eseje/Percepcja/skotopoweFotopowe.pdf",12,8)
 
 relative <- relative[order(relative[,1]),]
 par(xaxs="i", yaxs="i")
