@@ -63,25 +63,27 @@ p3 <- ggplot(aes(x=mmat[,1], y=mmat[,2]/1.5), data=mmat) + geom_point(color=I(ko
 mat <- matrix(0, 500, 250)
 colnames(mat) <- 1:250
 rownames(mat) <- 1:500
-mmat <- melt(mat)[,1:2]
+mmat2 <- melt(mat)[,1:2]
 
 h = 10
-kols <- apply(mmat, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
-p4 <- ggplot(aes(x=mmat[,1]/2.5, y=mmat[,2]/2.5), data=mmat) + geom_point(color=I(kols)) +
+kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
+p4 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
   xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 10") +  theme_bw() 
 
 h = 130
-kols <- apply(mmat, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
-p5 <- ggplot(aes(x=mmat[,1]/2.5, y=mmat[,2]/2.5), data=mmat) + geom_point(color=I(kols)) +
+kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
+p5 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
   xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 130") +  theme_bw() 
 
 h = 260
-kols <- apply(mmat, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
-p6 <- ggplot(aes(x=mmat[,1]/2.5, y=mmat[,2]/2.5), data=mmat) + geom_point(color=I(kols)) +
+kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
+p6 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
   xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 260") +  theme_bw() 
 
 
+setwd("/Users/pbiecek/camtasia/GitHub/Eseje/Kolory/")
 
+pdf("skalaHCL.pdf", 15, 10)
 grid.newpage()
 print(p1, vp=viewport(0.16,0.25,0.33, 0.5))
 print(p2, vp=viewport(0.16+0.33,0.25,0.33, 0.5))
@@ -90,4 +92,4 @@ print(p3, vp=viewport(0.16+0.66,0.25,0.33, 0.5))
 print(p4, vp=viewport(0.16,0.75,0.33, 0.5))
 print(p5, vp=viewport(0.16+0.33,0.75,0.33, 0.5))
 print(p6, vp=viewport(0.16+0.66,0.75,0.33, 0.5))
-
+dev.off()
