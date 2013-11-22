@@ -93,3 +93,19 @@ print(p4, vp=viewport(0.16,0.75,0.33, 0.5))
 print(p5, vp=viewport(0.16+0.33,0.75,0.33, 0.5))
 print(p6, vp=viewport(0.16+0.66,0.75,0.33, 0.5))
 dev.off()
+
+
+library(gridExtra)
+
+
+png("skalaHCL.png", 1500, 1000)
+grid.newpage()
+print(p1, vp=viewport(0.16,0.25,0.33, 0.5))
+print(p2, vp=viewport(0.16+0.33,0.25,0.33, 0.5))
+print(p3, vp=viewport(0.16+0.66,0.25,0.33, 0.5))
+
+print(p4, vp=viewport(0.16,0.75,0.33, 0.5))
+print(p5, vp=viewport(0.16+0.33,0.75,0.33, 0.5))
+print(p6, vp=viewport(0.16+0.66,0.75,0.33, 0.5))
+dev.off()
+
