@@ -1,3 +1,4 @@
+library(gridExtra)
 library(reshape2)
 library(ggplot2)
 
@@ -94,8 +95,6 @@ print(p5, vp=viewport(0.16+0.33,0.75,0.33, 0.5))
 print(p6, vp=viewport(0.16+0.66,0.75,0.33, 0.5))
 dev.off()
 
-
-library(gridExtra)
 
 
 png("skalaHCL.png", 1500, 1000)
