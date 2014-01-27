@@ -1,3 +1,5 @@
+setwd("c:/_Przemek_/GitHub/Eseje/Droga/FacebookLancuchMarkowa")
+
 dane <- read.table("relationship_status_changes.csv", sep="\t",quote='~', h=T)
 
 indPowt <- names(table(dane[,1]))[table(dane[,1]) > 1]
@@ -64,4 +66,16 @@ qgraph(Edges,esize=5,gray=TRUE,
 dev.off()
 
 
+
+#CairoSVG("siec2.svg",13,13)
+qgraph(Edges,esize=5,gray=TRUE,
+       edge.labels=paste(Edges[,3],"%",sep=""), 
+       asize=5, labels=FALSE,edge.labels=TRUE, label.color="white")
+#dev.off()
+
+
+
+Edges[,1] <- as.numeric(Edges[,1])
+Edges[,2] <- as.numeric(Edges[,2])
+Edges[,3] <- round(runif(nrow(Edges)),2)
 

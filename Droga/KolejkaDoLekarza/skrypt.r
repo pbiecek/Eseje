@@ -116,6 +116,11 @@ points(wybraneDF[,2] + rnorm(nrow(wybraneDF))/30, wybraneDF[,3] + rnorm(nrow(wyb
 
 dev.off()
 
+pdf("skalaKol.pdf", 10, 4)
+plot(1:length(lv), rep(1,length(lv)), col=rev(heat.colors(length(lv) - 1)), pch=15, yaxt="n", cex=3, bty="n", xlab="",ylab="", xaxt="n")
+axis(1, (0:7)*13.5, paste(0:7,"msc."))
+dev.off()
+
 #
 # podejscie 2
 # sredni czas czekania w okolicy za pomoca wielkosci punktu
