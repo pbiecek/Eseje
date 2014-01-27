@@ -1,4 +1,4 @@
-dat <- read.table("pisaze3.csv", sep=",",h=F,fill=TRUE, 
+dat <- read.table("pisarze3.csv", sep=",",h=F,fill=TRUE, 
                   encoding="UTF8", fileEncoding="UTF8")
 dat <- dat[which(dat[,5] > 1750),]
 dat <- dat[order(gsub(as.character(dat[,7]),pattern=" ", replacement="")),]
@@ -9,7 +9,7 @@ x3 <- as.numeric(as.character(dat[,5]))
 dat[,4] <- gsub(as.character(dat[,4]), pattern="^ ", replacement="")
 
 
-pdf("pisaze8.pdf",18,13)
+pdf("pisarze8.pdf",18,13)
 par(mar=c(2,2,2,19))
 plot(x2,seq_along(x1), xlim=c(1700,2005), pch=19, cex=0.2, yaxt="n", ylab="", bty="n", type="n", xaxt="n", xlab="")
 par(xpd=NA)
