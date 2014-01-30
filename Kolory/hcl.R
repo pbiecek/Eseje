@@ -48,17 +48,22 @@ colnames(mat) <- 1:250
 rownames(mat) <- 1:360
 mmat <- melt(mat)[,1:2]
 
+mat <- matrix(0, 360, 63)
+colnames(mat) <- 4*(1:63)
+rownames(mat) <- (1:360)
+mmat <- melt(mat)[,1:2]
+
 kols <- apply(mmat, 1, function(x) hcl(x[1], x[2]/1.5, 20, fixup=FALSE))
 p1 <- ggplot(aes(x=mmat[,1], y=mmat[,2]/1.5), data=mmat) + geom_point(color=I(kols)) + coord_polar() + theme_bw() + xlab("Barwa") + 
-  ylab("Natężenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasność = 20") 
+  ylab("Natezenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasnosc = 20") 
 
 kols <- apply(mmat, 1, function(x) hcl(x[1], x[2]/1.5, 50, fixup=FALSE))
 p2 <- ggplot(aes(x=mmat[,1], y=mmat[,2]/1.5), data=mmat) + geom_point(color=I(kols)) + coord_polar() + theme_bw() + xlab("Barwa") + 
-  ylab("Natężenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasność = 50") 
+  ylab("Natezenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasnosc = 50") 
 
 kols <- apply(mmat, 1, function(x) hcl(x[1], x[2]/1.5, 80, fixup=FALSE))
 p3 <- ggplot(aes(x=mmat[,1], y=mmat[,2]/1.5), data=mmat) + geom_point(color=I(kols)) + coord_polar() + theme_bw() + xlab("Barwa") + 
-  ylab("Natężenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasność = 80") 
+  ylab("Natezenie") + scale_x_continuous(breaks = seq(0,360,30)) + ggtitle("Jasnosc = 80") 
 
 
 mat <- matrix(0, 500, 250)
@@ -66,20 +71,26 @@ colnames(mat) <- 1:250
 rownames(mat) <- 1:500
 mmat2 <- melt(mat)[,1:2]
 
+mat <- matrix(0, 250, 125)
+colnames(mat) <- 2*(1:125)
+rownames(mat) <- 2*(1:250)
+mmat2 <- melt(mat)[,1:2]
+
+
 h = 10
 kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
 p4 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
-  xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 10") +  theme_bw() 
+  xlab("Natezenie") + ylab("Jasnosc") + ggtitle("Barwa = 10") +  theme_bw() 
 
 h = 130
 kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
 p5 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
-  xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 130") +  theme_bw() 
+  xlab("Natezenie") + ylab("Jasnosc") + ggtitle("Barwa = 130") +  theme_bw() 
 
 h = 260
 kols <- apply(mmat2, 1, function(x) hcl(h, x[1]/2.5, x[2]/2.5, fixup=FALSE))
 p6 <- ggplot(aes(x=mmat2[,1]/2.5, y=mmat2[,2]/2.5), data=mmat2) + geom_point(color=I(kols)) +
-  xlab("Natężenie") + ylab("Jasność") + ggtitle("Barwa = 260") +  theme_bw() 
+  xlab("Natezenie") + ylab("Jasnosc") + ggtitle("Barwa = 260") +  theme_bw() 
 
 
 setwd("/Users/pbiecek/camtasia/GitHub/Eseje/Kolory/")
