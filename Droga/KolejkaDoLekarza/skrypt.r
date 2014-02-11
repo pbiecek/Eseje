@@ -298,7 +298,7 @@ plot(shape1, border="grey50", lwd=1, add=T)
 points(wybraneDF[,2] , wybraneDF[,3] , 
        pch=19, cex=3, col=kol[as.numeric(wybraneDF$gr)])
 legend("bottomleft", c("< 2 tyg", "2 tyg - msc", "1 msc - 3 msc", "3 msc - 6 msc", "> 6 msc"), 
-       pch=19, bty="n", col=kol, title ="Czas oczekiwania", cex=1.5)
+       pch=19, bty="n", col=kol, title ="Czas oczekiwania", cex=1.8)
 
 dev.off()
 
