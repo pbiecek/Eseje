@@ -92,6 +92,9 @@ newproj <- "+ellps=GRS80"
 shape0 <- readShapeSpatial("/Users/pbiecek/camtasia/Dropbox/__SmarterPoland__/_Mapy_/POL_adm0", proj4string = CRS(newproj))
 shape1 <- readShapeSpatial("/Users/pbiecek/camtasia/Dropbox/__SmarterPoland__/_Mapy_/POL_adm1", proj4string = CRS(newproj),repair=TRUE,force_ring=T,verbose=TRUE) 
 
+shape0 <- readShapeSpatial("c:/_Przemek_/Dropbox/__SmarterPoland__/_Mapy_/POL_adm0", proj4string = CRS(newproj))
+shape1 <- readShapeSpatial("c:/_Przemek_/Dropbox/__SmarterPoland__/_Mapy_/POL_adm1", proj4string = CRS(newproj),repair=TRUE,force_ring=T,verbose=TRUE) 
+
 # siatka punktow
 x = seq(14,24.5,0.02)
 y = seq(49,55,0.02)
@@ -271,4 +274,31 @@ filled.contour2 <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1,
     box()
   invisible()
 }
+
+
+
+
+
+
+
+
+rownames(wybraneWspolrzedne) = NULL
+wybraneDF <- data.frame(y=wybraneDane[,8], wybraneWspolrzedne[,2:1])
+d = gDifference(tx,shape0)
+
+wybraneDF$gr <- cut(wybraneDF[,1], c(0,14,31,90,180,500))
+library(RColorBrewer)
+kol <- rev(brewer.pal(5, "RdYlGn"))
+
+pdf("mapaPunkty.pdf", 12, 11)
+par(mar=c(0,0,0,0))
+#plot(d, border="grey50", lwd=1)
+plot(wybraneDF[,2], wybraneDF[,3], pch=19, cex=0.2, col="white")
+plot(shape1, border="grey50", lwd=1, add=T)
+points(wybraneDF[,2] , wybraneDF[,3] , 
+       pch=19, cex=3, col=kol[as.numeric(wybraneDF$gr)])
+legend("bottomleft", c("< 2 tyg", "2 tyg - msc", "1 msc - 3 msc", "3 msc - 6 msc", "> 6 msc"), 
+       pch=19, bty="n", col=kol, title ="Czas oczekiwania", cex=1.5)
+
+dev.off()
 
