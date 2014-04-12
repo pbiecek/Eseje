@@ -97,6 +97,21 @@ axis(1, 0:20, c("I", "II", "III", "IV", "V", "VI","VII","VIII","IX","X",
 dev.off()
 
 
+
+zaznacz <- !duplicated(YearsB %/% 100)
+
+pdf("papiezeK.pdf",30,8)
+par(mar=c(8,1,1,1))
+(pp <- barplot(diff(c(YearsB,2013))+0.5, col="grey", border="grey"))
+abline(v=pp[which(zaznacz)], lty=3)
+text(pp[which(zaznacz)]-0.5, 30, YearsB[zaznacz], srt=90, cex=0.8,adj=c(0.5,-0.1))
+axis(1,pp, Iwektor, las=3)
+dev.off()
+
+
+
+
+
 CairoSVG("lpapiezy.svg",8,6)
 plot(unlist(l.y), YearsB %/% 100, yaxt="n", xlab="liczba papie¿y", ylab="wiek", 
      pch=15, cex=1.8, xaxt="n", bty="n", 
