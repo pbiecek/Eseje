@@ -45,13 +45,19 @@ ratesGeo <- merge(capitals, rates, by.x = "country.etc", by.y = "country")
 
 # World map, using geom_path instead of geom_polygon
 world <- map_data("world")
-worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+worldmap <- ggplot(data=world, aes(x=long, y=lat, group=group)) +
   geom_path(color="grey") +
   scale_y_continuous(breaks=(-2:2) * 30) +
   scale_x_continuous(breaks=(-4:4) * 45) +
-  coord_fixed() + theme_bw()
-
-worldmap + coord_map("gilbert")
+  coord_fixed() + theme_bw() + 
+  geom_point(data=ratesGeo, aes(x=long, y=lat, group=country.etc,
+                           size=Birth_rate-Death_rate,
+                           color=Birth_rate-Death_rate)) +
+  scale_color_gradient2(low="red", mid="black", high = "blue")+
+  theme(legend.position="none")
 
 ggsave(plot = worldmap, filename="rates_map.png", width = 15, height = 10)
 
+worldmapG <- worldmap + coord_map("gilbert",orientation=c(90,0,0))
+
+ggsave(plot = worldmapG, filename="rates_mapG.png", width = 15, height = 10)
