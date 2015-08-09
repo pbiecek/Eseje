@@ -39,4 +39,19 @@ setdiff(rates[,1],capitals$country.etc)
 
 ratesGeo <- merge(capitals, rates, by.x = "country.etc", by.y = "country")
 
+#
+# mapy
+#
+
+# World map, using geom_path instead of geom_polygon
+world <- map_data("world")
+worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+  geom_path(color="grey") +
+  scale_y_continuous(breaks=(-2:2) * 30) +
+  scale_x_continuous(breaks=(-4:4) * 45) +
+  coord_fixed() + theme_bw()
+
+worldmap + coord_map("gilbert")
+
+ggsave(plot = pl, filename="rates.png", width = 15, height = 10)
 
