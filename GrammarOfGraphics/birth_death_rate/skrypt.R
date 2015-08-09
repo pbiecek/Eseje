@@ -23,3 +23,20 @@ pl
 
 ggsave(plot = pl, filename="rates.png", width = 15, height = 10)
 
+
+#
+# drugi wykres ze współrzędnymi
+#
+
+library(maps) 
+library(dplyr) 
+data(world.cities)
+capitals <- world.cities %>%
+  filter(capital == 1)
+
+setdiff(capitals$country.etc,rates[,1])
+setdiff(rates[,1],capitals$country.etc)
+
+ratesGeo <- merge(capitals, rates, by.x = "country.etc", by.y = "country")
+
+
