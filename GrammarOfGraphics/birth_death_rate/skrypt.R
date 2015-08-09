@@ -78,3 +78,21 @@ worldmapG
 
 ggsave(plot = worldmap, filename="rates_map2.png", width = 15, height = 10)
 ggsave(plot = worldmapG, filename="rates_mapG2.png", width = 15, height = 10)
+
+
+#
+# jeszcze jedno podejscie
+
+worldmap <- ggplot(data=world, aes(x=long, y=lat, group=group)) +
+  geom_polygon(color="white", fill="lightgrey") +
+  scale_y_continuous(breaks=(-2:2) * 30, limits=c(-60,85)) +
+  scale_x_continuous(breaks=(-4:4) * 45) +
+  coord_fixed() + theme_bw() + 
+  geom_point(data=ratesGeo, aes(x=long, y=lat, group=country.etc,
+                                size=Birth_rate-Death_rate)) +
+  theme(legend.position="top")
+worldmapG <- worldmap + coord_map("gilbert",orientation=c(90,0,0))
+worldmapG
+
+ggsave(plot = worldmap, filename="rates_map3.png", width = 15, height = 10)
+ggsave(plot = worldmapG, filename="rates_mapG3.png", width = 15, height = 10)
