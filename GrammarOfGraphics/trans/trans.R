@@ -1,4 +1,12 @@
 #
+# Bez transformacji
+#
+pl0 <- ggplot(iris, aes(Sepal.Length, Petal.Length)) + 
+  geom_point() + 
+  geom_smooth(se=FALSE, method="lm") +
+  theme_bw()
+
+#
 # Transformacje układu współrzędnych
 # po wyznaczeniu stats
 #
@@ -27,11 +35,13 @@ pl3 <- ggplot(iris, aes(log10(Sepal.Length), log10(Petal.Length))) +
   theme_bw()
 
 
+pl0
 pl1
 pl2
 pl3
 
 
+ggsave(pl0, filename = "trans_0.png")
 ggsave(pl1, filename = "trans_coords.png")
 ggsave(pl2, filename = "trans_scales.png")
 ggsave(pl3, filename = "trans_vars.png")
