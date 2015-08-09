@@ -53,5 +53,5 @@ worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
 
 worldmap + coord_map("gilbert")
 
-ggsave(plot = pl, filename="rates.png", width = 15, height = 10)
+ggsave(plot = worldmap, filename="rates_map.png", width = 15, height = 10)
 
