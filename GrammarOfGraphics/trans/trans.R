@@ -41,7 +41,7 @@ pl2
 pl3
 
 
-ggsave(pl0, filename = "trans_0.png")
-ggsave(pl1, filename = "trans_coords.png")
-ggsave(pl2, filename = "trans_scales.png")
-ggsave(pl3, filename = "trans_vars.png")
+ggsave(pl0, filename = "trans_0.png", width = 7, height = 7)
+ggsave(pl1, filename = "trans_coords.png", width = 7, height = 7)
+ggsave(pl2, filename = "trans_scales.png", width = 7, height = 7)
+ggsave(pl3, filename = "trans_vars.png", width = 7, height = 7)
