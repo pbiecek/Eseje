@@ -6,11 +6,11 @@ ggplot(iris, aes(x=Species, y=Sepal.Length)) +
 ggplot(iris, aes(x=Species, y=Sepal.Length)) +
   geom_point(position = position_dodge())
 
-ggplot(iris, aes(x=Species, y=Sepal.Length)) +
+ggplot(iris, aes(x=Species, y=Sepal.Length, ymax=Sepal.Length+0.2)) +
   geom_point(position = position_stack(0.1, 0))
 
 ggplot(iris, aes(x=Species, y=Sepal.Length)) +
-  geom_point(position = position_fill())
+  geom_point(position = position_fill(0.1, 0.1))
 
 ggplot(iris, aes(x=Species, y=Sepal.Length)) +
   geom_point(position = position_jitter(0.1, 0))
