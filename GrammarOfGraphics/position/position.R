@@ -17,3 +17,12 @@ ggplot(iris, aes(x=Species, y=Sepal.Length)) +
 
 ggplot(iris, aes(x=Species, fill=Species, y=Sepal.Length)) +
   geom_point(position = position_jitterdodge(0.3, 0))
+
+
+#
+# factor
+
+# jednak nie jest zaimplementowane
+
+ggplot(iris, aes(x=Species, y=factor(Sepal.Length), group=factor(Sepal.Length))) +
+  geom_point(position = position_dodge(width = 0.2, 0))
