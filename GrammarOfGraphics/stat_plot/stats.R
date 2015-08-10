@@ -7,7 +7,14 @@ df <- iris %>%
   summarise(min = min(Petal.Length),
             max = max(Petal.Length))
 
+# range
+pl1 <- ggplot(df, aes(x=gr, ymin=min, ymax=max)) + 
+  geom_linerange() + theme_bw()
 
-ggplot(df, aes(x=gr, ymin=min, ymax=max)) + 
-  geom_linerange()
+
+
+
+
+
+ggsave("stats_range.png", pl1, width = 7, height = 7)
 
