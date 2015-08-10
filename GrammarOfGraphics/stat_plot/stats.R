@@ -20,13 +20,14 @@ pl2 <- ggplot(df2, aes(x=gr, y=value)) +
   geom_point() + theme_bw()
 
 # line
-pl3 <- ggplot(df2, aes(x=gr, y=min_max)) + 
+pl3 <- ggplot(df2, aes(x=gr, y=value, group=min_max)) + 
   geom_line() + theme_bw()
 
 
-
-
+#
+# save
 
 ggsave("stats_range.png", pl1, width = 7, height = 7)
 ggsave("stats_point.png", pl2, width = 7, height = 7)
+ggsave("stats_line.png", pl3, width = 7, height = 7)
 
