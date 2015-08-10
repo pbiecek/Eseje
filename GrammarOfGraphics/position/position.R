@@ -26,3 +26,16 @@ ggplot(iris, aes(x=Species, fill=Species, y=Sepal.Length)) +
 
 ggplot(iris, aes(x=Species, y=factor(Sepal.Length), group=factor(Sepal.Length))) +
   geom_point(position = position_dodge(width = 0.2, 0))
+
+
+
+
+
+#
+# geom _line
+#
+
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length)) +
+  geom_path(position = "stack") + 
+  geom_point()
+
