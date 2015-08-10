@@ -16,13 +16,12 @@ df2 <- df %>%
   gather(min_max, value, min, max)
   
 # points
-pl2 <- ggplot(df2, aes(x=gr, y=min_max)) + 
+pl2 <- ggplot(df2, aes(x=gr, y=value)) + 
   geom_point() + theme_bw()
 
-
-
-pl1 <- ggplot(df, aes(x=gr, ymin=min, ymax=max)) + 
-  geom_linerange() + theme_bw()
+# line
+pl3 <- ggplot(df2, aes(x=gr, y=min_max)) + 
+  geom_line() + theme_bw()
 
 
 
