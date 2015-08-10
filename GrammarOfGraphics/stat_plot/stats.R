@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 
 df <- iris %>%
@@ -11,10 +12,22 @@ df <- iris %>%
 pl1 <- ggplot(df, aes(x=gr, ymin=min, ymax=max)) + 
   geom_linerange() + theme_bw()
 
+df2 <- df %>%
+  gather(min_max, value, min, max)
+  
+# points
+pl2 <- ggplot(df2, aes(x=gr, y=min_max)) + 
+  geom_point() + theme_bw()
+
+
+
+pl1 <- ggplot(df, aes(x=gr, ymin=min, ymax=max)) + 
+  geom_linerange() + theme_bw()
 
 
 
 
 
 ggsave("stats_range.png", pl1, width = 7, height = 7)
+ggsave("stats_point.png", pl2, width = 7, height = 7)
 
