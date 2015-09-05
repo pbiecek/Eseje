@@ -1,0 +1,7 @@
+       long      lat group order region subregion
+1 -133.3664 58.42416     1     1 Canada      <NA>
+2 -132.2681 57.16308     1     2 Canada      <NA>
+3 -132.0498 56.98610     1     3 Canada      <NA>
+4 -131.8797 56.74001     1     4 Canada      <NA>
+5 -130.2492 56.09945     1     5 Canada      <NA>
+6 -130.0131 55.91169     1     6 Canada      <NA>
