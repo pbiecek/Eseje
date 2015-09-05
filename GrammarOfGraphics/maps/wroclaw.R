@@ -21,6 +21,8 @@ pl2 <- ggplot(states, aes(x=long, y=lat, group = group)) +
 
 
 # Zapisujemy
+## 59e5c70228245b28facc8997ba187cd0
+## 816048bc988aebc8f8f27e975c285dc9
 
 ggsave(pl1, filename = "miasta0.pdf", width=7, height=7)
 ggsave(pl2, filename = "miasta1.pdf", width=7, height=7)
