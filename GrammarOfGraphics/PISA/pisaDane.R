@@ -14,5 +14,18 @@ pisa <- student2012 %>%
   summarize(math = weighted.mean(PV1MATH, W_FSTUWT),
             read = weighted.mean(PV1READ, W_FSTUWT))
 
+# dane 'pisa'
+save(pisa, file="pisa.rda")
 
-ggplot(pisa, aes(math, read)) + geom_point()
+
+ggplot(pisa, aes(math, read, 
+                 shape=ST04Q01, color=ST04Q01)) + geom_point()
+
+ggplot(pisa, aes(math, read, 
+                 shape=ST04Q01, color=ST04Q01, group = CNT)) + 
+  geom_line() + geom_point()
+
+ggplot(pisa, aes(read, math, 
+                 shape=ST04Q01, color=ST04Q01, group = CNT)) + 
+  geom_line() + geom_point()
+
