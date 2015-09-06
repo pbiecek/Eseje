@@ -19,6 +19,13 @@ ggplot(cowMilk, aes(x=time, y=value, fill=geo == "PL")) +
 
 
 
+powierzchnia <- getEurostatRCV("demo_r_d3area")
+powierzchniaLand <- powierzchnia %>%
+  filter(landuse == "L0008" & time == "2014") %>%
+  filter(geo %in% EUcc)
+
+
+
 
 # apples
 library(ggplot2)
@@ -59,7 +66,10 @@ europeCoords <- lapply(indEU, function(i){
   }
   if (length(vv) != 1) vv = NA
   df$value = vv
-  colnames(df) <- list("long", "lat", "region", "iso2", "value")
+  vv <- as.character(powierzchniaLand$value[powierzchniaLand$geo == df$iso2[1]])
+  if (length(vv) != 1) vv = NA
+  df$land = vv
+  colnames(df) <- list("long", "lat", "region", "iso2", "value", "land")
   return(df)
 })
 
@@ -71,6 +81,13 @@ pl1 <- ggplot() + geom_polygon(data = europeCoords,
   coord_map(xlim = c(-13, 35),  ylim = c(32, 71), projection = "mollweide")
 
 pl1
+
+pl2 <- ggplot() + geom_polygon(data = europeCoords, 
+                               aes(x = long, y = lat, group = factor(region), fill = value/as.numeric(land)),
+                               colour = "black", size = 0.1) +
+  coord_map(xlim = c(-13, 35),  ylim = c(32, 71), projection = "mollweide")
+
+pl2
 
 ggsave(filename = "appleMap.pdf", pl1, width = 7, height = 7)
 
