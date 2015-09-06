@@ -1,0 +1,17 @@
+geom_crossbar
+geom_violin
+geom_boxplot
+
+geom_bar
+geom_density
+geom_dotplot
+geom_line
+geom_path
+geom_point
+geom_pointrange
+geom_rect
+geom_rug
+geom_segment
+geom_smooth
+geom_text
+
