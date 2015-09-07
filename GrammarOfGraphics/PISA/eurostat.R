@@ -82,6 +82,35 @@ pl1 <- ggplot() + geom_polygon(data = europeCoords,
 
 pl1
 
+europeCoordsUniq <- na.omit(unique(europeCoords[,c(3,4,5)]))
+europeCoordsUniq$region <- reorder(europeCoordsUniq$region, europeCoordsUniq$value, sum)
+  
+pl3 <- ggplot() + geom_bar(data = europeCoordsUniq, 
+                    aes(x = region, y = value),
+                        fill = "black", stat= "identity") +
+  coord_flip()
+
+pl3
+
+europeCoordsUniq <- unique(europeCoords[,c(3,4,5,6)])
+europeCoordsUniq$region <- reorder(europeCoordsUniq$region, europeCoordsUniq$value, sum)
+europeCoordsUniq$land <- as.numeric(as.character(europeCoordsUniq$land))
+
+pl4 <- ggplot() + 
+#  geom_point(data = europeCoordsUniq, 
+#                           aes(x = land, y = value, label = region))  + 
+  geom_text(data = europeCoordsUniq, 
+                           aes(x = land, y = value, label = region))  + 
+  coord_trans("sqrt","sqrt")
+
+pl4
+
+
+ggsave(filename = "appleMap.pdf", pl1, width = 7, height = 7)
+ggsave(filename = "appleBar.pdf", pl3, width = 7, height = 7)
+ggsave(filename = "appleText.pdf", pl4, width = 7, height = 7)
+
+
 pl2 <- ggplot() + geom_polygon(data = europeCoords, 
                                aes(x = long, y = lat, group = factor(region), fill = value/as.numeric(land)),
                                colour = "black", size = 0.1) +
@@ -89,5 +118,6 @@ pl2 <- ggplot() + geom_polygon(data = europeCoords,
 
 pl2
 
-ggsave(filename = "appleMap.pdf", pl1, width = 7, height = 7)
+
+
 
