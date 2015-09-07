@@ -12,6 +12,16 @@ colnames(rates) <- c("country","Birth_rate","Death_rate", "Population", "Populat
 ratesMerged <- merge(rates, countrycode_data[,c("country.name", "continent")],
       by.x = "country", by.y = "country.name")
 
+ratesMergedEurope <- ratesMerged[ratesMerged$continent == "Europe",]
+
+pl <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) +
+  geom_point() + 
+  geom_text(vjust=-.5, size=4) + 
+  coord_fixed(xlim = c(6,16), ylim = c(6,16)) +
+  theme_bw() 
+
+ggsave(pl, filename = "europaBirthDeath.pdf", width = 7, height = 7)
+
 ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent)) +
   geom_density2d(h=c(10,10), color="grey") +
   geom_point() + coord_fixed() +
