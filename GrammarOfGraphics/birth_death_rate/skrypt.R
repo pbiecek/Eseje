@@ -4,10 +4,28 @@
 library(openxlsx)
 
 rates <- read.xlsx("data.xlsx",1)[-1,]
-rates[,2] <- as.numeric(as.character(rates[,2]))
-rates[,3] <- as.numeric(as.character(rates[,3]))
+for (i in 2:7)
+  rates[,i] <- as.numeric(as.character(rates[,i]))
 
-colnames(rates) <- c("country","Birth_rate","Death_rate")
+colnames(rates) <- c("country","Birth_rate","Death_rate", "Population", "Population.under.15", "Population.over.60","Population.med.age", "Population.urban")
+
+ratesMerged <- merge(rates, countrycode_data[,c("country.name", "continent")],
+      by.x = "country", by.y = "country.name")
+
+ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent)) +
+  geom_density2d(h=c(10,10), color="grey") +
+  geom_point() + coord_fixed() +
+  geom_abline(xintercept=0,slope=1) + 
+  geom_point(data=rates[136,], color="red", size=6) + 
+  theme_bw() 
+
+ggplot(ratesMerged, aes(x=Population.under.15, y=Population.over.60, color=continent)) +
+  geom_density2d(h=c(10,10), color="grey") +
+  geom_point() + coord_fixed() +
+  geom_abline(xintercept=0,slope=1) + 
+  geom_point(data=rates[136,], color="red", size=6) + 
+  theme_bw() 
+
 
 library(ggplot2)
 library(MASS)
