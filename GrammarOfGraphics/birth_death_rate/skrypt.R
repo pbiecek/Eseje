@@ -12,6 +12,8 @@ colnames(rates) <- c("country","Birth_rate","Death_rate", "Population", "Populat
 ratesMerged <- merge(rates, countrycode_data[,c("country.name", "continent")],
       by.x = "country", by.y = "country.name")
 
+ratesSmall <- ratesMerged[,c(1,2,3,4,9)]
+
 ratesMergedEurope <- ratesMerged[ratesMerged$continent == "Europe",]
 
 pl <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) +
@@ -20,7 +22,35 @@ pl <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) 
   coord_fixed(xlim = c(6,16), ylim = c(6,16)) +
   theme_bw() 
 
-ggsave(pl, filename = "europaBirthDeath.pdf", width = 7, height = 7)
+ggsave(pl, filename = "europaBirthDeath.pdf", width = 9, height = 5)
+
+plI <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate)) +
+  geom_point() + coord_fixed() +
+  theme_bw() 
+
+ggsave(plI, filename = "europaBirthDeathI.pdf", width = 9, height = 5)
+
+plII <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent, shape=continent)) +
+  geom_point() + coord_fixed() +
+  theme_bw() 
+
+ggsave(plII, filename = "europaBirthDeathII.pdf", width = 9, height = 5)
+
+ratesMerged$PopulationCat <- cut(ratesMerged$Population, c(1,10^3,10^4,10^5, 10^6, 10^7), labels = c("< 1M", "< 10M","< 100 M", "< 1 B", "> 1 B"))
+plIII <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent, 
+                                 shape=PopulationCat, size=PopulationCat)) +
+  geom_point() + coord_fixed() +
+  theme_bw() 
+
+ggsave(plIII, filename = "europaBirthDeathIII.pdf", width = 9, height = 5)
+
+
+
+
+
+
+
+
 
 ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent)) +
   geom_density2d(h=c(10,10), color="grey") +
