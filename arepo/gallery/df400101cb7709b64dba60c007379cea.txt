@@ -1,0 +1,14 @@
+                  country Birth_rate Death_rate Population Population.under.15 Population.over.60
+2                 Albania       12.9        9.4       3173                20.6               15.3
+4                 Andorra        8.9        8.4         79                15.3               23.1
+10                Austria        9.5        9.0       8495                14.5               23.7
+16                Belarus       11.0       13.5       9357                15.3               19.5
+17                Belgium       11.7        9.9      11104                17.0               24.0
+21 Bosnia and Herzegovina        9.0        9.4       3829                15.8               20.9
+   Population.med.age Population.urban continent
+2                32.9               55    Europe
+4                  NA               86    Europe
+10               42.7               66    Europe
+16               39.3               76    Europe
+17               41.6               98    Europe
+21               39.5               40    Europe
