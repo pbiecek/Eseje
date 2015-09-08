@@ -154,3 +154,9 @@ worldmapG
 
 ggsave(plot = worldmap, filename="rates_map3.png", width = 15, height = 10)
 ggsave(plot = worldmapG, filename="rates_mapG3.png", width = 15, height = 10)
+
+
+library(archivist)
+setLocalRepo("~/GitHub/Eseje/arepo/")
+# df400101cb7709b64dba60c007379cea
+saveToRepo(ratesMergedEurope)
