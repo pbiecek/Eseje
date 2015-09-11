@@ -22,13 +22,40 @@ pl <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) 
   coord_fixed(xlim = c(6,16), ylim = c(6,16)) +
   theme_bw() 
 
+plP <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) +
+  geom_point() + 
+  coord_fixed(xlim = c(6,16), ylim = c(6,16)) +
+  theme_bw() 
+
+plT <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) +
+  geom_text(vjust=-.5, size=4) + 
+  coord_fixed(xlim = c(6,16), ylim = c(6,16)) +
+  theme_bw() 
+
 ggsave(pl, filename = "europaBirthDeath.pdf", width = 9, height = 5)
+ggsave(plP, filename = "europaBirthDeathPunkty.pdf", width = 9, height = 5)
+ggsave(plT, filename = "europaBirthDeathText.pdf", width = 9, height = 5)
 
 plI <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate)) +
   geom_point() + coord_fixed() +
   theme_bw() 
 
 ggsave(plI, filename = "europaBirthDeathI.pdf", width = 9, height = 5)
+
+plCont <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate)) +
+  coord_fixed() +
+  geom_density2d(h=c(10,10), color="grey") +
+  theme_bw() 
+
+ggsave(plCont, filename = "europaBirthDeathCont.pdf", width = 9, height = 5)
+
+plC <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate)) +
+  geom_point() + coord_fixed() +
+  geom_density2d(h=c(10,10), color="grey") +
+  theme_bw() 
+
+ggsave(plC, filename = "europaBirthDeathC.pdf", width = 9, height = 5)
+
 
 plII <- ggplot(ratesMerged, aes(x=Birth_rate, y=Death_rate, color=continent, shape=continent)) +
   geom_point() + coord_fixed() +
@@ -70,6 +97,20 @@ ggplot(ratesMerged, aes(x=Population.under.15, y=Population.over.60, color=conti
 library(ggplot2)
 library(MASS)
 
+
+ratesRug <- ggplot(rates, aes(x=Birth_rate, y=Death_rate)) +
+  geom_rug() + coord_fixed() +
+  theme_bw() 
+
+ratesBoth <- ggplot(rates, aes(x=Birth_rate, y=Death_rate)) +
+  geom_rug() + coord_fixed() +
+  geom_point() + 
+  theme_bw() 
+
+ggsave(plot = ratesRug, filename="ratesRug.pdf", width = 15, height = 10)
+ggsave(plot = ratesBoth, filename="ratesBoth.pdf", width = 15, height = 10)
+
+
 pl <- ggplot(rates, aes(x=Birth_rate, y=Death_rate)) +
   geom_density2d(h=c(10,10), color="grey") +
   geom_point() + coord_fixed() +
@@ -81,6 +122,7 @@ pl
 
 ggsave(plot = pl, filename="rates.png", width = 15, height = 10)
 
+ggsave(plot = pl, filename="rates.pdf", width = 15, height = 10)
 
 #
 # drugi wykres ze współrzędnymi
