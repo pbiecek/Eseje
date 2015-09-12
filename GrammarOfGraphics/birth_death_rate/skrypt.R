@@ -2,6 +2,7 @@
 # http://apps.who.int/gho/data/view.main.CBDR2040
 
 library(openxlsx)
+library(SmarterPoland)
 
 rates <- read.xlsx("data.xlsx",1)[-1,]
 for (i in 2:7)
@@ -9,12 +10,74 @@ for (i in 2:7)
 
 colnames(rates) <- c("country","Birth_rate","Death_rate", "Population", "Population.under.15", "Population.over.60","Population.med.age", "Population.urban")
 
+
+# density
+ggplot(ratesSmall, aes(x=Birth_rate)) +
+  stat_density() + 
+  geom_rug() + 
+  theme_bw() 
+
+
+ggplot(ratesSmall, aes(x=Birth_rate)) +
+  geom_histogram(binwidth=1) + 
+  geom_rug() + 
+  theme_bw() 
+
+
+ggplot(ratesSmall, aes(x=continent, y=Birth_rate)) +
+  geom_boxplot() + 
+  geom_rug(sides = "lr") + 
+  theme_bw() 
+
+ggplot(ratesSmall, aes(x=continent, y=Birth_rate)) +
+  geom_violin() + 
+  geom_rug(sides = "lr") + 
+  theme_bw() 
+
+
+ggplot(ratesSmall, aes(x=continent, y=Birth_rate)) +
+  stat_summary(fun.y = mean, fun.ymin = min, fun.ymax = max,
+               colour = "red") + 
+  geom_rug(sides = "lr") + 
+  theme_bw() 
+
+ggplot(ratesSmall, aes(x=continent, y=Birth_rate)) +
+  stat_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+               colour = "red", width = 0.3) + 
+  geom_rug(sides = "lr") + 
+  theme_bw() 
+
+
+pp1 <- ggplot(ratesSmall, aes(x=continent, y=Birth_rate)) +
+  geom_violin(fill="grey") + 
+  stat_summary(fun.data = "median_hilow", geom = "crossbar",
+               colour = "red", width = 0.5, conf.int=0.5) + 
+  geom_rug(sides = "r") + 
+  geom_point(position= position_jitter(width = .05, height = 0), size=2) + 
+  theme_bw() 
+
+ggsave(pp1, filename = "ppP5.pdf", width = 8, height = 8, useDingbats=FALSE)
+
+
+ggsave(pp1, filename = "pp1.pdf", width = 6, height = 6, useDingbats=FALSE)
+
+
+countries <- ratesSmall
+colnames(countries) <- c("country", "birth.rate", "death.rate", "population", "continent")
+  
+save(countries, file="countries.rda")
+  
+
+library(countrycode)
+
+
 ratesMerged <- merge(rates, countrycode_data[,c("country.name", "continent")],
       by.x = "country", by.y = "country.name")
 
 ratesSmall <- ratesMerged[,c(1,2,3,4,9)]
 
 ratesMergedEurope <- ratesMerged[ratesMerged$continent == "Europe",]
+
 
 pl <- ggplot(ratesMergedEurope, aes(x=Birth_rate, y=Death_rate, label=country)) +
   geom_point() + 
@@ -122,7 +185,7 @@ pl
 
 ggsave(plot = pl, filename="rates.png", width = 15, height = 10)
 
-ggsave(plot = pl, filename="rates.pdf", width = 15, height = 10)
+ggsave(plot = pl, filename="rates.pdf", width = 15, height = 10, useDingbats=FALSE)
 
 #
 # drugi wykres ze współrzędnymi
@@ -202,3 +265,12 @@ library(archivist)
 setLocalRepo("~/GitHub/Eseje/arepo/")
 # df400101cb7709b64dba60c007379cea
 saveToRepo(ratesMergedEurope)
+
+
+tmp <- aread("pbiecek/Eseje/arepo/df400101cb7709b64dba60c007379cea")
+tmp2 <- tmp[,c(1:4,9)]
+rownames(tmp2) <- tmp2[,1]
+
+library(xtable)
+xtable(tmp2[,-1])
+
