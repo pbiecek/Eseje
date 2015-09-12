@@ -274,3 +274,46 @@ rownames(tmp2) <- tmp2[,1]
 library(xtable)
 xtable(tmp2[,-1])
 
+
+
+
+
+#
+# Inna opcja
+#
+countries$pop <- cut(countries$population, c(0,10000, 100000, 100000000), labels = c("< 10 M", "> 100 M", "> 10 M"))
+
+ggplot(countries, aes(x=continent, y=birth.rate)) +
+  geom_boxplot(fill="lightgrey", coef=3) + 
+  geom_point(aes(size=pop, color=pop), 
+             position=position_jitter(width = .25, height = 0),
+             shape=15) + 
+  scale_size_manual(values=c(4,6,8)) + 
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "white", colour = NA))
+
+
+ggplot(countries, aes(x=continent, y=birth.rate)) +
+  geom_violin(fill="lightgrey", scale="width") + 
+  geom_point(aes(size=pop, color=pop), 
+             position=position_jitter(width = .25, height = 0),
+             shape=15) + 
+  scale_size_manual(values=c(4,6,8)) + 
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "white", colour = NA))
+
+df <- data.frame(x = unique(countries$pop))
+countries2 <- merge(df, countries)
+colnames(countries2)[7] = "y"
+colnames(countries2)[1] = "pop"
+
+ggplot(countries, aes(x=continent, y=birth.rate)) +
+  geom_violin(data=countries2, aes(x=continent, fill=pop), alpha=0.2,scale="width") + 
+  geom_point(aes(size=pop, color=pop), 
+             position=position_jitter(width = .25, height = 0),
+             shape=15) + 
+  scale_size_manual(values=c(4,6,8)) + 
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "white", colour = NA)) +
+  facet_wrap(~pop)
+
