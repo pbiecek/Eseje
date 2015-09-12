@@ -307,13 +307,16 @@ countries2 <- merge(df, countries)
 colnames(countries2)[7] = "y"
 colnames(countries2)[1] = "pop"
 
-ggplot(countries, aes(x=continent, y=birth.rate)) +
+pl <- ggplot(countries, aes(x=continent, y=birth.rate)) +
   geom_violin(data=countries2, aes(x=continent, fill=pop), alpha=0.2,scale="width") + 
   geom_point(aes(size=pop, color=pop), 
              position=position_jitter(width = .25, height = 0),
              shape=15) + 
   scale_size_manual(values=c(4,6,8)) + 
+  coord_flip() + 
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "white", colour = NA)) +
   facet_wrap(~pop)
+
+ggsave(pl, filename = "vioploty.pdf",  width = 8, height = 8, useDingbats=FALSE)
 
