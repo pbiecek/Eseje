@@ -316,7 +316,7 @@ pl <- ggplot(countries, aes(x=continent, y=birth.rate)) +
   coord_flip() + 
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "white", colour = NA)) +
-  facet_wrap(~pop)
+  facet_grid(pop~.)
 
 ggsave(pl, filename = "vioploty.pdf",  width = 8, height = 8, useDingbats=FALSE)
 
