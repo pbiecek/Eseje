@@ -33,3 +33,11 @@ plBH <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 ggsave(plBH, filename = "geomBinHex.pdf", width = 7, height = 7, useDingbats=FALSE)
 
 
+# geomRug
+plR <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_rug() + 
+  theme_bw()
+
+ggsave(plR, filename = "geomRug.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
