@@ -25,3 +25,11 @@ ggsave(plC, filename = "geomCrossbar.pdf", width = 7, height = 7, useDingbats=FA
 
 
 
+# stat_binhex
+plBH <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  stat_binhex(bins = 9) + scale_fill_gradient(low = "white", high = "black") + 
+  theme_bw()
+
+ggsave(plBH, filename = "geomBinHex.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
