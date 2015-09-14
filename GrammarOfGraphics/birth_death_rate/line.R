@@ -23,3 +23,11 @@ plL <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 ggsave(plL, filename = "geomLine.pdf", width = 7, height = 7, useDingbats=FALSE)
 
 
+
+# smooth
+plS <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_smooth() +
+  theme_bw()
+
+ggsave(plS, filename = "geomSmooth.pdf", width = 7, height = 7, useDingbats=FALSE)
+
