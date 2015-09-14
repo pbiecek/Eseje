@@ -18,3 +18,13 @@ plB <- ggplot(continents, aes(x = continent, y = birth.rate)) +
 
 ggsave(plB, filename = "geomBar.pdf", width = 7, height = 7, useDingbats=FALSE)
 
+
+
+
+# rect
+plR <- ggplot(continents, aes(xmin = death.rate, ymin = birth.rate, xmax = death.rate+1, ymax = birth.rate+1)) +
+  geom_rect() +
+  theme_bw()
+
+ggsave(plR, filename = "geomRect.pdf", width = 7, height = 7, useDingbats=FALSE)
+
