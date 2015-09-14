@@ -16,10 +16,18 @@ ggsave(plD, filename = "geomDensity.pdf", width = 7, height = 7, useDingbats=FAL
 
 # vioplot
 plV <- ggplot(countries, aes(x = continent, y = birth.rate)) +
-  geom_violin(fill="grey") +
+  geom_violin(fill="black") +
   theme_bw()
 
 ggsave(plV, filename = "geomViolin.pdf", width = 7, height = 7, useDingbats=FALSE)
 
+
+
+# ribbon
+plR <- ggplot(countries[order(countries$birth.rate),], aes(x = birth.rate, ymin = 0, ymax = death.rate)) +
+  geom_ribbon(fill="black") +
+  theme_bw()
+
+ggsave(plR, filename = "geomRibbon.pdf", width = 7, height = 7, useDingbats=FALSE)
 
 
