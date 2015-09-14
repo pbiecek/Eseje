@@ -16,7 +16,7 @@ ggsave(plD, filename = "geomDensity.pdf", width = 7, height = 7, useDingbats=FAL
 
 # vioplot
 plV <- ggplot(countries, aes(x = continent, y = birth.rate)) +
-  geom_violin(alpha=0.5) +
+  geom_violin(fill="grey") +
   theme_bw()
 
 ggsave(plV, filename = "geomViolin.pdf", width = 7, height = 7, useDingbats=FALSE)
