@@ -12,7 +12,8 @@ df <- do.call(rbind, lata)
 
 
 pl <- ggplot(df, aes(sredniaP)) +
-  geom_histogram(binwidth=1) + facet_wrap(~rok)
+  geom_histogram(binwidth=1) + facet_wrap(~rok) +
+  xlab("Liczba punktów na maturze") + ggtitle("Wyniki matur z j. polskiego poziom podstawowy")
 
 pl 
 
