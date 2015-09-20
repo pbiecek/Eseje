@@ -6,7 +6,9 @@ lata <- lapply(c("matura2010.rda",  "matura2011.rda",
        function(x) {
          load(x)
          data.frame(sredniaP=rowSums(maturaPolski[,5:ncol(maturaPolski)], na.rm=TRUE), 
-                           obs=maturaPolski[,"rok"])
+                    obs=maturaPolski[,"rok"])
+#         data.frame(sredniaP=rowSums(maturaMatematyka[,5:ncol(maturaMatematyka)], na.rm=TRUE), 
+#                    obs=maturaMatematyka[,"rok"])
        })
 df <- do.call(rbind, lata)
 
@@ -20,12 +22,13 @@ pl
 ggsave(pl, file="gestoscPolski.pdf", width = 8, height = 8)
 
 
-
-pl <- ggplot(df, aes(sredniaP/74, colour=factor(rok))) +
-  stat_ecdf() + scale_color_brewer(type="qual", palette = 2, name="Rok matury") + 
+maxx <- max(df$sredniaP)
+pl <- ggplot(df, aes(sredniaP/maxx, colour=factor(rok))) +
+  stat_ecdf(size=2) + scale_color_brewer(type="qual", palette = 3, name="Rok matury") + 
   theme_bw() + scale_y_continuous(label=percent, name="Procent osób o wyniku gorszym") +
   scale_x_continuous(label=percent, name="Procent maksymalnej liczby punktów", limits=c(0,1)) +
-  ggtitle("Matury z j. polskiego poziom podstawowy") 
+  ggtitle("Matury z j. polskiego poziom podstawowy") +
+  coord_cartesian(ylim=c(0,0.2), xlim=c(0,0.5))
 
 pl 
 
