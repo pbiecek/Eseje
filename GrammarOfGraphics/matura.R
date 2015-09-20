@@ -17,7 +17,7 @@ for (i in 2010:2015) {
   maturaMatematyka <- collect(pobierz_wyniki_egzaminu(src, rodzajEgzaminu = "matura", 
                                           czescEgzaminu = "matematyka podstawowa", i, TRUE))
   save(maturaPolski, maturaMatematyka, file=paste0("matura",i,".rda"))
-  maturaFALSE[[i - 2009]] <- list(maturaPolski, maturaMatematyka)
+  matura[[i - 2009]] <- list(maturaPolski, maturaMatematyka)
 }
 
 
