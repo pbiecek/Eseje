@@ -28,4 +28,6 @@ pl <- ggplot(df, aes(sredniaP, fill=przedmiot)) +
 # 62400e7e6a0b300dd17c0fb29e3655ab
 pl 
 
+archivist::aread("pbiecek/graphGallery/62400e7e6a0b300dd17c0fb29e3655ab")
+
 ggsave(pl, file="calaMacierz.pdf", width = 8, height = 10)

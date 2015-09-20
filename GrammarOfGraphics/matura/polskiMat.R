@@ -1,4 +1,4 @@
-load("~/Dropbox/_Ksiazki_/_jakPokazywacDane_/eseje/matura/matura2011.rda")
+load("~/Dropbox/_Ksiazki_/_jakPokazywacDane_/eseje/matura/matura2015.rda")
 
 dfP <- data.frame(sredniaP=rowSums(maturaPolski[,5:ncol(maturaPolski)], na.rm=TRUE), 
                   obs=maturaPolski[,"id_obserwacji"])
@@ -11,8 +11,9 @@ tab <- table(matematyka = cut(rank(dfMP$sredniaM)/nrow(dfMP), c(0,0.25,0.5,0.75,
 
 pl <- ggplotit:::ggplotit.table(tab, "div") + 
   ylab("") + theme(legend.position="top") +
-  ggtitle("Wyniki matura 2011")
+  ggtitle("Wyniki matura 2015")
 
 pl 
 
-ggsave(pl, file="mozaika2011.pdf", width = 8, height = 8)
+# a2c0d34c2ff4d1752e838ed057d21741
+ggsave(pl, file="mozaika2015.pdf", width = 8, height = 8)
