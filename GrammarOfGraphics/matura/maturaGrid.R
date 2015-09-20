@@ -25,6 +25,7 @@ pl <- ggplot(df, aes(sredniaP, fill=przedmiot)) +
   scale_fill_manual(values=c("red3","blue3")) +
   ll + ylab("")
 
+# 62400e7e6a0b300dd17c0fb29e3655ab
 pl 
 
 ggsave(pl, file="calaMacierz.pdf", width = 8, height = 10)
