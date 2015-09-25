@@ -31,3 +31,16 @@ pl
 archivist::aread("pbiecek/graphGallery/62400e7e6a0b300dd17c0fb29e3655ab")
 
 ggsave(pl, file="calaMacierz.pdf", width = 8, height = 10)
+
+
+
+
+#
+# Ze zmienną matura
+#
+
+ggplot(matura, aes(punkty, fill=przedmiot)) +
+  geom_histogram(binwidth=1, color="white", size=0.1) + facet_grid(rok~przedmiot, scales = "free") +
+  xlab("Liczba punktów na maturze") + ggtitle("Wyniki matur poziom podstawowy") +
+  scale_fill_manual(values=c("red3","blue3")) +
+  ll + ylab("")
