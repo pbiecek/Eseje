@@ -40,7 +40,8 @@ ggsave(pl, file="calaMacierz.pdf", width = 8, height = 10)
 #
 
 ggplot(matura, aes(punkty, fill=przedmiot)) +
-  geom_histogram(binwidth=1, color="white", size=0.1) + facet_grid(rok~przedmiot, scales = "free") +
+  geom_histogram(binwidth=1, color="white", size=0.1) + facet_grid(rok~przedmiot, scales = "free_x") +
   xlab("Liczba punktów na maturze") + ggtitle("Wyniki matur poziom podstawowy") +
   scale_fill_manual(values=c("red3","blue3")) +
   ll + ylab("")
+
