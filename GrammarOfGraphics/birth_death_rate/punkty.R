@@ -33,4 +33,35 @@ ggsave(plJ, filename = "geomJitter.pdf", width = 7, height = 7, useDingbats=FALS
 
 
 
+# różne mapownia
+
+plP <- ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, shape=continent), size=4) +
+  theme_bw() +
+  scale_shape_manual(values=c("F","A","S","E","O")) +
+  theme(legend.position=c(0.9,0.17))
+plP
+ggsave(plP, filename = "geomPointShape.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
+plC <- ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, color=continent), size=4, shape=19) +
+  theme_bw() + scale_color_brewer(type = "qual", palette=6)
+plC
+ggsave(plC, filename = "geomPointColor.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
+
+library(scales)
+plS <- ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, size=population)) +
+  scale_size_continuous(trans="sqrt", label=comma, limits=c(0,1500000)) +
+  theme_bw() + theme(legend.position="none")
+
+ggsave(plS, filename = "geomPointSize.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
+
+
+
 
