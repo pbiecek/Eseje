@@ -9,15 +9,15 @@ head(countries)
 # density
 plD <- ggplot(countries, aes(x = birth.rate, fill = continent)) +
   geom_density(alpha=0.5) +
-  theme_bw()
+  theme_bw() + theme(legend.position=c(0.85,0.85))
 
 ggsave(plD, filename = "geomDensity.pdf", width = 7, height = 7, useDingbats=FALSE)
 
 
 # vioplot
-plV <- ggplot(countries, aes(x = continent, y = birth.rate)) +
-  geom_violin(fill="black") +
-  theme_bw()
+plV <- ggplot(countries, aes(x = continent, y = birth.rate, fill=continent)) +
+  geom_violin() +
+  theme_bw() + theme(legend.position="none")
 
 ggsave(plV, filename = "geomViolin.pdf", width = 7, height = 7, useDingbats=FALSE)
 
