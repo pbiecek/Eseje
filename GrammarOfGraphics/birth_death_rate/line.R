@@ -34,6 +34,37 @@ ggsave(plS, filename = "geomSmooth.pdf", width = 7, height = 7, useDingbats=FALS
 
 
 
+# arrow
+library(grid)
+countries$country <- reorder(countries$country, countries$birth.rate, mean)
+ar <- ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                  y = birth.rate, yend=death.rate),
+               arrow = arrow(length = unit(0.1,"cm"))) +
+  theme_bw() + coord_flip() + theme(legend.position="none") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") 
+
+ggsave(ar, filename = "geomLine1.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
+
+ar2 <- ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                                                     y = birth.rate, yend=death.rate,
+                                                                     color=death.rate > birth.rate),
+               arrow = arrow(length = unit(0.1,"cm"))) +
+  theme_bw() + coord_flip() + theme(legend.position="top") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") +
+  scale_color_manual(values = c("green3", "red3"), labels=c("More births than deaths","More deaths than births"), name="")
+
+ggsave(ar2, filename = "geomLine2.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
+
+
+
+
+
 
 # smooth + kolor
 plS <- ggplot() +
