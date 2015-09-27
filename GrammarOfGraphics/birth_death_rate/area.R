@@ -24,9 +24,15 @@ ggsave(plV, filename = "geomViolin.pdf", width = 7, height = 7, useDingbats=FALS
 
 
 # ribbon
-plR <- ggplot(countries[order(countries$birth.rate),], aes(x = birth.rate, ymin = 0, ymax = death.rate)) +
-  geom_ribbon(fill="black") +
-  theme_bw()
+ndf <- countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = weighted.mean(birth.rate, population, na.rm=TRUE),
+            death.rate = weighted.mean(death.rate, population, na.rm=TRUE))
+
+plR <- ggplot() + 
+  geom_ribbon(data=ndf, aes(x=continent, ymax=birth.rate, y=birth.rate, ymin=0, group=1), fill="green3") +
+  geom_ribbon(data=ndf, aes(x=continent, ymax=death.rate, y=death.rate, ymin=0, group=1), fill="red3") +
+  theme_bw() + xlab("") + ylab("birth.rate / death.rate")
 
 ggsave(plR, filename = "geomRibbon.pdf", width = 7, height = 7, useDingbats=FALSE)
 
