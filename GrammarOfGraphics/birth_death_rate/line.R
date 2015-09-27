@@ -31,3 +31,20 @@ plS <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 
 ggsave(plS, filename = "geomSmooth.pdf", width = 7, height = 7, useDingbats=FALSE)
 
+
+
+
+
+# smooth + kolor
+plS <- ggplot() +
+  geom_smooth(data=countries, aes(x = birth.rate, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
+  theme_bw()
+plS
+
+
+plS <- ggplot() +
+  geom_smooth(data=countries, aes(x = population, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
+  geom_point(data=countries, aes(x = population, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
+  scale_x_log10() +
+  theme_bw()
+plS
