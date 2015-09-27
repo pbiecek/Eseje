@@ -48,3 +48,13 @@ plS <- ggplot() +
   scale_x_log10() +
   theme_bw()
 plS
+
+
+
+ggplot() +
+  geom_smooth(data=maturaExam, aes(x=podstawowy.matematyka,
+                             y=podstawowy.j.polski,
+                             color=rok), se=FALSE,
+              method="loess", span=1)
+
+
