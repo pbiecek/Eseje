@@ -87,29 +87,28 @@ ggsave(ar4, filename = "geomLine4.pdf", width = 7, height = 7, useDingbats=FALSE
 
 
 
+# error bary
 
+conts <- countries %>% 
+  group_by(continent) %>%
+  summarise(bmin = min(birth.rate, na.rm=TRUE),
+            bmax = max(birth.rate, na.rm=TRUE),
+            bmea = weighted.mean(birth.rate, w = population, na.rm=TRUE),
+            dmin = min(death.rate, na.rm=TRUE),
+            dmax = max(death.rate, na.rm=TRUE),
+            dmea = weighted.mean(death.rate, w = population, na.rm=TRUE),
+            population = sum(population, na.rm=TRUE)
+  )
 
+plError <- ggplot(conts, aes(x = bmea, y = dmea, 
+                  ymin = dmin, ymax = dmax,
+                  xmin = bmin, xmax = bmax,
+                  color=continent))+
+ geom_point() + 
+  geom_errorbar(width=0.5) +
+  geom_errorbarh(width=0.5) + 
+  theme_bw() + xlab("birth.rate") + ylab("death.rate") +
+  theme(legend.position="none")
 
-# smooth + kolor
-plS <- ggplot() +
-  geom_smooth(data=countries, aes(x = birth.rate, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
-  theme_bw()
-plS
-
-
-plS <- ggplot() +
-  geom_smooth(data=countries, aes(x = population, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
-  geom_point(data=countries, aes(x = population, y = death.rate, color=continent), method="loess", span=1, se=FALSE, size=3) +
-  scale_x_log10() +
-  theme_bw()
-plS
-
-
-
-ggplot() +
-  geom_smooth(data=maturaExam, aes(x=podstawowy.matematyka,
-                             y=podstawowy.j.polski,
-                             color=rok), se=FALSE,
-              method="loess", span=1)
-
+ggsave(plError, filename = "geomError.pdf", width = 7, height = 7, useDingbats=FALSE)
 
