@@ -46,7 +46,8 @@ ggsave(plP, filename = "geomPointShape.pdf", width = 7, height = 7, useDingbats=
 
 plC <- ggplot() +
   geom_point(data=countries, aes(x = birth.rate, y =death.rate, color=continent), size=4, shape=19) +
-  theme_bw() + scale_color_brewer(type = "qual", palette=6)
+  theme_bw() + scale_color_brewer(type = "qual", palette=6) +
+  theme(legend.position=c(0.9,0.17))
 plC
 ggsave(plC, filename = "geomPointColor.pdf", width = 7, height = 7, useDingbats=FALSE)
 
