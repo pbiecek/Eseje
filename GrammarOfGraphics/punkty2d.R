@@ -28,6 +28,18 @@ pl4 <- ggplot(maturaExam[maturaExam$rok == 2015,],
   xlab("Punkty, matura z j. polskiego, poziom podstawowy") +
   ylab("Punkty, matura z matematyki, poziom podstawowy") 
 
+maturaExam2 <- maturaExam[maturaExam$rok == 2015,] %>%
+  group_by(podstawowy.matematyka) %>%
+  summarise(podstawowy.j.polski=median(podstawowy.j.polski))
+
+ggplot(maturaExam[maturaExam$rok == 2015,], 
+       aes(factor(podstawowy.matematyka), podstawowy.j.polski)) + 
+  geom_boxplot(fill="red3",color="red3", coef=5) + 
+  geom_jitter(size=1, alpha=0.03) + theme_bw() + ylim(0,74) +
+  geom_line(data=maturaExam2, aes(factor(podstawowy.matematyka), podstawowy.j.polski, group=1), color="navyblue2") +
+  xlab("Punkty, matura z j. polskiego, poziom podstawowy") +
+  ylab("Punkty, matura z matematyki, poziom podstawowy") 
+
 
 ggsave(pl1, filename = "geomMatura1.png", width = 7, height = 7)
 ggsave(pl2, filename = "geomMatura2.png", width = 7, height = 7)
