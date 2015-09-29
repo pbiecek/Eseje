@@ -57,3 +57,13 @@ plRR3 <- ggplot() +
 
 ggsave(plRR3, filename = "geomRect.pdf", width = 7, height = 7, useDingbats=FALSE)
 
+
+# liczba krajów na kontynent
+
+plB <- ggplot(countries, aes(x = continent, fill = continent)) +
+  geom_bar() +
+  theme_bw() + theme(legend.position="none") + xlab("") + ylab("Liczba krajów")
+
+ggsave(plB, filename = "geomCountBar.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
