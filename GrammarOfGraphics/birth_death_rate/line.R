@@ -33,6 +33,16 @@ plS <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 ggsave(plS, filename = "geomSmooth.pdf", width = 7, height = 7, useDingbats=FALSE)
 
 
+plS2 <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_point(color="black", alpha=0.3) +
+  geom_smooth(se=FALSE, size=2, color="red4", method="lm", formula = y~poly(x,1)) +
+  geom_smooth(se=FALSE, size=2, color="red3", method="lm", formula = y~poly(x,2)) +
+  geom_smooth(se=FALSE, size=2, color="red1", span=0.5) +
+  theme_bw()
+
+ggsave(plS2, filename = "geomSmooth2.pdf", width = 7, height = 7, useDingbats=FALSE)
+
+
 
 
 # arrow
