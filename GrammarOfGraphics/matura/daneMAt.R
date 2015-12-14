@@ -15,6 +15,15 @@ lata <- lapply(c("matura2010.rda",  "matura2011.rda",
                })
 df <- do.call(rbind, lata)
 
+df[,1:3] %>%
+  group_by(rok, przedmiot, sredniaP) %>%
+  summarise(n=n()) %>%
+  group_by(rok, przedmiot) %>%
+  mutate(n=round(100*n/sum(n),3)) %>%
+  spread(rok, n) -> tabi
+  
+library(xtable)
+xtable(tabi)
 
 library(dplyr)
 library(tidyr)
