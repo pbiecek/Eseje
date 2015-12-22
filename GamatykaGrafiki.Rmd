@@ -3,7 +3,8 @@ title: "Skrypty reprodukujące wykresy z rozdziału ,,Gramatyka języka wizualiz
 author: "Przemyslaw Biecek"
 date: "22 December 2015"
 output: 
-  html_document
+  html_document:
+    toc: TRUE
 ---
 
 # Przygotowanie
