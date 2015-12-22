@@ -5,6 +5,30 @@ date: "22 December 2015"
 output: html_document
 ---
 
+# Przygotowanie
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(archivist)
+
+# store everything in the archivist repo
+setLocalRepo("arepo")
+
+q3 <- function(x) {
+  a <- quantile(x, c(0.25,0.5,0.75))
+  names(a) <- c("ymin", "y", "ymax")
+  a
+}
+
+print.ggplot <- function(x, ...) {
+  hash <- saveToRepo(x)
+  cat("Load: [archivist::aread('pbiecek/Eseje/arepo/",hash,"')](https://github.com/pbiecek/Eseje/raw/master/arepo/gallery/",hash,".rda)\n", sep="")
+  ggplot2:::print.ggplot(x, ...)
+}
+
+```
+
 # Dane
 
 W tym skrypcie wykorzystujemy pakiet `SmarterPoland` i zbiory danych
@@ -17,15 +41,7 @@ head(maturaExam)
 
 # Warstwy
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6}
-library(ggplot2)
-library(dplyr)
-
-q3 <- function(x) {
-  a <- quantile(x, c(0.25,0.5,0.75))
-  names(a) <- c("ymin", "y", "ymax")
-  a
-}
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
 countriesMin <- countries %>% 
   group_by(continent) %>% 
   filter(birth.rate == min(birth.rate, na.rm=TRUE))
@@ -43,5 +59,37 @@ ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   geom_text(data=countriesMin, vjust=2, color="blue3") + 
   geom_text(data=countriesMax, vjust=-1, color="blue3") + 
   theme_bw() + xlab("") + theme(panel.grid.major.x = element_line(color="white"))
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_density_2d(h=c(10,10), color="grey") +
+  geom_point() + coord_fixed() +
+  geom_abline(intercept=0,slope=1) + 
+  geom_point(data=countries[132,], color="red", size=4) + 
+  theme_bw() 
+
 ```
 
+# Mapowania
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6}
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point() + coord_fixed() +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=continent, shape=continent)) +
+  geom_point() + coord_fixed() +
+  theme_bw() + theme(legend.position="top") 
+
+
+countries$populationCat <- cut(countries$population, 
+                               c(1, 10^3, 10^4, 10^5, 10^6, 10^7), 
+                               labels = c("< 1M", "< 10M","< 100 M", "< 1 B", "> 1 B"))
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=continent, shape=continent,
+                      size=populationCat)) +
+  geom_point() + coord_fixed() +
+  theme_bw() + theme(legend.position="top") 
+
+```
