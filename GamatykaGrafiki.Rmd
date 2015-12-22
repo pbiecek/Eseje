@@ -2,7 +2,8 @@
 title: "Skrypty reprodukujące wykresy z rozdziału ,,Gramatyka języka wizualizacji historii''"
 author: "Przemyslaw Biecek"
 date: "22 December 2015"
-output: html_document
+output: 
+  html_document
 ---
 
 # Przygotowanie
@@ -23,7 +24,7 @@ q3 <- function(x) {
 
 print.ggplot <- function(x, ...) {
   hash <- saveToRepo(x)
-  cat("Load: [archivist::aread('pbiecek/Eseje/arepo/",hash,"')](https://github.com/pbiecek/Eseje/raw/master/arepo/gallery/",hash,".rda)\n", sep="")
+  cat("Load: [`archivist::aread('pbiecek/Eseje/arepo/",hash,"')`](https://github.com/pbiecek/Eseje/raw/master/arepo/gallery/",hash,".rda)\n", sep="")
   ggplot2:::print.ggplot(x, ...)
 }
 
@@ -71,7 +72,7 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 
 # Mapowania
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6}
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point() + coord_fixed() +
   theme_bw() 
