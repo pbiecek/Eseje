@@ -1,0 +1,47 @@
+---
+title: "Skrypty reprodukujące wykresy z rozdziału ,,Gramatyka języka wizualizacji historii''"
+author: "Przemyslaw Biecek"
+date: "22 December 2015"
+output: html_document
+---
+
+# Dane
+
+W tym skrypcie wykorzystujemy pakiet `SmarterPoland` i zbiory danych
+
+```{r, warning=FALSE, message=FALSE}
+library(SmarterPoland)
+head(countries)
+head(maturaExam)
+```
+
+# Warstwy
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6}
+library(ggplot2)
+library(dplyr)
+
+q3 <- function(x) {
+  a <- quantile(x, c(0.25,0.5,0.75))
+  names(a) <- c("ymin", "y", "ymax")
+  a
+}
+countriesMin <- countries %>% 
+  group_by(continent) %>% 
+  filter(birth.rate == min(birth.rate, na.rm=TRUE))
+countriesMax <- countries %>% 
+  group_by(continent) %>% 
+  filter(birth.rate == max(birth.rate, na.rm=TRUE))
+  
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_violin(scale="area", fill="grey", color="white") + 
+  stat_summary(fun.data = "q3", geom = "crossbar",
+               colour = "red", width = 0.4) + 
+  geom_jitter(position=position_jitter(width = .25, height = 0),
+             shape=15) +
+  geom_rug(sides = "l") + 
+  geom_text(data=countriesMin, vjust=2, color="blue3") + 
+  geom_text(data=countriesMax, vjust=-1, color="blue3") + 
+  theme_bw() + xlab("") + theme(panel.grid.major.x = element_line(color="white"))
+```
+
