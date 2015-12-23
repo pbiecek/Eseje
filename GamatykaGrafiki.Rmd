@@ -95,3 +95,45 @@ ggplot(countries, aes(x=birth.rate, y=death.rate,
   theme_bw() + theme(legend.position="top") 
 
 ```
+
+# Formy / Geometrie
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Statystyki
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Modyfikatory położenia
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Układ współrzędnych
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Miary / podziałki / skale
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Panele / oblicza
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
+
+# Dekoracje
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+```
