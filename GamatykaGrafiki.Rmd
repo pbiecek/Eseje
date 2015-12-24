@@ -134,6 +134,39 @@ ggplot() +
   scale_size_continuous(trans="sqrt", label=comma, limits=c(0,1500000)) +
   theme_bw() + theme(legend.position="none")
 
+```
+
+## Obszar
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
+# density
+ggplot(countries, aes(x = birth.rate, fill = continent)) +
+  geom_density(alpha=0.5) +
+  theme_bw() + theme(legend.position=c(0.85,0.85))
+
+# vioplot
+ggplot(countries, aes(x = continent, y = birth.rate, fill=continent)) +
+  geom_violin() +
+  theme_bw() + theme(legend.position="none")
+
+# ribbon
+ndf <- countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = weighted.mean(birth.rate, population, na.rm=TRUE),
+            death.rate = weighted.mean(death.rate, population, na.rm=TRUE))
+
+ggplot() + 
+  geom_ribbon(data=ndf, aes(x=continent, ymax=birth.rate, y=birth.rate, ymin=0, group=1), fill="green3") +
+  geom_ribbon(data=ndf, aes(x=continent, ymax=death.rate, y=death.rate, ymin=0, group=1), fill="red3") +
+  theme_bw() + xlab("") + ylab("birth.rate / death.rate")
+
+```
+
+## Prostokąty
+
+```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+
 
 ```
 
