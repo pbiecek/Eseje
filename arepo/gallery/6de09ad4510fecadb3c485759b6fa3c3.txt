@@ -1,0 +1,10 @@
+Source: local data frame [6 x 3]
+
+  continent    key  value
+      (chr) (fctr)  (dbl)
+1    Africa     q1 28.700
+2  Americas     q1 14.900
+3      Asia     q1 15.275
+4    Europe     q1  9.575
+5   Oceania     q1 16.275
+6    Africa     q2 35.200

@@ -1,0 +1,9 @@
+Source: local data frame [5 x 4]
+
+  continent     q1    q2     q3
+      (chr)  (dbl) (dbl)  (dbl)
+1    Africa 28.700 35.20 38.300
+2  Americas 14.900 17.70 20.300
+3      Asia 15.275 19.80 23.675
+4    Europe  9.575 10.75 11.600
+5   Oceania 16.275 24.55 26.550
