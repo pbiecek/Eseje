@@ -7,9 +7,14 @@ output:
     toc: TRUE
 ---
 
+```{r}
+library(knitr)
+opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FALSE, message=FALSE)
+```
+
 # Przygotowanie
 
-```{r, warning=FALSE, message=FALSE}
+```{r }
 library(ggplot2)
 library(scales)
 library(dplyr)
@@ -36,7 +41,7 @@ print.ggplot <- function(x, ...) {
 
 W tym skrypcie wykorzystujemy pakiet `SmarterPoland` i zbiory danych
 
-```{r, warning=FALSE, message=FALSE}
+```{r }
 library(SmarterPoland)
 head(countries)
 head(maturaExam)
@@ -44,7 +49,7 @@ head(maturaExam)
 
 # Warstwy
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 countriesMin <- countries %>% 
   group_by(continent) %>% 
   filter(birth.rate == min(birth.rate, na.rm=TRUE))
@@ -74,7 +79,7 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 
 # Mapowania
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point() + coord_fixed() +
   theme_bw() 
@@ -101,7 +106,7 @@ ggplot(countries, aes(x=birth.rate, y=death.rate,
 
 ## Punkty
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 # dotplot
 ggplot(countries, aes(x = continent, y = birth.rate)) +
   geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
@@ -138,12 +143,17 @@ ggplot() +
 
 ## Obszar
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 # density
 ggplot(countries, aes(x = birth.rate, fill = continent)) +
   geom_density(alpha=0.5) +
   theme_bw() + theme(legend.position=c(0.85,0.85))
+
+ggplot(countries, aes(x = birth.rate, fill = continent)) +
+  geom_density( position="fill", color=NA) +
+  theme_bw() + theme(legend.position="top")
+
 
 # vioplot
 ggplot(countries, aes(x = continent, y = birth.rate, fill=continent)) +
@@ -165,7 +175,7 @@ ggplot() +
 
 ## Prostokąty
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 continents <- 
   countries %>%
   group_by(continent) %>%
@@ -218,7 +228,7 @@ ggplot(countries, aes(x = continent, fill = continent)) +
 
 ## Linie
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 # line
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   geom_line() +
@@ -299,7 +309,7 @@ ggplot(conts, aes(x = bmea, y = dmea,
 
 ## Inne geometrie
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 # boxplot
 ggplot(countries, aes(x = continent, y = birth.rate)) +
@@ -371,36 +381,36 @@ ggplot(continents, aes(x = birth.rate, y = death.rate, label = continent)) +
 
 # Statystyki
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
 
 # Modyfikatory położenia
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
 
 # Układ współrzędnych
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
 
 # Miary / podziałki / skale
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
 
 # Panele / oblicza
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
 
 # Dekoracje
 
-```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+```{r   }
 
 ```
