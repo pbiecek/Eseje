@@ -11,6 +11,7 @@ output:
 
 ```{r, warning=FALSE, message=FALSE}
 library(ggplot2)
+library(scales)
 library(dplyr)
 library(archivist)
 
@@ -86,7 +87,7 @@ ggplot(countries, aes(x=birth.rate, y=death.rate,
 
 countries$populationCat <- cut(countries$population, 
                                c(1, 10^3, 10^4, 10^5, 10^6, 10^7), 
-                               labels = c("< 1M", "< 10M","< 100 M", "< 1 B", "> 1 B"))
+                               labels = c("< 1M", "< 10M","< 100 M", "< 1 B", "> 1 B"), ordered_result = TRUE)
 
 ggplot(countries, aes(x=birth.rate, y=death.rate, 
                       color=continent, shape=continent,
@@ -98,7 +99,41 @@ ggplot(countries, aes(x=birth.rate, y=death.rate,
 
 # Formy / Geometrie
 
+## Punkty
+
 ```{r, warning=FALSE, message=FALSE, fig.width=6, fig.height=6, results='asis'}
+# dotplot
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
+  theme_bw()
+
+# dotplot
+ggplot(countries, aes(x = birth.rate, y =death.rate)) +
+  geom_point() +
+  theme_bw()
+
+# jitter
+ggplot(countries, aes(x = continent, y =birth.rate)) +
+  geom_jitter(position = position_jitter(width = .2)) +
+  theme_bw()
+
+# różne mapownia
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, shape=continent), size=4) +
+  theme_bw() +
+  scale_shape_manual(values=c("F","A","S","E","O")) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, color=continent), size=4, shape=19) +
+  theme_bw() + scale_color_brewer(type = "qual", palette=6) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, size=population)) +
+  scale_size_continuous(trans="sqrt", label=comma, limits=c(0,1500000)) +
+  theme_bw() + theme(legend.position="none")
+
 
 ```
 
