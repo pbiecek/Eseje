@@ -19,6 +19,7 @@ library(ggplot2)
 library(scales)
 library(dplyr)
 library(archivist)
+library(gridExtra)
 
 # store everything in the archivist repo
 setLocalRepo("arepo")
@@ -480,6 +481,31 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 # Modyfikatory położenia
 
 ```{r   }
+tab <- table(matematyka = cut(rank(maturaExam$podstawowy.matematyka)/nrow(maturaExam), c(0,0.25,0.5,0.75,1), labels = c("matematyka <25%", "matematyka 25%-50%", "matematyka 50%-75%", "matematyka >75%")),
+             polski = cut(rank(maturaExam$podstawowy.j.polski)/nrow(maturaExam), c(0,0.25,0.5,0.75,1), labels = c("polski <25%", "polski 25%-50%", "polski 50%-75%", "polski >75%")))
+
+df <- data.frame(tab)
+dfn <- colnames(df)
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "fill") + theme_bw() +
+  scale_y_continuous(label = percent) + scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_fill") + xlab("")
+
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "stack") + theme_bw() +
+   scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_stack")+ xlab("")
+
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "dodge") + theme_bw() +
+  scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_dodge")+ xlab("")
 
 ```
 
