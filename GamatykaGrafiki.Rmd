@@ -393,6 +393,28 @@ ggplot(cq, aes(x=continent, y=q2)) +
   geom_text(label="*", size=15) + 
   theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
 
+# contour
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  geom_density2d(h=c(10,10), color="grey") +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), geom="polygon", alpha=0.25) +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), geom="tile", aes(fill = ..density..), contour = FALSE) + scale_fill_gradient(low="white", high="black") +
+  theme_minimal() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,1.5)) +
+  theme_minimal() 
+
+
 ```
 
 # Modyfikatory położenia
