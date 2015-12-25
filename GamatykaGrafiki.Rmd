@@ -411,7 +411,7 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   coord_fixed() + xlim(0,50) + ylim(0,16)+
-  stat_density2d(h=c(10,10), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,1.5)) +
+  stat_density2d(h=c(10,10), n=c(50,15), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,2)) +
   theme_minimal() 
 
 
