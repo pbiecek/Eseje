@@ -57,6 +57,10 @@ countriesMax <- countries %>%
   group_by(continent) %>% 
   filter(birth.rate == max(birth.rate, na.rm=TRUE))
   
+theme_ggplain <- theme_bw() + theme(panel.grid.major.x = element_line(color="white"), axis.ticks=element_line(size=0), axis.text=element_text(size=0))
+
+# pierwszy przyklad
+
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   geom_violin(scale="area", fill="grey", color="white") + 
   stat_summary(fun.data = "q3", geom = "crossbar",
@@ -67,6 +71,39 @@ ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   geom_text(data=countriesMin, vjust=2, color="blue3") + 
   geom_text(data=countriesMax, vjust=-1, color="blue3") + 
   theme_bw() + xlab("") + theme(panel.grid.major.x = element_line(color="white"))
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_text(data=countriesMin, vjust=2, color="blue3") + 
+  geom_text(data=countriesMax, vjust=-1, color="blue3") + 
+  theme_bw() + xlab("") + ylab("") + theme_ggplain
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_violin(scale="area", fill="grey", color="white") + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  stat_summary(fun.data = "q3", geom = "crossbar",
+               colour = "red", width = 0.4) + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_jitter(position=position_jitter(width = .25, height = 0),
+             shape=15) +
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_rug(sides = "l") + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+# drugi przyklad
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_density_2d(h=c(10,10), color="grey") +
@@ -362,6 +399,7 @@ ggplot(countries, aes(x = continent, y = birth.rate)) +
 
 # crossbar
 ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_jitter(position=position_jitter(width=0.25), color="grey") + 
   stat_summary(fun.data = "mean_cl_boot", geom = "crossbar", width = 0.3)  +
   theme_bw()
 
@@ -378,19 +416,22 @@ cq13 <- cq %>%
 
 # statQ1.pdf
 ggplot(cq13, aes(x=continent, y=value, group=continent)) +
-  geom_path(arrow=arrow(ends = "both")) + 
-  geom_point(data=cq13[cq13$key == "q2",], aes(x=continent, y=value), size=4) +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  geom_path(arrow=arrow(ends = "both"), size=2) + 
+  geom_point(data=cq13[cq13$key == "q2",], aes(x=continent, y=value), size=5) +
   theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
 
 # statQ2.pdf
 ggplot(cq, aes(x=continent, y=q2)) +
   geom_boxplot(aes(ymin=q1, lower=q1, middle=q2, upper=q3, ymax=q3), stat="identity") +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
   theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
 
 # statQ3.pdf
 ggplot(cq, aes(x=continent, y=q2)) +
-  geom_errorbar(aes(ymin=q1, ymax=q3), stat="identity", width=0.3) +
-  geom_text(label="*", size=15) + 
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  geom_errorbar(aes(ymin=q1, ymax=q3), stat="identity", width=0.3, size=2) +
+  geom_text(label="*", size=25) + 
   theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
 
 # contour
