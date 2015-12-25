@@ -112,6 +112,25 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point(data=countries[132,], color="red", size=4) + 
   theme_bw() 
 
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point() + coord_fixed() +
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_density_2d(h=c(10,10), color="grey") +
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_abline(intercept=0,slope=1) + 
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_point(data=countries[132,], color="red", size=4) + 
+  theme_ggplain + xlab("") + ylab("") 
+
 ```
 
 # Mapowania
