@@ -130,6 +130,12 @@ ggplot() +
   theme(legend.position=c(0.9,0.17))
 
 ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, shape=continent, color=continent), size=4) +
+  theme_bw() +
+  scale_shape_manual(values=c("F","A","S","E","O")) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
   geom_point(data=countries, aes(x = birth.rate, y =death.rate, color=continent), size=4, shape=19) +
   theme_bw() + scale_color_brewer(type = "qual", palette=6) +
   theme(legend.position=c(0.9,0.17))
@@ -182,6 +188,12 @@ continents <-
   summarise(birth.rate = weighted.mean(birth.rate, w = population, na.rm=TRUE),
             death.rate = weighted.mean(death.rate, w = population, na.rm=TRUE),
             population = sum(population))
+
+# bar
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_rect(xmin=12.38, xmax=27.85, ymin=0, ymax=18, alpha=0.3, fill="grey90") +
+  geom_point() +
+  theme_bw()
 
 # bar
 ggplot(continents, aes(x = continent, y = birth.rate)) +
@@ -310,6 +322,38 @@ ggplot(conts, aes(x = bmea, y = dmea,
 ## Inne geometrie
 
 ```{r   }
+# stat_binhex
+# geomBinHex.pdf
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  stat_binhex(bins = 9) + scale_fill_gradient(low = "white", high = "black") + 
+  theme_bw()
+
+# geomRug
+# geomRug.pdf
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_rug() + 
+  theme_bw()
+
+
+continents <- 
+  countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = mean(birth.rate, na.rm=TRUE),
+            death.rate = mean(death.rate, na.rm=TRUE))
+  
+# text
+#geomText.pdf
+ggplot(continents, aes(x = birth.rate, y = death.rate, label = continent)) +
+  geom_text(alpha=1) +
+  theme_bw() + xlim(8,35)
+
+
+```
+
+# Statystyki
+
+```{r}
+
 
 # boxplot
 ggplot(countries, aes(x = continent, y = birth.rate)) +
@@ -348,40 +392,6 @@ ggplot(cq, aes(x=continent, y=q2)) +
   geom_errorbar(aes(ymin=q1, ymax=q3), stat="identity", width=0.3) +
   geom_text(label="*", size=15) + 
   theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
-
-
-
-# stat_binhex
-# geomBinHex.pdf
-ggplot(countries, aes(x = birth.rate, y = death.rate)) +
-  stat_binhex(bins = 9) + scale_fill_gradient(low = "white", high = "black") + 
-  theme_bw()
-
-# geomRug
-# geomRug.pdf
-ggplot(countries, aes(x = birth.rate, y = death.rate)) +
-  geom_rug() + 
-  theme_bw()
-
-
-continents <- 
-  countries %>%
-  group_by(continent) %>%
-  summarise(birth.rate = mean(birth.rate, na.rm=TRUE),
-            death.rate = mean(death.rate, na.rm=TRUE))
-  
-# text
-#geomText.pdf
-ggplot(continents, aes(x = birth.rate, y = death.rate, label = continent)) +
-  geom_text(alpha=1) +
-  theme_bw() + xlim(8,35)
-
-
-```
-
-# Statystyki
-
-```{r   }
 
 ```
 
