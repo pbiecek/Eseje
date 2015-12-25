@@ -507,6 +507,23 @@ ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
                    axis.text.x  = element_text(angle=90, vjust=0.5)) +
   ggtitle("position_dodge")+ xlab("")
 
+
+# dotplot
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_point() +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("geom_point")+ xlab("")
+
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("geom_dotplot")+ xlab("")
+
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_jitter(position=position_jitter(0.35)) +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("geom_jitter")+ xlab("")
+
 ```
 
 # Układ współrzędnych
