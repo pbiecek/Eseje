@@ -530,6 +530,22 @@ ggplot(countries, aes(x = continent, y = birth.rate)) +
 
 ```{r   }
 
+# dotplot
+ddplot <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_point(size=2) +
+  geom_smooth(size=2, se=F) + 
+  theme_bw() + theme(legend.position="none", text=element_text(size=20))
+
+ddplot
+
+ddplot + coord_fixed()
+
+ddplot + coord_polar()
+
+ddplot + coord_trans(x = "log2", y = "sqrt")
+
+ddplot + coord_flip()
+
 ```
 
 # Miary / podziałki / skale
