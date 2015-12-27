@@ -20,6 +20,8 @@ library(scales)
 library(dplyr)
 library(archivist)
 library(gridExtra)
+library(rworldmap)
+library(ggthemes)
 
 # store everything in the archivist repo
 setLocalRepo("arepo")
@@ -546,6 +548,24 @@ ddplot + coord_trans(x = "log2", y = "sqrt")
 
 ddplot + coord_flip()
 
+# Mapy
+map.world <- map_data(map="world")
+countries[177,"country"] = "UK"
+countries[135,"country"] = "Russia"
+countries[76,"country"] = "Iran"
+
+map2 <- merge(map.world, countries, by.x="region", by.y="country")
+map3 <- map2[order(map2$order),]
+
+gg <- ggplot()
+gg <- gg + theme(legend.position="none")
+gg <- gg + geom_map(data=map3, map=map3, color="grey", aes(map_id=region, x=long, y=lat, fill=birth.rate))
+gg <- gg + scale_fill_gradient(low = "yellow", high = "blue4", guide = "colourbar") + theme_bw() + ylim(10,70)+ xlim(-25,50) +
+  theme(text=element_text(size=20))+theme_map()
+
+gg + coord_map("mollweide") 
+
+gg+ coord_map()
 ```
 
 # Miary / podziałki / skale
