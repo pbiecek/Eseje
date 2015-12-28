@@ -667,6 +667,23 @@ do.call(grid.arrange, pl)
 # Panele / oblicza
 
 ```{r   }
+plD <- ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate)) +
+  stat_ellipse(color="red4")+
+  geom_point(data=countries[,-5],size=1,color="grey") +
+  geom_point(size=2, color="red") +
+  theme_bw() + theme(legend.position="none") +
+  theme(text=element_text(size=20)) +
+  scale_x_sqrt() + scale_y_sqrt()
+
+plD + facet_wrap(~continent)
+
+
+ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate, color=continent)) +
+  stat_ellipse()+
+  geom_point(size=2) +
+  theme_bw() + theme(legend.position="none") +
+  theme(text=element_text(size=20)) +
+  scale_x_sqrt() + scale_y_sqrt()
 
 ```
 
