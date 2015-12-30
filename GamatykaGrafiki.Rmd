@@ -65,42 +65,44 @@ countriesMax <- countries %>%
 theme_ggplain <- theme_bw() + theme(panel.grid.major.x = element_line(color="white"), axis.ticks=element_line(size=0), axis.text=element_text(size=0))
 
 # pierwszy przyklad
+countries$continent <- reorder(countries$continent, countries$birth.rate, median, na.rm=TRUE)
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
-  geom_violin(scale="area", fill="grey", color="white") + 
+  geom_violin(scale="width", aes(fill=continent), color="white", alpha=0.4) + 
   stat_summary(fun.data = "q3", geom = "crossbar",
-               colour = "red", width = 0.4) + 
-  geom_jitter(position=position_jitter(width = .25, height = 0),
+               colour = "red", width = 0.5) + 
+  geom_jitter(aes(size=(population)^0.9),position=position_jitter(width = .45, height = 0),
              shape=15) +
   geom_rug(sides = "l") + 
   geom_text(data=countriesMin, vjust=2, color="blue3") + 
   geom_text(data=countriesMax, vjust=-1, color="blue3") + 
-  theme_bw() + xlab("") + theme(panel.grid.major.x = element_line(color="white"))
+  theme_bw() + xlab("") + theme(legend.position="none", panel.grid.major.x = element_line(color="white"))
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_jitter(color="white",size=0) +
   geom_text(data=countriesMin, vjust=2, color="blue3") + 
   geom_text(data=countriesMax, vjust=-1, color="blue3") + 
   theme_bw() + xlab("") + ylab("") + theme_ggplain
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
-  geom_violin(scale="area", fill="grey", color="white") + 
+  geom_violin(scale="width", aes(fill=continent), color="white", alpha=0.4) + 
   geom_text(data=countriesMin, vjust=2, color="white") + 
   geom_text(data=countriesMax, vjust=-1, color="white") + 
   theme_ggplain + xlab("") + ylab("") 
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   stat_summary(fun.data = "q3", geom = "crossbar",
-               colour = "red", width = 0.4) + 
+               colour = "red", width = 0.5) + 
   geom_text(data=countriesMin, vjust=2, color="white") + 
   geom_text(data=countriesMax, vjust=-1, color="white") + 
   theme_ggplain + xlab("") + ylab("") 
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
-  geom_jitter(position=position_jitter(width = .25, height = 0),
+  geom_jitter(aes(size=(population)^0.9),position=position_jitter(width = .45, height = 0),
              shape=15) +
   geom_text(data=countriesMin, vjust=2, color="white") + 
   geom_text(data=countriesMax, vjust=-1, color="white") + 
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("") + theme(legend.position="none")
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   geom_rug(sides = "l") + 
