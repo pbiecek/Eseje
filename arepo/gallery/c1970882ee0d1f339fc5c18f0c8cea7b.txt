@@ -1,0 +1,9 @@
+Source: local data frame [5 x 8]
+
+  continent  bmin  bmax     bmea  dmin  dmax      dmea population
+     (fctr) (dbl) (dbl)    (dbl) (dbl) (dbl)     (dbl)      (dbl)
+1    Europe   6.8  15.4 10.78323   5.9  15.1 11.015354     736492
+2  Americas   9.5  31.0 15.83824   4.0   9.6  6.734084     925417
+3      Asia   8.4  35.8 17.63231   1.1  12.6  7.113835    4246175
+4   Oceania  10.9  30.8 17.02608   3.5   8.7  6.625181      37378
+5    Africa  11.5  49.7 34.58183   4.2  16.8  9.280557     971885
