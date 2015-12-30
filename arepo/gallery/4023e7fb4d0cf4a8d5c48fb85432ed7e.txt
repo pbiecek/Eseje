@@ -1,0 +1,11 @@
+Source: local data frame [6 x 3]
+Groups: continent [3]
+
+  continent       rate    values
+     (fctr)     (fctr)     (dbl)
+1    Europe birth.rate 10.682500
+2    Europe death.rate  9.992500
+3  Americas birth.rate 18.024242
+4  Americas death.rate  6.360606
+5      Asia birth.rate 19.902174
+6      Asia death.rate  5.891304
