@@ -114,29 +114,30 @@ ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_density_2d(h=c(10,10), color="grey") +
-  geom_point() + coord_fixed() +
+  geom_point()+
   geom_abline(intercept=0,slope=1) + 
   geom_point(data=countries[132,], color="red", size=4) + 
-  theme_bw() 
+  theme_bw()  + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point() + coord_fixed() +
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point(color="white") + coord_fixed() +
   geom_density_2d(h=c(10,10), color="grey") +
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point(color="white") + coord_fixed() +
   geom_abline(intercept=0,slope=1) + 
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   geom_point(color="white") + coord_fixed() +
   geom_point(data=countries[132,], color="red", size=4) + 
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
 
 ```
 
@@ -161,6 +162,13 @@ ggplot(countries, aes(x=birth.rate, y=death.rate,
                       color=continent, shape=continent,
                       size=populationCat)) +
   geom_point() + coord_fixed() +
+  theme_bw() + theme(legend.position="top") 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=populationCat, shape=continent,
+                      size=populationCat)) +
+  geom_point() + coord_fixed() + scale_color_brewer(type="seq") + 
+  scale_size_manual(values=c(1:5)*2)+
   theme_bw() + theme(legend.position="top") 
 
 ```
