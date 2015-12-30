@@ -323,9 +323,9 @@ countries3 <- countries %>%
   group_by(continent, rate) %>%
   summarise(values = mean(values, na.rm=TRUE))
 ggplot(countries3, aes(x = rate, y = values, group=continent, color=continent)) +
-  geom_line() +
-  geom_point() +
-  theme_bw() + theme(legend.position="none")
+  geom_line(size=2) +
+  geom_point(size=4) +
+  theme_bw() + theme(legend.position="none")+scale_color_brewer(type = "qual", palette = 6) 
 
 # line
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
