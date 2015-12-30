@@ -260,6 +260,11 @@ continents <-
             death.rate = weighted.mean(death.rate, w = population, na.rm=TRUE),
             population = sum(population))
 
+# hist
+ggplot(countries, aes(x = birth.rate, fill=continent)) +
+  geom_histogram(binwidth = 2.5) + scale_fill_brewer(type = "qual", palette = 6) + 
+  theme_bw() + theme(legend.position="none")
+
 # bar
 ggplot(countries, aes(x = birth.rate, y = death.rate)) +
   geom_rect(xmin=12.38, xmax=27.85, ymin=0, ymax=18, alpha=0.3, fill="grey90") +
@@ -268,7 +273,7 @@ ggplot(countries, aes(x = birth.rate, y = death.rate)) +
 
 # bar
 ggplot(continents, aes(x = continent, y = birth.rate)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity") +scale_fill_brewer(type = "qual", palette = 6) + 
   theme_bw()
 
 
@@ -277,7 +282,7 @@ continents2 <- continents %>%
 
 ggplot() +
   geom_rect(data=continents2, aes(xmin=cum, ymax=0, xmax=cum+population, ymin=birth.rate, fill=continent)) +
-  geom_text(data=continents2, aes(label=continent, x=cum+population/2, y=birth.rate), vjust=-0.1) + 
+  geom_text(data=continents2, aes(label=continent, x=cum+population/2, y=birth.rate), vjust=-0.1) +scale_fill_brewer(type = "qual", palette = 6)+ 
   theme_bw() + theme(legend.position="none") +
   xlab("population") + ylab("birth.rate")
 
@@ -304,7 +309,7 @@ ggplot() +
 
 # liczba krajów na kontynent
 ggplot(countries, aes(x = continent, fill = continent)) +
-  geom_bar() +
+  geom_bar() +scale_fill_brewer(type = "qual", palette = 6) + 
   theme_bw() + theme(legend.position="none") + xlab("") + ylab("Liczba krajów")
 
 ```
