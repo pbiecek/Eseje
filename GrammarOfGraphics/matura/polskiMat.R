@@ -62,8 +62,14 @@ lata <- lapply(c("matura2010.rda",  "matura2011.rda",
                  dfMP
                })
 df <- do.call(rbind, lata)
-df <- df[,-1]
-colnames(df) = c("podstawowy.matematyka", "podstawowy.j.polski","rok")
+#df <- df[,-1]
+colnames(df) = c("obs", "podstawowy.matematyka", "podstawowy.j.polski","rok")
 maturaExam <- df
+
+library(tidyr)
+maturaExam <- gather(maturaExam, przedmiot, punkty, podstawowy.matematyka, podstawowy.j.polski)
+maturaExam <- maturaExam[,c(1,4,3,2)]
+levels(maturaExam$przedmiot) <- c("matematyka", "j. polski")
+maturaExam <- arrange(maturaExam, obs)
 
 save(maturaExam, file="maturaExam.rda", compress = "xz", compression_level = 9)
