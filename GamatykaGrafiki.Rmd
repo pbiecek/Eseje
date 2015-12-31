@@ -592,6 +592,8 @@ gg <- gg + scale_fill_gradient(low = "yellow", high = "blue4", guide = "colourba
 
 gg + coord_map("mollweide") 
 
+gg + coord_map("ortho", orientation=c(60,20,-10)) 
+
 gg+ coord_map()
 ```
 
