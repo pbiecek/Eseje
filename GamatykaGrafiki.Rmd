@@ -497,12 +497,12 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   coord_fixed() + xlim(0,50) + ylim(0,16)+
   stat_density2d(h=c(10,10), geom="tile", aes(fill = ..density..), contour = FALSE) + scale_fill_gradient(low="white", high="black") +
-  theme_minimal() 
+  theme_minimal() + theme(legend.position="top")
 
 ggplot(countries, aes(x=birth.rate, y=death.rate)) +
   coord_fixed() + xlim(0,50) + ylim(0,16)+
-  stat_density2d(h=c(10,10), n=c(50,15), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,2)) +
-  theme_minimal() 
+  stat_density2d(h=c(10,10), n=c(50,15), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,4)) +
+  theme_minimal()  + theme(legend.position="top")
 
 
 ```
