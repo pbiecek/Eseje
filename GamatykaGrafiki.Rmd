@@ -229,7 +229,7 @@ ggplot(countries, aes(x = birth.rate, fill = continent)) +
 
 ggplot(countries, aes(x = birth.rate, fill = continent)) +
   geom_density( position="fill", color=NA)+ scale_fill_brewer(type = "qual", palette=6) +
-  theme_bw() + theme(legend.position="top")
+  theme_bw() + theme(legend.position="none")
 
 
 # vioplot
