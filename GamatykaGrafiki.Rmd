@@ -46,7 +46,7 @@ print.ggplot <- function(x, ...) {
 
 W tym skrypcie wykorzystujemy pakiet `SmarterPoland` i zbiory danych
 
-```{r, cache=FALSE}
+```{r, cache=FALSE, results='markup'}
 library(SmarterPoland)
 head(countries)
 head(maturaExam)
