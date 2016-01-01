@@ -597,7 +597,7 @@ gg + coord_map("ortho", orientation=c(60,20,-10))
 gg+ coord_map()
 ```
 
-# Miary / podziałki / skale
+# Podziałki / skale
 
 ```{r   }
 # Scale_fill_brewer
