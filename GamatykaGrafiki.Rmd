@@ -510,8 +510,9 @@ ggplot(countries, aes(x=birth.rate, y=death.rate)) +
 # Modyfikatory położenia
 
 ```{r   }
-tab <- table(matematyka = cut(rank(maturaExam$podstawowy.matematyka)/nrow(maturaExam), c(0,0.25,0.5,0.75,1), labels = c("matematyka <25%", "matematyka 25%-50%", "matematyka 50%-75%", "matematyka >75%")),
-             polski = cut(rank(maturaExam$podstawowy.j.polski)/nrow(maturaExam), c(0,0.25,0.5,0.75,1), labels = c("polski <25%", "polski 25%-50%", "polski 50%-75%", "polski >75%")))
+maturaExam2 <- spread(maturaExam, przedmiot, punkty)
+tab <- table(matematyka = cut(rank(maturaExam2$matematyka)/nrow(maturaExam2), c(0,0.25,0.5,0.75,1), labels = c("matematyka <25%", "matematyka 25%-50%", "matematyka 50%-75%", "matematyka >75%")),
+             polski = cut(rank(maturaExam2[,"j. polski"])/nrow(maturaExam2), c(0,0.25,0.5,0.75,1), labels = c("polski <25%", "polski 25%-50%", "polski 50%-75%", "polski >75%")))
 
 df <- data.frame(tab)
 dfn <- colnames(df)
@@ -541,17 +542,17 @@ ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
 ggplot(countries, aes(x = continent, y = birth.rate)) +
   geom_point() +
   theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
-  ggtitle("geom_point")+ xlab("")
+  ggtitle("position_identity")+ xlab("")
 
 ggplot(countries, aes(x = continent, y = birth.rate)) +
   geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
   theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
-  ggtitle("geom_dotplot")+ xlab("")
+  ggtitle("position_dotplot")+ xlab("")
 
 ggplot(countries, aes(x = continent, y = birth.rate)) +
   geom_jitter(position=position_jitter(0.35)) +
   theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
-  ggtitle("geom_jitter")+ xlab("")
+  ggtitle("position_jitter")+ xlab("")
 
 ```
 
