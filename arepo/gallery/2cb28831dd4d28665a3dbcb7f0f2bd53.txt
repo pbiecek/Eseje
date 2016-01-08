@@ -1,0 +1,11 @@
+Source: local data frame [6 x 7]
+Groups: CNT [1]
+
+      CNT             ST28Q01     math       sd     n    lmath    umath
+   (fctr)              (fctr)    (dbl)    (dbl) (int)    (dbl)    (dbl)
+1 Germany         0-10 books  429.9597 88.80094   403 421.2896 438.6297
+2 Germany        11-25 books  470.7188 86.88098   546 463.4312 478.0064
+3 Germany       26-100 books  509.8257 83.81381  1171 505.0251 514.6263
+4 Germany      101-200 books  536.1063 86.47889   850 530.2926 541.9201
+5 Germany      201-500 books  565.5353 86.23794   743 559.3343 571.7363
+6 Germany More than 500 books 574.8394 97.76092   445 565.7562 583.9227
