@@ -1,0 +1,14 @@
+  cnt      avg                                       lab color level
+.   0 517.5011                                    Poland         1.5
+1   0 556.4243                                1 Managers     1   1.0
+2   0 570.9370                           2 Professionals     2   1.0
+3   0 538.9915 3 Technicians and associate professionals     3   1.0
+4   0 534.6791                4 Clerical support workers     4   1.0
+5   0 509.1033               5 Service and sales workers     5   1.0
+                                         gr     avg2
+.                                    Poland 517.5011
+1                                1 Managers 556.4243
+2                           2 Professionals 570.9370
+3 3 Technicians and associate professionals 538.9915
+4                4 Clerical support workers 534.6791
+5               5 Service and sales workers 509.1033

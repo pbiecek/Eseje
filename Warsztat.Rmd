@@ -76,6 +76,7 @@ cntName <- "Poland"
 cntNameS <- "Poland"
 isubject <- "MATH"
 kol10 <- c("#777777", "#a60C00", "#E63600", "#E67100", "#E6A700", "#46a604", "#00B6E6", "#00AAE6", "#008Dc6", "#0063a6", "#000000")
+kol9 <- c("#a60C00", "#E63600", "#E67100", "#E6A700", "#46a604", "#00B6E6", "#00AAE6", "#008Dc6", "#0063a6")
 
 
 flatHtree <- na.omit(data.frame(
@@ -169,6 +170,42 @@ ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) +
         legend.title = element_blank(), legend.text = element_text(size = 12), 
         panel.border = element_rect(linetype = "dotted", colour = "white"), legend.key = element_blank())+ scale_size_continuous(range=c(3.5,12)) 
 
+
+```
+
+```{r}
+
+eMeans <- AllAvgSds[[paste0(isubject, "avg")]]["Poland",]
+eSd    <- AllAvgSds[[paste0(isubject, "sd")]]["Poland",]
+eSize  <- AllAvgSds[["struct"]]["Poland",]
+eStud  <- AllAvgSds[["studs"]]["Poland",]
+eSchool <- AllAvgSds[["schools"]]["Poland",]
+
+par(omd=c(0.1,0.75,0.01,0.65), mar=c(0,0,0,0))
+plot(seq_along(eMeans), eMeans, pch=19, cex=2*sqrt(eSize/median(eSize, na.rm=TRUE)), las=1, xaxt="n", xlab="", ylab="", main="", type="n", ylim=range, yaxt="n")
+axis(2, las=1, seq(round(range[1],-1), range[2], 10))
+abline(h=seq(round(range[1],-1), range[2], 20), col="grey", lty=3)
+for (i in 1:9) {
+  tx <- grep(names(eMeans), pattern=paste("^", i, "[^0]", sep=""))
+  lines(range(tx), eMeans[paste(i)]*c(1,1), col=kol9[i])
+  for (txx in tx) {
+    if (!is.na(eStud[txx]) && eStud[txx] >= minStudents && eSchool[txx] >= minSchools) {
+      points(txx, eMeans[txx], pch=19, cex=sqrt(2*sqrt(eSize[txx]/median(eSize, na.rm=TRUE))), col=kol9[i])
+      lines(txx*c(1,1), eMeans[txx] + c(-1,1)*eSd[txx], col=kol9[i])
+    }
+  }
+}
+
+for (ii in 1:9)
+  axis(4, las=1, eMeans[paste(ii)], grep(labels, pattern=paste0("^", ii, " "), value = TRUE)[1], cex.axis=0.95, col.axis=kol9[ii])
+axis(3, 1, "Poland", las=2, cex.axis=0.95, col.axis="#777777")
+points(1, eMeans[1], pch=19, cex=sqrt(2*sqrt(eSize["."]/median(eSize, na.rm=TRUE))), col="#777777")
+lines(c(1,1), eMeans["."] + c(-1,1)*eSd["."], col="#777777")
+
+for (ii in seq_along(eMeans))
+  if (nchar(names(eMeans)[ii]) > 1)
+    axis(3, ii, labels[ii], las=2, cex.axis=0.95, 
+         col.axis=kol9[as.numeric(substr(labels[ii], 1, 1))])
 
 ```
 
