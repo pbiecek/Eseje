@@ -1,0 +1,59 @@
+---
+title: "Skrypty reprodukujące wykresy z rozdziału ,,Warsztat''"
+author: "Przemyslaw Biecek"
+date: "8 January 2016"
+output: 
+  html_document:
+    toc: TRUE
+---
+
+```{r}
+library(knitr)
+opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+# Przygotowanie
+
+```{r, cache=FALSE}
+library(scales)
+library(dplyr)
+library(archivist)
+library(gridExtra)
+library(ggthemes)
+library(ggplot2)
+
+# store everything in the archivist repo
+setLocalRepo("arepo")
+
+print.ggplot <- function(x, ...) {
+  hash <- saveToRepo(x)
+  cat("Load: [`archivist::aread('pbiecek/Eseje/arepo/",hash,"')`](https://github.com/pbiecek/Eseje/raw/master/arepo/gallery/",hash,".rda)\n", sep="")
+  ggplot2:::print.ggplot(x, ...)
+}
+
+```
+
+# Dane
+
+```{r, cache=FALSE, results='markup'}
+library(Hmisc)   # ważone średnie
+library(dplyr)   # obróbka danych
+library(ggplot2) # grafika
+
+load("pisaAVGS.rda")
+```
+
+# Warstwy
+
+```{r}
+ggplot(pisaAVGS[pisaAVGS$CNT!="Finland",], aes(x=ST28Q01, y=math, shape=CNT,colour=CNT)) + 
+  geom_errorbar(aes(ymin=lmath, ymax=umath), 
+                width=0.2, 
+                position=position_dodge(.2)) +
+  geom_point(size=4, position=position_dodge(.2)) + 
+  coord_flip() +
+  scale_color_brewer(name="Country", type = "qual", palette = 2) + 
+  scale_shape(name="Country") + 
+  theme_bw() + theme(panel.grid.major.y=element_blank(), legend.position=c(0.85,0.15)) + xlab("") + ggtitle("Math score vs. number of books")
+
+```
