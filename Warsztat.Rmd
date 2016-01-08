@@ -41,6 +41,14 @@ library(dplyr)   # obróbka danych
 library(ggplot2) # grafika
 
 load("pisaAVGS.rda")
+load("AllAvgSds.rda")
+load("labels.rda")
+labels[30] <- "6 Skilled agricultural, forestry and fishery workers"
+labels[34] <- "7 Craft and related trades workers"
+labels[40] <- "8 Plant and machine operators, and assemblers"
+
+minStudents = 30
+minSchools = 5
 ```
 
 # Warstwy
@@ -57,3 +65,110 @@ ggplot(pisaAVGS[pisaAVGS$CNT!="Finland",], aes(x=ST28Q01, y=math, shape=CNT,colo
   theme_bw() + theme(panel.grid.major.y=element_blank(), legend.position=c(0.85,0.15)) + xlab("") + ggtitle("Math score vs. number of books")
 
 ```
+
+
+# PISA
+
+
+```{r}
+datasource <- AllAvgSds
+cntName <- "Poland"
+cntNameS <- "Poland"
+isubject <- "MATH"
+kol10 <- c("#777777", "#a60C00", "#E63600", "#E67100", "#E6A700", "#46a604", "#00B6E6", "#00AAE6", "#008Dc6", "#0063a6", "#000000")
+
+
+flatHtree <- na.omit(data.frame(
+  level = c(0,0.4,1.9)[nchar(sapply(strsplit(labels, split=" "), '[', 1))+1],
+  average = datasource[[paste0(isubject, "avg")]][cntName,],
+  nameLong = sapply(sapply(strsplit(labels, split=" "), '[', -1), paste, collapse=" "),
+  struct = datasource[["struct"]][cntName,],
+  studs = datasource[["studs"]][cntName,],
+  schools = datasource[["schools"]][cntName,],
+  color = factor(substr(labels, 1, 1)), stringsAsFactors = FALSE))
+flatHtree[1,3] = cntNameS
+#flatHtree <- flatHtree[flatHtree$studs >= 30 & flatHtree$schools >=5 , ]
+flatHtree <- flatHtree[flatHtree$level < 1.8,]
+
+x = "level"
+y = "average"
+size = "struct"
+label="nameLong"
+color = "color"
+range = c(460, 590)
+y2 = "average"
+flatHtree$size = (2.8-sqrt(flatHtree[,x]))*2.8
+flatHtree$xx = 0.1 + flatHtree[,x]
+```
+```{r}
+bp <- ggplot(aes_string(x = x, y = y, size = size, label=label, color = color), data=flatHtree)
+bp + geom_point() + theme_bw() +
+  scale_color_manual(values=kol10) +
+  geom_text(aes_string(y = "average"), hjust=0, vjust=0.5, size=5, nudge_x=0.05) + 
+  scale_x_continuous(limits = c(0, 1.5)) + 
+  scale_y_continuous("", limits = c(range[1], range[2])) + 
+  geom_text(x=-0.1, y=range[2]+2, label="PISA score", size=6, colour="#777777", hjust=0, vjust=0.5) + 
+  geom_text(x=0.38, y=range[2]+2, label="Results by\nparents' major occupational groups", size=6, colour="#777777", hjust=0, vjust=0.5) + 
+  geom_text(x=1.88, y=range[2]+2, label="Results by\nparents' detailed occupational groups", size=6, colour="#777777", hjust=0, vjust=0.5)  + 
+  theme(plot.title = element_text(face="bold", size=14), 
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.title.y = element_text(face="bold", size=12, angle=90),
+        panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(), 
+        legend.position = "none", 
+        legend.title = element_blank(), 
+        legend.text = element_text(size=12),
+        panel.border = element_rect(linetype = "dotted", colour = "white"),
+        legend.key = element_blank() 
+  )  + scale_size_continuous(range=c(3.5,12)) 
+ 
+```
+
+```{r}
+
+levs1 <- nchar(sapply(strsplit(labels, split=" "), '[', 1))
+gr1 <- labels; gr1[1] = "Poland"
+gr2 <- labels; gr2[1] = "Finland"
+
+val1 = AllAvgSds[[paste0(isubject, "avg")]][gr1[1],]
+val2 = AllAvgSds[[paste0(isubject, "avg")]][gr2[1],]
+val12 = val1
+val22 = val2
+
+val1 =val1
+val2 = val2
+lab1 = gr1
+lab2 = gr2
+col1 = factor(substr(labels,1,1))
+col2 = factor(substr(labels,1,1))
+lev1 = (3-levs1)/2
+lev2 = (3-levs1)/2
+rang = c(460, 590)
+val12 = val12
+val22 = val22
+
+flatHtree <- rbind(
+  data.frame(cnt = 0, avg = val1, lab= lab1, color=col1, level=lev1, gr=gr1, avg2=val12),
+  data.frame(cnt = 1, avg = val2, lab= lab2, color=col2, level=lev2, gr=gr2, avg2=val22))
+flatHtree <- flatHtree[flatHtree$level > 0.9,]
+
+ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) + 
+  geom_line(lwd=2) +
+  geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level, y=avg2)) + 
+  scale_size_continuous(range=c(3,7)) + 
+  theme_bw()+
+  scale_color_manual(values=kol10) + 
+  scale_x_continuous("", limits = c(-3,4)) + 
+  scale_y_continuous("", limits = rang) + 
+  theme(plot.title = element_text(face = "bold", size = 14), 
+        axis.title.x = element_blank(), axis.ticks.x = element_blank(), 
+        axis.text.x = element_blank(), axis.title.y = element_text(face = "bold", size = 12, angle = 90), panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(), legend.position = "none", 
+        legend.title = element_blank(), legend.text = element_text(size = 12), 
+        panel.border = element_rect(linetype = "dotted", colour = "white"), legend.key = element_blank())+ scale_size_continuous(range=c(3.5,12)) 
+
+
+```
+
