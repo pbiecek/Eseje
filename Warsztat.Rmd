@@ -152,24 +152,32 @@ val22 = val22
 
 flatHtree <- rbind(
   data.frame(cnt = 0, avg = val1, lab= lab1, color=col1, level=lev1, gr=gr1, avg2=val12),
-  data.frame(cnt = 1, avg = val2, lab= lab2, color=col2, level=lev2, gr=gr2, avg2=val22))
+  data.frame(cnt = 1, avg = val2, lab= lab2, color=col2, level=lev2, gr=gr1, avg2=val22))
 flatHtree <- flatHtree[flatHtree$level > 0.9,]
 
 ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) + 
+  geom_line(lwd=2) +
+  geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, y=avg2)) + 
+  theme_bw()+
+  scale_x_continuous("", limits = c(-3,4)) 
+
+
+
+ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) + 
+  geom_point(size=3) +
   geom_line(lwd=2) +
   geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level, y=avg2)) + 
   scale_size_continuous(range=c(3,7)) + 
   theme_bw()+
   scale_color_manual(values=kol10) + 
   scale_x_continuous("", limits = c(-3,4)) + 
-  scale_y_continuous("", limits = rang) + 
+  scale_y_continuous("", limits = c(475,575), breaks=seq(460,600,10)) + 
   theme(plot.title = element_text(face = "bold", size = 14), 
         axis.title.x = element_blank(), axis.ticks.x = element_blank(), 
         axis.text.x = element_blank(), axis.title.y = element_text(face = "bold", size = 12, angle = 90), panel.grid.major.x = element_blank(), 
         panel.grid.minor.x = element_blank(), legend.position = "none", 
         legend.title = element_blank(), legend.text = element_text(size = 12), 
         panel.border = element_rect(linetype = "dotted", colour = "white"), legend.key = element_blank())+ scale_size_continuous(range=c(3.5,12)) 
-
 
 ```
 
