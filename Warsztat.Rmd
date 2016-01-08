@@ -173,7 +173,7 @@ ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) +
 
 ```
 
-```{r}
+```{r, fig.width=12}
 
 eMeans <- AllAvgSds[[paste0(isubject, "avg")]]["Poland",]
 eSd    <- AllAvgSds[[paste0(isubject, "sd")]]["Poland",]
