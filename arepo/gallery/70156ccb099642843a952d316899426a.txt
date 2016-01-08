@@ -1,0 +1,14 @@
+   level  average                               nameLong     struct studs
+.    0.0 517.5011                                 Poland 379544.671  4607
+1    0.4 556.4243                               Managers  52436.187   681
+11   1.9 574.3199     Chief executives, senior officials   4099.882    56
+12   1.9 566.5069 Administrative and commercial managers  14487.145   186
+13   1.9 550.9452    Production and specialised services  28742.279   374
+14   1.9 544.6793          Hospitality, retail and other   7303.143    97
+   schools color     size  xx
+.      184       7.840000 0.1
+1      161     1 6.069125 0.5
+11      39     1 3.980466 2.0
+12     102     1 3.980466 2.0
+13     139     1 3.980466 2.0
+14      62     1 3.980466 2.0
