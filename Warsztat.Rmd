@@ -166,7 +166,7 @@ ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) +
 ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) + 
   geom_point(size=3) +
   geom_line(lwd=2) +
-  geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level, y=avg2)) + 
+  geom_text(aes(label = gsub(lab, pattern="^[0-9 ]+", replacement = ""), x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level, y=avg2)) + 
   scale_size_continuous(range=c(3,7)) + 
   theme_bw()+
   scale_color_manual(values=kol10) + 
