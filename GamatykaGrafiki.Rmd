@@ -88,7 +88,7 @@ ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   geom_violin(scale="width", aes(fill=continent), color="white", alpha=0.4) + 
   geom_text(data=countriesMin, vjust=2, color="white") + 
   geom_text(data=countriesMax, vjust=-1, color="white") + 
-  theme_ggplain + xlab("") + ylab("") 
+  theme_ggplain + xlab("") + ylab("") +theme(legend.position="none")
 
 ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
   stat_summary(fun.data = "q3", geom = "crossbar",
