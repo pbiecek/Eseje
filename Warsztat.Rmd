@@ -7,7 +7,7 @@ output:
     toc: TRUE
 ---
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(knitr)
 opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FALSE, message=FALSE, cache=TRUE)
 ```
