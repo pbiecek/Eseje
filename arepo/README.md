@@ -2677,6 +2677,9 @@ date:2016-01-08 14:29:10
 [archivist::aread("pbiecek/Eseje/2cb28831dd4d28665a3dbcb7f0f2bd53")](https://github.com/pbiecek/Eseje/blob/master/gallery/2cb28831dd4d28665a3dbcb7f0f2bd53.rda?raw=true)
 ```{R} 
 relationWith:c266ff96ca828665ac9271e3059fcb21
+format:rda
+format:txt
+relationWith:89a1b1ba70004a89c867d0613b76fd77
 ``` 
 [archivist::aread("pbiecek/Eseje/820cfeec47a46d1756495b6073af2740")](https://github.com/pbiecek/Eseje/blob/master/gallery/820cfeec47a46d1756495b6073af2740.rda?raw=true)
 ```{R} 
@@ -2795,4 +2798,15 @@ name:ob1
 date:2016-01-15 22:11:37
 name:x
 date:2016-01-15 22:11:48
+``` 
+[archivist::aread("pbiecek/Eseje/89a1b1ba70004a89c867d0613b76fd77")](https://github.com/pbiecek/Eseje/blob/master/gallery/89a1b1ba70004a89c867d0613b76fd77.rda?raw=true)
+```{R} 
+format:rda
+name:pl
+class:gg
+class:ggplot
+labelx:
+labely:math
+date:2016-01-27 22:11:32
+format:png
 ``` 
