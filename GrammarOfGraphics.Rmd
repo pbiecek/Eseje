@@ -1,0 +1,761 @@
+---
+title: "Script that reproduces plots from the chapter ,,Grammar of Graphics''"
+author: "Przemyslaw Biecek"
+date: "22 December 2015"
+output: 
+  html_document:
+    toc: TRUE
+---
+
+# Data preparation
+
+```{r, cache=FALSE, warning=FALSE, message=FALSE}
+library(archivist)
+library(ggplot2)
+
+# store everything in the archivist repo
+addHooksToPrint(class=c("ggplot", "data.frame"),
+                 repoDir = "arepo", 
+                 repo = "Eseje", user = "pbiecek", subdir = "arepo")
+
+library(knitr)
+library(scales)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+library(rworldmap)
+library(ggthemes)
+library(latticeExtra)
+library(lattice)
+
+q3 <- function(x) {
+  a <- quantile(x, c(0.25,0.5,0.75))
+  names(a) <- c("ymin", "y", "ymax")
+  a
+}
+
+opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FALSE, message=FALSE, cache=FALSE)
+```
+
+# Data
+
+Here we are using the `SmarterPoland` package and two datasets.
+
+```{r, cache=FALSE, results='markup'}
+library(SmarterPoland)
+head(countries)
+head(maturaExam)
+```
+
+# Layers
+
+```{r   }
+countriesMin <- countries %>% 
+  group_by(continent) %>% 
+  filter(birth.rate == min(birth.rate, na.rm=TRUE))
+countriesMax <- countries %>% 
+  group_by(continent) %>% 
+  filter(birth.rate == max(birth.rate, na.rm=TRUE))
+  
+theme_ggplain <- theme_bw() + theme(panel.grid.major.x = element_line(color="white"), axis.ticks=element_line(size=0), axis.text=element_text(size=0))
+
+# foirst example
+countries$continent <- reorder(countries$continent, countries$birth.rate, median, na.rm=TRUE)
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_violin(scale="width", aes(fill=continent), color="white", alpha=0.4) + 
+  stat_summary(fun.data = "q3", geom = "crossbar",
+               colour = "red", width = 0.5) + 
+  geom_jitter(aes(size=(population)^0.9),position=position_jitter(width = .45, height = 0),
+             shape=15) +
+  geom_rug(sides = "l") + 
+  geom_text(data=countriesMin, vjust=2, color="blue3") + 
+  geom_text(data=countriesMax, vjust=-1, color="blue3") + 
+  theme_bw() + xlab("") + theme(legend.position="none", panel.grid.major.x = element_line(color="white"))
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_jitter(color="white",size=0) +
+  geom_text(data=countriesMin, vjust=2, color="blue3") + 
+  geom_text(data=countriesMax, vjust=-1, color="blue3") + 
+  theme_bw() + xlab("") + ylab("") + theme_ggplain
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_violin(scale="width", aes(fill=continent), color="white", alpha=0.4) + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") +theme(legend.position="none")
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  stat_summary(fun.data = "q3", geom = "crossbar",
+               colour = "red", width = 0.5) + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_jitter(aes(size=(population)^0.9),position=position_jitter(width = .45, height = 0),
+             shape=15) +
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") + theme(legend.position="none")
+
+ggplot(countries, aes(x=continent, y=birth.rate, label=country)) +
+  geom_rug(sides = "l") + 
+  geom_text(data=countriesMin, vjust=2, color="white") + 
+  geom_text(data=countriesMax, vjust=-1, color="white") + 
+  theme_ggplain + xlab("") + ylab("") 
+
+# second example
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_density_2d(h=c(10,10), color="grey") +
+  geom_point()+
+  geom_abline(intercept=0,slope=1) + 
+  geom_point(data=countries[132,], color="red", size=4) + 
+  theme_bw()  + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point() + coord_fixed() +
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_density_2d(h=c(10,10), color="grey") +
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_abline(intercept=0,slope=1) + 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point(color="white") + coord_fixed() +
+  geom_point(data=countries[132,], color="red", size=4) + 
+  theme_ggplain + xlab("") + ylab("")   + xlim(0,50)+ylim(-10,20)+ coord_fixed(xlim=c(0,50),ylim=c(0,18), expand = FALSE) 
+
+```
+
+# Mappings
+
+```{r   }
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  geom_point() + coord_fixed() +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=continent, shape=continent)) +
+  geom_point() + coord_fixed() +
+  theme_bw() + theme(legend.position="top") 
+
+
+countries$populationCat <- cut(countries$population, 
+                               c(1, 10^3, 10^4, 10^5, 10^6, 10^7), 
+                               labels = c("< 1M", "< 10M","< 100 M", "< 1 B", "> 1 B"), ordered_result = TRUE)
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=continent, shape=continent,
+                      size=populationCat)) +
+  geom_point() + coord_fixed() +
+  theme_bw() + theme(legend.position="top") 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate, 
+                      color=populationCat, shape=continent,
+                      size=populationCat)) +
+  geom_point() + coord_fixed() + scale_color_brewer(type="seq") + 
+  scale_size_manual(values=c(1,2,3,6,9))+
+  theme_bw() + theme(legend.position="top") 
+
+```
+
+# Forms / Geoms
+
+## Points
+
+```{r   }
+# dotplot
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
+  theme_bw()
+
+# dotplot
+ggplot(countries, aes(x = birth.rate, y =death.rate)) +
+  geom_point() +
+  theme_bw()
+
+# jitter
+ggplot(countries, aes(x = continent, y =birth.rate)) +
+  geom_jitter(position = position_jitter(width = .2)) +
+  theme_bw()
+
+# różne mapownia
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, shape=continent), size=4) +
+  theme_bw() +
+  scale_shape_manual(values=c("F","A","S","E","O")) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, shape=continent, color=continent), size=4) +
+  theme_bw() +
+  scale_shape_manual(values=c("F","A","S","E","O")) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, color=continent), size=4, shape=19) +
+  theme_bw() + scale_color_brewer(type = "qual", palette=6) +
+  theme(legend.position=c(0.9,0.17))
+
+ggplot() +
+  geom_point(data=countries, aes(x = birth.rate, y =death.rate, size=population)) +
+  scale_size_continuous(trans="sqrt", label=comma, limits=c(0,1500000)) +
+  theme_bw() + theme(legend.position="none")
+
+```
+
+## Area
+
+```{r   }
+
+# density
+ggplot(countries, aes(x = birth.rate, fill = continent)) +
+  geom_density(alpha=0.5)+ scale_fill_brewer(type = "qual", palette=6) +
+  theme_bw() + theme(legend.position=c(0.85,0.85))
+
+ggplot(countries, aes(x = birth.rate, fill = continent)) +
+  geom_density( position="fill", color=NA)+ scale_fill_brewer(type = "qual", palette=6) +
+  theme_bw() + theme(legend.position="none")
+
+
+# vioplot
+ggplot(countries, aes(x = continent, y = birth.rate, color=continent,fill=continent)) +
+  geom_violin(scale = "width")+ scale_color_brewer(type = "qual", palette=6)+ scale_fill_brewer(type = "qual", palette=6) +
+  theme_bw() + theme(legend.position="none")
+
+# ribbon
+ndf <- countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = weighted.mean(birth.rate, population, na.rm=TRUE),
+            death.rate = weighted.mean(death.rate, population, na.rm=TRUE))
+
+ggplot() + 
+  geom_ribbon(data=ndf, aes(x=continent, ymax=birth.rate, y=birth.rate, ymin=0, group=1), fill="green3") +
+  geom_ribbon(data=ndf, aes(x=continent, ymax=death.rate, y=death.rate, ymin=0, group=1), fill="red3") +
+  theme_bw() + xlab("") + ylab("birth.rate / death.rate")
+
+```
+
+## Rectangles
+
+```{r   }
+continents <- 
+  countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = weighted.mean(birth.rate, w = population, na.rm=TRUE),
+            death.rate = weighted.mean(death.rate, w = population, na.rm=TRUE),
+            population = sum(population))
+
+# hist
+ggplot(countries, aes(x = birth.rate, fill=continent)) +
+  geom_histogram(binwidth = 2.5) + scale_fill_brewer(type = "qual", palette = 6) + 
+  theme_bw() + theme(legend.position="none")
+
+# bar
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_rect(xmin=12.38, xmax=27.85, ymin=0, ymax=18, alpha=0.3, fill="grey90") +
+  geom_point() +
+  theme_bw()
+
+# bar
+ggplot(continents, aes(x = continent, y = birth.rate)) +
+  geom_bar(stat = "identity") +scale_fill_brewer(type = "qual", palette = 6) + 
+  theme_bw()
+
+
+continents2 <- continents %>%
+  mutate(cum = cumsum(population)-population)
+
+ggplot() +
+  geom_rect(data=continents2, aes(xmin=cum, ymax=0, xmax=cum+population, ymin=birth.rate, fill=continent)) +
+  geom_text(data=continents2, aes(label=continent, x=cum+population/2, y=birth.rate), vjust=-0.1) +scale_fill_brewer(type = "qual", palette = 6)+ 
+  theme_bw() + theme(legend.position="none") +
+  xlab("population") + ylab("birth.rate")
+
+
+ggplot() +
+  geom_rect(data=continents, aes(xmin = as.numeric(factor(continent))-0.1, 
+                                 ymin = 0, 
+                                 xmax = as.numeric(factor(continent))+0.2, 
+                                 ymax = birth.rate),
+            fill="green3") +
+  geom_rect(data=continents, aes(xmin = as.numeric(factor(continent))+0.21, 
+                                 ymin = birth.rate - death.rate, 
+                                 xmax = as.numeric(factor(continent))+0.51, 
+                                 ymax = birth.rate),
+            fill="red3") +
+  geom_text(data=continents, aes(x = as.numeric(factor(continent))+0.21, 
+                                 y = birth.rate + 1, 
+                                 label = continent)) + 
+  geom_hline(yintercept=0) + ylab("birth.rate - death.rate") + xlab("") +
+  geom_rug(data=continents, aes(x = as.numeric(factor(continent))+0.21, 
+                                y = birth.rate - death.rate), sides="l") +
+  theme_bw() + theme(axis.text.x = element_text(color="white"),
+                     axis.ticks.x = element_line(color="white"))
+
+# liczba krajów na kontynent
+ggplot(countries, aes(x = continent, fill = continent)) +
+  geom_bar() +scale_fill_brewer(type = "qual", palette = 6) + 
+  theme_bw() + theme(legend.position="none") + xlab("") + ylab("Liczba krajów")
+
+```
+
+## Lines
+
+```{r   }
+# slope charts
+countries3 <- countries %>% 
+  gather(rate, values, birth.rate, death.rate) %>%
+  group_by(continent, rate) %>%
+  summarise(values = mean(values, na.rm=TRUE))
+ggplot(countries3, aes(x = rate, y = values, group=continent, color=continent)) +
+  geom_line(size=2) +
+  geom_point(size=4) +
+  theme_bw() + theme(legend.position="none")+scale_color_brewer(type = "qual", palette = 6) 
+
+# line
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_line() +
+  theme_bw()
+
+# smooth
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_point(color="white", alpha=0) +
+  geom_smooth(se=FALSE, size=3, color="black") +
+  theme_bw()
+
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_point(color="black", alpha=0.3) +
+  geom_smooth(se=FALSE, size=2, color="red4", method="lm", formula = y~poly(x,1)) +
+  geom_smooth(se=FALSE, size=2, color="red3", method="lm", formula = y~poly(x,2)) +
+  geom_smooth(se=FALSE, size=2, color="red1", span=0.5) +
+  theme_bw()
+
+# arrow
+library(grid)
+countries$country <- reorder(countries$country, countries$birth.rate, mean)
+ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                  y = birth.rate, yend=death.rate),
+               arrow = arrow(length = unit(0.1,"cm"))) +
+  theme_bw() + coord_flip() + theme(legend.position="none") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") 
+
+ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                                                     y = birth.rate, yend=death.rate,
+                                                                     color=death.rate > birth.rate),
+               arrow = arrow(length = unit(0.1,"cm"))) +
+  theme_bw() + coord_flip() + theme(legend.position="top") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") +
+  scale_color_manual(values = c("green3", "red3"), labels=c("More births than deaths","More deaths than births"), name="")
+
+ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                                                     y = birth.rate, yend=death.rate,
+                                                                     size=population),
+               arrow = arrow(length = unit(0.1,"cm"), type="closed")) +
+  theme_bw() + coord_flip() + theme(legend.position="none") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") 
+
+ggplot() +
+  geom_segment(data=countries[countries$continent == "Europe",], aes(x = country, xend = country, 
+                                                                     y = birth.rate, yend=death.rate,
+                                                                     linetype=birth.rate > death.rate),
+               arrow = arrow(length = unit(0.1,"cm"), type="closed")) +
+  theme_bw() + coord_flip() + theme(legend.position="top") + 
+  ylab("<---- more births                more deaths ---->") + xlab("") +
+  scale_linetype_manual(values = c(1,2), labels=c("More births than deaths","More deaths than births"), name="")
+
+# error bars
+conts <- countries %>% 
+  group_by(continent) %>%
+  summarise(bmin = min(birth.rate, na.rm=TRUE),
+            bmax = max(birth.rate, na.rm=TRUE),
+            bmea = weighted.mean(birth.rate, w = population, na.rm=TRUE),
+            dmin = min(death.rate, na.rm=TRUE),
+            dmax = max(death.rate, na.rm=TRUE),
+            dmea = weighted.mean(death.rate, w = population, na.rm=TRUE),
+            population = sum(population, na.rm=TRUE)
+  )
+
+ggplot(conts, aes(x = bmea, y = dmea, 
+                  ymin = dmin, ymax = dmax,
+                  xmin = bmin, xmax = bmax,
+                  color=continent))+
+ geom_point() + 
+  geom_errorbar(width=0.5) +
+#  geom_errorbarh(width=0.5) + 
+  theme_bw() + xlab("birth.rate") + ylab("death.rate") +
+  theme(legend.position="none")
+
+```
+
+## Other geoms
+
+```{r   }
+# stat_binhex
+# geomBinHex.pdf
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  stat_binhex(bins = 9) + scale_fill_gradient(low = "white", high = "black") + 
+  theme_bw()
+
+# geomRug
+# geomRug.pdf
+ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_rug() + 
+  theme_bw()
+
+
+continents <- 
+  countries %>%
+  group_by(continent) %>%
+  summarise(birth.rate = mean(birth.rate, na.rm=TRUE),
+            death.rate = mean(death.rate, na.rm=TRUE))
+  
+# text
+#geomText.pdf
+ggplot(continents, aes(x = birth.rate, y = death.rate, label = continent)) +
+  geom_text(alpha=1) +
+  theme_bw() + xlim(8,35)
+
+
+```
+
+# Stats
+
+```{r}
+
+
+# boxplot
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_boxplot(fill="grey", coef = 3) +
+  theme_bw()
+
+# crossbar
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_jitter(position=position_jitter(width=0.25), color="grey") + 
+  stat_summary(fun.data = "mean_cl_boot", geom = "crossbar", width = 0.3)  +
+  theme_bw()
+
+# strzalki
+library(tidyr)
+library(grid)
+cq <- countries %>%
+  group_by(continent) %>%
+  summarise(q1 = quantile(birth.rate, 0.25, na.rm=TRUE),
+            q2 = quantile(birth.rate, 0.5, na.rm=TRUE),
+            q3 = quantile(birth.rate, 0.75, na.rm=TRUE))
+cq13 <- cq %>%
+  gather(key, value, -continent)
+
+# statQ1.pdf
+ggplot(cq13, aes(x=continent, y=value, group=continent)) +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  geom_path(arrow=arrow(ends = "both"), size=2) + 
+  geom_point(data=cq13[cq13$key == "q2",], aes(x=continent, y=value), size=5) +
+  theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
+
+# statQ2.pdf
+ggplot(cq, aes(x=continent, y=q2)) +
+  geom_boxplot(aes(ymin=q1, lower=q1, middle=q2, upper=q3, ymax=q3), stat="identity") +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
+
+# statQ3.pdf
+ggplot(cq, aes(x=continent, y=q2)) +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  geom_errorbar(aes(ymin=q1, ymax=q3), stat="identity", width=0.3, size=2) +
+  geom_text(label="*", size=25) + 
+  theme_bw() + xlab("") + ylab("Kwartyle i mediana dla wsp. urodzin")
+
+# contour
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  geom_density2d(h=c(10,10), color="grey") +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), geom="polygon", alpha=0.25) +
+  theme_bw() 
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), geom="tile", aes(fill = ..density..), contour = FALSE) + scale_fill_gradient(low="white", high="black") +
+  theme_minimal() + theme(legend.position="top")
+
+ggplot(countries, aes(x=birth.rate, y=death.rate)) +
+  coord_fixed() + xlim(0,50) + ylim(0,16)+
+  stat_density2d(h=c(10,10), n=c(50,15), geom="point", aes(size = ..density..), contour = FALSE) + scale_size_continuous(range=c(0,4)) +
+  theme_minimal()  + theme(legend.position="top")
+
+
+```
+
+# Position modifiers
+
+```{r   }
+maturaExam2 <- spread(maturaExam, przedmiot, punkty)
+tab <- table(matematyka = cut(rank(maturaExam2$matematyka)/nrow(maturaExam2), c(0,0.25,0.5,0.75,1), labels = c("matematyka <25%", "matematyka 25%-50%", "matematyka 50%-75%", "matematyka >75%")),
+             polski = cut(rank(maturaExam2[,"j. polski"])/nrow(maturaExam2), c(0,0.25,0.5,0.75,1), labels = c("polski <25%", "polski 25%-50%", "polski 50%-75%", "polski >75%")))
+
+df <- data.frame(tab)
+dfn <- colnames(df)
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "fill") + theme_bw() +
+  scale_y_continuous(label = percent) + scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_fill") + xlab("")
+
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "stack") + theme_bw() +
+   scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_stack")+ xlab("")
+
+ggplot(df, aes_string(x = dfn[1], fill = dfn[2], y = dfn[3])) +
+  geom_bar(stat = "identity", position = "dodge") + theme_bw() +
+  scale_fill_brewer(type = "div")+
+  ylab("") + theme(legend.position="none",
+                   axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_dodge")+ xlab("")
+
+
+# dotplot
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_point() +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_identity")+ xlab("")
+
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 0.7) +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_dotplot")+ xlab("")
+
+ggplot(countries, aes(x = continent, y = birth.rate)) +
+  geom_jitter(position=position_jitter(0.35)) +
+  theme_bw() + #theme(axis.text.x  = element_text(angle=90, vjust=0.5)) +
+  ggtitle("position_jitter")+ xlab("")
+
+```
+
+# Coordinate system
+
+```{r   }
+
+# dotplot
+ddplot <- ggplot(countries, aes(x = birth.rate, y = death.rate)) +
+  geom_point(size=2) +
+  geom_smooth(size=2, se=F) + 
+  theme_bw() + theme(legend.position="none", text=element_text(size=20))
+
+ddplot
+
+ddplot + coord_fixed()
+
+ddplot + coord_polar()
+
+ddplot + coord_trans(x = "log2", y = "sqrt")
+
+ddplot + coord_flip()
+
+# Mapy
+map.world <- map_data(map="world")
+countries[177,"country"] = "UK"
+countries[135,"country"] = "Russia"
+countries[76,"country"] = "Iran"
+
+map2 <- merge(map.world, countries, by.x="region", by.y="country")
+map3 <- map2[order(map2$order),]
+
+gg <- ggplot()
+gg <- gg + theme(legend.position="none")
+gg <- gg + geom_map(data=map3, map=map3, color="grey", aes(map_id=region, x=long, y=lat, fill=birth.rate))
+gg <- gg + scale_fill_gradient(low = "yellow", high = "blue4", guide = "colourbar") + theme_bw() + ylim(10,70)+ xlim(-25,50) +
+  theme(text=element_text(size=20))+theme_map()
+
+gg + coord_map("mollweide") 
+
+gg + coord_map("ortho", orientation=c(60,20,-10)) 
+
+gg+ coord_map()
+```
+
+# Scales
+
+```{r   }
+# Scale_fill_brewer
+df <- data.frame(a=factor(1:8))
+
+pl1 <- list()
+pl2 <- list()
+pl3 <- list()
+for (i in 1:8) {
+  pl1[[i]] <- ggplot(df, aes(x=a,fill=a)) +
+    geom_bar() +
+    scale_fill_brewer(type="qual",palette = i) +
+    theme(axis.title.x = element_text(size=0, color="black"),
+          axis.title.y = element_text(size=0, color="black"),
+          axis.text.y = element_text(size=0, color="black"),
+          axis.text.x = element_text(size=0, color="black"),
+          line = element_blank(), rect = element_blank(), #text = element_blank(),
+          plot.margin = grid::unit(c(0, 0, 0, 0), "lines"), complete = TRUE,
+          legend.position="none") +
+    ggtitle(paste("type = qual, palette =",i,""))
+  pl2[[i]] <- pl1[[i]] + scale_fill_brewer(type="div",palette = i) +
+    ggtitle(paste("type = div, palette =",i,""))
+  pl3[[i]] <- pl1[[i]] + scale_fill_brewer(type="seq",palette = i) +
+    ggtitle(paste("type = seq, palette =",i,""))
+}
+
+pl <- c(pl1, pl2, pl3)
+pl4 <- sapply(1:8, function(i) list(pl1[[i]], pl2[[i]], pl3[[i]]))
+pl$ncol=1
+pl$nrow =24
+pl4$ncol=3
+pl4$nrow =8
+
+pl1$ncol=1
+pl1$nrow =8
+pl2$ncol=1
+pl2$nrow =8
+pl3$ncol=1
+pl3$nrow =8
+do.call(grid.arrange, pl1)
+do.call(grid.arrange, pl2)
+do.call(grid.arrange, pl3)
+do.call(grid.arrange, pl)
+do.call(grid.arrange, pl4)
+```
+
+## scales_x
+
+```{r}
+plD <- ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate)) +
+  geom_point(size=2, color="black") +
+  theme_bw()
+
+pl <- list()
+
+pl[[1]] <- plD + ggtitle("default")
+pl[[2]] <- plD + scale_x_tufte() + scale_y_tufte() + ggtitle("_tufte")
+pl[[3]] <- plD + scale_x_sqrt() + scale_y_sqrt() + ggtitle("_sqrt")
+pl[[4]] <- plD + scale_x_reverse() + scale_y_reverse() + ggtitle("_reverse")
+pl[[5]] <- plD + scale_x_log10() + scale_y_log10() + ggtitle("_log10")
+pl[[6]] <- plD + scale_x_continuous(trans="log2") + scale_y_continuous(trans="log2") + ggtitle("_log2")
+
+
+sapply(pl, print)
+
+do.call(grid.arrange, pl)
+
+```
+
+## shape
+
+```{r}
+plD <- ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate, shape=continent, color=continent)) +
+  geom_point(size=5) +
+  theme_bw()
+
+pl <- list()
+
+pl[[1]] <- plD + ggtitle("default")
+pl[[2]] <- plD + scale_shape_stata() + ggtitle("_stata")
+pl[[3]] <- plD + scale_shape_calc() + ggtitle("_calc")
+pl[[4]] <- plD + scale_shape_tableau() + ggtitle("_tableau")
+pl[[5]] <- plD + scale_shape_cleveland() + ggtitle("_cleveland")
+pl[[6]] <- plD + scale_shape_manual(values=LETTERS) + ggtitle("_manual")
+
+
+sapply(pl, print)
+
+do.call(grid.arrange, pl)
+
+```
+
+
+# Panels / facets
+
+```{r   }
+plD <- ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate)) +
+  stat_ellipse(color="red4")+
+  geom_point(data=countries[,-5],size=1,color="grey") +
+  geom_point(size=2, color="red") +
+  theme_bw() + theme(legend.position="none") +
+  theme(text=element_text(size=20)) +
+  scale_x_sqrt() + scale_y_sqrt()
+
+plD + facet_wrap(~continent)
+
+
+ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate, color=continent)) +
+  stat_ellipse()+
+  geom_point(size=2) +
+  theme_bw() + theme(legend.position="none") +
+  theme(text=element_text(size=20)) +
+  scale_x_sqrt() + scale_y_sqrt()
+
+```
+
+# Themes
+
+```{r   }
+
+plD <- ggplot(na.omit(countries), aes(x = birth.rate, y = death.rate)) +
+  geom_point(size=2, color="black") +
+  scale_x_sqrt() 
+
+pl <- list()
+pl[[1]] <- plD +   theme_bw() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_bw")
+#pl[[2]] <- plD # +   theme_calc() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_calc")
+pl[[3]] <- plD +   theme_classic() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_classic")
+#pl[[4]] <- plD +   theme_economist() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20, margin = 0)) + ggtitle("theme_economist")
+#pl[[5]] <- plD +   theme_economist_white() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_economist_white")
+pl[[6]] <- plD +   theme_excel() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_excel")
+pl[[7]] <- plD +   theme_few() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_few")
+#pl[[8]] <- plD +   theme_fivethirtyeight() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_fivethirtyeight")
+#pl[[9]] <- plD +   theme_foundation() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_foundation")
+pl[[10]] <- plD +   theme_gray() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_gray")
+pl[[11]] <- plD +   theme_map() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_map")
+pl[[12]] <- plD +   theme_pander() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_pander")
+pl[[13]] <- plD +   theme_solarized() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_solarized")
+#pl[[14]] <- plD +   theme_stata() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_stata")
+#pl[[15]] <- plD +   theme_wsj() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_wsj")
+pl[[16]] <- plD +   theme_tufte() +  theme(legend.position="none") +
+  theme(text=element_text(size=20)) + ggtitle("theme_tufte")
+#pl[[17]] <- plD +   theme_solarized_2() +  theme(legend.position="none") +
+#  theme(text=element_text(size=20)) + ggtitle("theme_solarized_2")
+
+tmp <- sapply(pl, print)
+
+#do.call(grid.arrange, pl[c(1,10,11,  8,17,14,  4,5, 6)])
+
+```
