@@ -1,0 +1,16 @@
+base
+archivist
+ggplot2
+knitr
+scales
+dplyr
+gridExtra
+sp
+rworldmap
+ggthemes
+RColorBrewer
+lattice
+latticeExtra
+httr
+htmltools
+SmarterPoland
