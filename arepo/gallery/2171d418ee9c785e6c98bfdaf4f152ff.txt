@@ -1,0 +1,7 @@
+  id_ucznia punkty  przedmiot  rok
+1         4     14 matematyka 2011
+2         4     31  j. polski 2011
+3         5     19 matematyka 2010
+4         5     35  j. polski 2010
+5         7     16 matematyka 2010
+6         7     43  j. polski 2010
