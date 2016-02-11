@@ -11,14 +11,14 @@ output:
 
 ```{r, cache=FALSE, warning=FALSE, message=FALSE}
 library(archivist)
+library(knitr)
 library(ggplot2)
 
 # store everything in the archivist repo
-addHooksToPrint(class=c("ggplot", "data.frame"),
+addHooksToPrint(class=c("ggplot", "knitr_kable"),
                  repoDir = "arepo", 
                  repo = "Eseje", user = "pbiecek", subdir = "arepo")
 
-library(knitr)
 library(scales)
 library(dplyr)
 library(tidyr)
@@ -41,10 +41,10 @@ opts_chunk$set(comment=NA, fig.width=6, fig.height=6, results='asis', warning=FA
 
 Here we are using the `SmarterPoland` package and two datasets.
 
-```{r, cache=FALSE, results='markup'}
+```{r}
 library(SmarterPoland)
-head(countries)
-head(maturaExam)
+print(kable(head(countries)))
+print(kable(head(maturaExam)))
 ```
 
 # Layers
