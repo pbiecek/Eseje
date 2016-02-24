@@ -3,8 +3,9 @@ title: "Script that reproduces plots from the chapter ,,Grammar of Graphics''"
 author: "Przemyslaw Biecek"
 date: "22 December 2015"
 output: 
-  github_document:
+  html_document:
     toc: TRUE
+    toc_float: TRUE
 ---
 
 # Data preparation
