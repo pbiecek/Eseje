@@ -5,6 +5,7 @@ date: "22 December 2015"
 output: 
   html_document:
     toc: TRUE
+    toc_float: TRUE
 ---
 
 ```{r}
