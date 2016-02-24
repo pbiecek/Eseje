@@ -3,7 +3,7 @@ title: "Script that reproduces plots from the chapter ,,Grammar of Graphics''"
 author: "Przemyslaw Biecek"
 date: "22 December 2015"
 output: 
-  html_document:
+  github_document:
     toc: TRUE
 ---
 
