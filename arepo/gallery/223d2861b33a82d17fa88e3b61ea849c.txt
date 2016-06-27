@@ -1,7 +1,7 @@
 Source: local data frame [6 x 3]
 
   continent   key  value
-     (fctr) (chr)  (dbl)
+     <fctr> <chr>  <dbl>
 1    Europe    q1  9.575
 2  Americas    q1 14.900
 3      Asia    q1 15.275

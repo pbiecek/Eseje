@@ -1,7 +1,7 @@
 Source: local data frame [5 x 3]
 
   continent birth.rate death.rate
-     (fctr)      (dbl)      (dbl)
+     <fctr>      <dbl>      <dbl>
 1    Europe   10.68250   9.992500
 2  Americas   18.02424   6.360606
 3      Asia   19.90217   5.891304
