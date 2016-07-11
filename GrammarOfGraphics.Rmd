@@ -448,9 +448,22 @@ ggplot(countries, aes(x = continent, y = birth.rate)) +
   stat_summary(fun.data = "mean_cl_boot", geom = "crossbar", width = 0.3)  +
   theme_bw()
 
-# strzalki
+# arrows
 library(tidyr)
 library(grid)
+
+countries %a%
+  group_by(continent) %a%
+  summarise(q1 = quantile(birth.rate, 0.25, na.rm=TRUE),
+            q2 = quantile(birth.rate, 0.5, na.rm=TRUE),
+            q3 = quantile(birth.rate, 0.75, na.rm=TRUE)) %a%
+  gather(key, value, -continent) %a%
+  ggplot(aes(x=continent, y=value, group=continent)) +
+  geom_jitter(data=countries, aes(x = continent, y = birth.rate), position=position_jitter(width=0.25), color="grey") + 
+  geom_path(arrow=arrow(ends = "both"), size=2)  +
+  theme_bw() + xlab("") + ylab("Quantiles")
+
+# arrows
 cq <- countries %>%
   group_by(continent) %>%
   summarise(q1 = quantile(birth.rate, 0.25, na.rm=TRUE),
