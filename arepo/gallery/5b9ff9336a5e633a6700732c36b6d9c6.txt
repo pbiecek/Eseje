@@ -1,0 +1,14 @@
+              country birth.rate death.rate population continent
+1         Afghanistan       34.1        7.7      30552      Asia
+2             Albania       12.9        9.4       3173    Europe
+3             Algeria       24.3        5.7      39208    Africa
+4             Andorra        8.9        8.4         79    Europe
+5              Angola       44.1       13.9      21472    Africa
+6 Antigua and Barbuda       16.5        6.8         90  Americas
+  populationCat
+1       < 100 M
+2         < 10M
+3       < 100 M
+4          < 1M
+5       < 100 M
+6          < 1M

@@ -1,0 +1,9 @@
+# A tibble: 6 × 3
+  continent   key  value
+     <fctr> <chr>  <dbl>
+1    Europe    q1  9.575
+2  Americas    q1 14.900
+3      Asia    q1 15.275
+4   Oceania    q1 16.275
+5    Africa    q1 28.700
+6    Europe    q2 10.750
