@@ -50,6 +50,7 @@ W tym skrypcie wykorzystujemy pakiet `SmarterPoland` i zbiory danych
 ```{r, cache=FALSE, results='markup'}
 library(SmarterPoland)
 head(countries)
+countries <- na.omit(countries)
 head(maturaExam)
 ```
 
